@@ -1,0 +1,47 @@
+/* config.h.in.  Generated from configure.ac by autoheader.  */
+
+/* Have the kernel patch for lookup_bdev()
+   https://www.redhat.com/archives/dm-devel/2016-April/msg00372.html */
+#undef HAVE_LOOKUP_BDEV_PATCH
+
+/* Define to the address where bug reports for this package should be sent. */
+#undef PACKAGE_BUGREPORT
+
+/* Define to the full name of this package. */
+#undef PACKAGE_NAME
+
+/* Define to the full name and version of this package. */
+#undef PACKAGE_STRING
+
+/* Define to the one symbol short name of this package. */
+#undef PACKAGE_TARNAME
+
+/* Define to the home page for this package. */
+#undef PACKAGE_URL
+
+/* Define to the version of this package. */
+#undef PACKAGE_VERSION
+
+/* the name of physical backup disk, default is "/dev/sda4" */
+#undef USER_BACKUP_DISK
+
+/* the max page number in a single bio request, default is 32 */
+#undef USER_BIO_PAGE_CAP
+
+/* the max page number in a single struct request (swap IO request),
+   MAX_SGL_LEN */
+#undef USER_MAX_PAGE_NUM
+
+/* the max remote memory size from one server (MAX_MR_SIZE_GB), default is 32
+   */
+#undef USER_MAX_REMOTE_MEMORY
+
+/* the number of queried server in looking for remote memory
+   (SERVER_SELECT_NUM), default is 1 */
+#undef USER_NUM_SERVER_SELECT
+
+/* the name of stackbd disk */
+#undef USER_STACKBD_NAME
+
+/* stackbd (backup) disk size */
+#undef USER_STACKBD_SIZE
