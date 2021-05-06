@@ -32,7 +32,7 @@ stackbd_name="stackbd"
 
 #name of physical backup disk
 #(BACKUP_DISK), default is "/dev/sda4"
-backup_disk="/dev/vdb"
+backup_disk="/dev/sda4"
 
 #number of queried server in looking for remote memory
 #(SERVER_SELECT_NUM), default is 1
@@ -90,7 +90,7 @@ daemon_options="--enable-max_client=${max_client} \
     --enable-measured_free_mem_weight=${measured_free_mem_weight}"
 
 # build infiniswap block device
-# if [ $1 == "bd" ]; then
+if [ $1 == "bd" ]; then
 echo "........ install infiniswap block device, options:"
 echo "${bd_options}"
 cd ../infiniswap_bd
@@ -100,7 +100,7 @@ make
 sudo make install
 echo -e "\033[32m....... infiniswap block device done\033[0m"
 #build infiniswap daemon
-# elif [ $1 == "daemon" ]; then
+elif [ $1 == "daemon" ]; then
 echo "........ install infiniswap daemon, options:"
 echo "${daemon_options}"
 cd ../infiniswap_daemon
@@ -108,5 +108,5 @@ cd ../infiniswap_daemon
 ./configure ${daemon_options}
 make 
 echo -e "\033[32m....... infiniswap daemon done\033[0m"
-# fi
+fi
 

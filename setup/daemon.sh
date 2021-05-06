@@ -1,4 +1,8 @@
 #!/bin/bash
 
+./install.sh daemon
+
+sudo ./ib_setup.sh $1
+
 cd ../infiniswap_daemon/
-./infiniswap-daemon 192.168.2.221 9400
+./infiniswap-daemon $1 9400

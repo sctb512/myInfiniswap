@@ -1,14 +1,14 @@
 #!/bin/bash
 
-./install.sh
+# ./install.sh
 
-user=root
-client=u224
-server=u221
+project=myInfiniswap
+user=bin_tang
+machines=(apt050.apt.emulab.net	apt007.apt.emulab.net)
 
-echo "copy to server:${server} client:${client}"
-
-scp -r ../../Infiniswap root@${client}:~/ >/dev/null 2>&1
-ssh ${user}@${server} "pidof activeswap-daemon | xargs kill -s 9"
-ssh ${user}@${server} "pidof infiniswap-daemon | xargs kill -s 9"
-scp -r ../../Infiniswap root@${server}:~/ >/dev/null 2>&1
+for machine in ${machines[*]};do
+    echo "copy to ${machine}..."
+    ssh ${user}@${machine} "pidof activeswap-daemon | xargs kill -s 9"
+    ssh ${user}@${machine} "pidof infiniswap-daemon | xargs kill -s 9"
+    scp -r ../../${project} ${user}@${machine}:~/ >/dev/null 2>&1
+done
