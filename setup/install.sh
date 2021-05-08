@@ -20,11 +20,11 @@ bio_page_cap=32
 
 #max remote memory size from one server 
 #(MAX_MR_SIZE_GB), default is 32
-max_remote_memory=32    #also for daemon
+max_remote_memory=60    #also for daemon
 
 #stackbd (backup) disk size, also the total size of remote memory of this bd
 #(STACKBD_SIZE), default is 12
-stackbd_size=12
+stackbd_size=60
 
 #name of stackbd disk
 #(STACKBD_NAME), default is "stackbd"
