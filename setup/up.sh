@@ -12,3 +12,8 @@ for machine in ${machines[*]};do
     ssh ${user}@${machine} "pidof infiniswap-daemon | xargs kill -s 9"
     scp -r ../../${project} ${user}@${machine}:~/ >/dev/null 2>&1
 done
+
+cd ..
+git add -A
+git commit -m "update files"
+git push origin master
