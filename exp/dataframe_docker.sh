@@ -14,11 +14,11 @@ total_mem=41943040
 docker_name=is_workloads
 echo "total_mem: ${total_mem}"
 
-# ssh ${user}@${server} "pidof infiniswap-daemon | xargs kill -s 9"
-# ssh ${user}@${server} "cd ~/myInfiniswap/setup && ./daemon.sh ${server_ib} 9400" &
+ssh ${user}@${server} "pidof infiniswap-daemon | xargs kill -s 9"
+ssh ${user}@${server} "cd ~/myInfiniswap/setup && ./daemon.sh ${server_ib} 9400" &
 
-# echo "sleep 80s..."
-# sleep 80
+echo "sleep 80s..."
+sleep 80
 
 for local in 100 75 50 25;do
     local_mem=`expr ${total_mem} \* ${local} / 100`
@@ -31,16 +31,16 @@ for local in 100 75 50 25;do
         continue
     fi
 
-    ssh ${user}@${server} "pidof infiniswap-daemon | xargs kill -s 9"
-    ssh ${user}@${server} "cd ~/myInfiniswap/setup && ./daemon.sh ${server_ib} 9400" &
+    # ssh ${user}@${server} "pidof infiniswap-daemon | xargs kill -s 9"
+    # ssh ${user}@${server} "cd ~/myInfiniswap/setup && ./daemon.sh ${server_ib} 9400" &
 
-    echo "sleep 80s..."
-    sleep 80
+    # echo "sleep 80s..."
+    # sleep 80
 
-    cd ../setup
-    ./bd.sh ${client_ib}
-    cd ../exp
-    dmesg | tail
+    # cd ../setup
+    # ./bd.sh ${client_ib}
+    # cd ../exp
+    # dmesg | tail
 
     sudo docker stop $(sudo docker ps -a -q)
     sudo docker rm $(sudo docker ps -a -q)
@@ -55,7 +55,7 @@ for local in 100 75 50 25;do
 
     sudo docker cp ${docker_name}:/root/${output_dir}/ .
 
-    cd ../setup
-    ./old.sh
-    cd ../exp
+    # cd ../setup
+    # ./old.sh
+    # cd ../exp
 done
