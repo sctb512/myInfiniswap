@@ -19,11 +19,16 @@ sudo ./install.sh bd >/dev/null 2>&1
 echo "confihure ib0 ..."
 sudo /etc/init.d/openibd restart
 
+sudo ./ib_setup.sh $1
 ifconfig ib0 | grep "inet addr"
 echo "sleep 10s..."
 sleep 10
 
-sudo ./ib_setup.sh $1
+server=`cat portal.list | tail -n 1| awk -F: '{print $1}'`
+ping -c1 ${server} &>/dev/null
+while [ $? -eq 1 ];do
+    ping -c1 ${server} &>/dev/null
+done
 
 echo "run infiniswap_bd_setup.sh ..."
 sudo ./infiniswap_bd_setup.sh
