@@ -1,6 +1,6 @@
 #!/bin/bash
 
-output_dir="./is_result_dataframe"
+output_dir="is_result_dataframe"
 sudo rm -rf ${output_dir}/*
 if [ ! -d ${output_dir} ]; then
     mkdir -p ${output_dir}
