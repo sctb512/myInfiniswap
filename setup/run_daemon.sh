@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd myInfiniswap/setup
+cd ~/myInfiniswap/setup
 
 ./pull.sh
 
