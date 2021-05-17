@@ -1,10 +1,11 @@
 #!/bin/bash
 
 output_dir="is_result_dataframe"
-sudo rm -rf ${output_dir}/*
+
 if [ ! -d ${output_dir} ]; then
     mkdir -p ${output_dir}
 fi
+sudo rm -rf ${output_dir}/*
 
 total_mem=16777216
 docker_name=is_workloads
