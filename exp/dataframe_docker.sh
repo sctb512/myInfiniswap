@@ -1,10 +1,5 @@
 #!/bin/bash
 
-user=bin_tang
-server=128.110.96.50
-server_ib=192.168.0.112
-client_ib=192.168.0.111
-
 output_dir="./result_dataframe"
 if [ ! -d ${output_dir} ]; then
     mkdir -p ${output_dir}
@@ -14,19 +9,10 @@ total_mem=16777216
 docker_name=is_workloads
 echo "total_mem: ${total_mem}"
 
-ssh ${user}@${server} "pidof infiniswap-daemon | xargs kill -s 9"
-ssh ${user}@${server} "cd ~/myInfiniswap/setup && ./daemon.sh ${server_ib} 9400" &
-
-echo "sleep 80s..."
-sleep 80
-
 cd ../setup
-./bd.sh ${client_ib}
+./run_infiniswap.sh
 cd ../exp
-dmesg | tail
 
-echo "sleep 10s..."
-sleep 10
 
 for local in 100 75 50 25;do
     local_mem=`expr ${total_mem} \* ${local} / 100`
