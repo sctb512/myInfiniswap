@@ -1,7 +1,7 @@
 #!/bin/bash
 
 output_dir="./is_result_dataframe"
-rm -rf ${output_dir}/*
+sudo rm -rf ${output_dir}/*
 if [ ! -d ${output_dir} ]; then
     mkdir -p ${output_dir}
 fi
