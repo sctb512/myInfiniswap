@@ -5,7 +5,7 @@ output_dir="is_result_dataframe"
 if [ ! -d ${output_dir} ]; then
     mkdir -p ${output_dir}
 fi
-sudo rm -rf ${output_dir}/*
+# sudo rm -rf ${output_dir}/*
 
 total_mem=16777216
 docker_name=is_workloads
@@ -51,7 +51,7 @@ for i in `seq 10`;do
         sudo docker cp dataframe.py ${docker_name}:/root
         sudo docker exec -it ${docker_name} /bin/bash -c "cd /root && mkdir ${output_dir} && ls && (time python3 dataframe.py ${df_num}) 2> ${output_dir}/${file_name}"
 
-        sudo docker cp ${docker_name}:/root/${output_dir}/* ./${output_dir}/${i}/
+        sudo docker cp ${docker_name}:/root/${output_dir}/ ./${output_dir}/${i}/
 
         # cd ../setup
         # ./old.sh
