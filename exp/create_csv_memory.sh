@@ -7,6 +7,7 @@ done
 echo "${headline}" > create_csv_memory.csv
 
 for data in `seq 8 8 256`;do
+	rm -rf test*.csv
 	line="${data}"	
 	for i in `seq 5`;do
 		mem_base=`free | awk '/Mem/ {print $3}'`
