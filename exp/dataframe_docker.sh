@@ -25,7 +25,7 @@ for i in `seq 10`;do
 
         file_name="total_mem${total_mem}_local_mem${local_mem}_local${local}.txt"
 
-        if [ -f ${output_dir}/${i}/${file} ];then
+        if [ -f ${output_dir}/${i}/${output_dir}/${file} ];then
             continue
         fi
 
