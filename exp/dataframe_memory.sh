@@ -4,7 +4,7 @@ headline="dataframe"
 for i in `seq 5`;do
 	headline="${headline},${i}_memory_used(kB)"
 done
-echo "${headline}" > dataframe_memory.csv
+echo "${headline}" > is_dataframe_memory.csv
 
 for data in `seq 8 8 256`;do
 	line="${data}"	
@@ -30,5 +30,5 @@ for data in `seq 8 8 256`;do
 		sleep 10
 	done
 	echo "${line}"
-	echo "${line}" >> dataframe_memory.csv
+	echo "${line}" >> is_dataframe_memory.csv
 done

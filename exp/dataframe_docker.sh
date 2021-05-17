@@ -1,6 +1,6 @@
 #!/bin/bash
 
-output_dir="./result_dataframe"
+output_dir="./is_result_dataframe"
 if [ ! -d ${output_dir} ]; then
     mkdir -p ${output_dir}
 fi

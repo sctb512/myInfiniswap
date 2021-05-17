@@ -1,6 +1,6 @@
 #!/bin/bash
 
-output_dir="./result_fio"
+output_dir="./is_result_fio"
 if [ ! -d ${output_dir} ]; then
     mkdir -p ${output_dir}
 fi
