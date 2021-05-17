@@ -17,7 +17,7 @@ cd ../exp
 
 
 for i in `seq 10`;do
-    mkdir -p ${output_dir}/${i}
+    sudo mkdir -p ${output_dir}/${i}
     for local in 100 75 50 25;do
         local_mem=`expr ${total_mem} \* ${local} / 100`
         df_num=`expr ${local_mem} / 220851`
