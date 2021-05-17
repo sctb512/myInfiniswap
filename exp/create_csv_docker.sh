@@ -14,11 +14,11 @@ total_mem=41943040
 docker_name=is_workloads
 echo "total_mem: ${total_mem}"
 
-ssh ${user}@${server} "pidof infiniswap-daemon | xargs kill -s 9"
-ssh ${user}@${server} "cd ~/myInfiniswap/setup && ./daemon.sh ${server_ib} 9400" &
+# ssh ${user}@${server} "pidof infiniswap-daemon | xargs kill -s 9"
+# ssh ${user}@${server} "cd ~/myInfiniswap/setup && ./daemon.sh ${server_ib} 9400" &
 
-echo "sleep 80s..."
-sleep 80
+# echo "sleep 80s..."
+# sleep 80
 
 for local in 100 75 50 25;do
     local_mem=`expr ${total_mem} \* ${local} / 100`
