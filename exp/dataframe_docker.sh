@@ -23,9 +23,9 @@ for i in `seq 10`;do
         df_num=`expr ${local_mem} / 220851`
         echo "local_mem: ${local_mem}, df_num: ${df_num}"
 
-        file_name="total_mem${total_mem}_local_mem${local_mem}_local${local}.txt"
+        file="total_mem${total_mem}_local_mem${local_mem}_local${local}.txt"
 
-        if [ -f ${output_dir}/${i}/${output_dir}/${file_name} ];then
+        if [ -f ${output_dir}/${i}/${output_dir}/${file} ];then
             continue
         fi
 
@@ -49,7 +49,7 @@ for i in `seq 10`;do
         echo "install env in docker..."
         sudo docker exec -it ${docker_name} /bin/bash -c "apt-get update && apt-get install python3 -y && python3 -V && apt-get install python3-pip -y && pip3 install pandas" > /dev/null 2>&1
         sudo docker cp dataframe.py ${docker_name}:/root
-        sudo docker exec -it ${docker_name} /bin/bash -c "cd /root && mkdir ${output_dir} && ls && (time python3 dataframe.py ${df_num}) 2> ${output_dir}/${file_name}"
+        sudo docker exec -it ${docker_name} /bin/bash -c "cd /root && mkdir ${output_dir} && ls && (time python3 dataframe.py ${df_num}) 2> ${output_dir}/${file}"
 
         sudo docker cp ${docker_name}:/root/${output_dir}/ ./${output_dir}/${i}/
 
