@@ -6,5 +6,5 @@ cd ~/myInfiniswap/setup
 
 ./bd.sh 192.168.0.111
 
-cd ../exp
-./dataframe_docker.sh
+# cd ../exp
+# ./dataframe_docker.sh
