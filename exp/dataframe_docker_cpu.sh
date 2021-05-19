@@ -15,7 +15,7 @@ echo "total_mem: ${total_mem}"
 # ./run_infiniswap.sh
 # cd ../exp
 
-cpu_useage=90
+cpu_useage=95
 
 ./compile_cpu.sh
 ./cpu ${cpu_useage} &
