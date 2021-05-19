@@ -15,6 +15,8 @@ echo "total_mem: ${total_mem}"
 # ./run_infiniswap.sh
 # cd ../exp
 
+./compile_cpu.sh
+cpu_useage=90
 
 for i in `seq 10`;do
     sudo mkdir -p ${output_dir}/${i}
@@ -49,8 +51,8 @@ for i in `seq 10`;do
         echo "install env in docker..."
         sudo docker exec -it ${docker_name} /bin/bash -c "apt-get update && apt-get install python3 -y && python3 -V && apt-get install python3-pip -y && pip3 install pandas" > /dev/null 2>&1
         sudo docker cp dataframe.py ${docker_name}:/root
-        sudo docker cp full_cpu.sh ${docker_name}:/root
-        sudo docker exec -it ${docker_name} /bin/bash -c "cd /root && mkdir ${output_dir} && ls && sh full_cpu.sh && (time python3 dataframe.py ${df_num}) 2> ${output_dir}/${file}"
+        sudo docker cp cpu ${docker_name}:/root
+        sudo docker exec -it ${docker_name} /bin/bash -c "cd /root && mkdir ${output_dir} && ls && (./cpu ${cpu_useage} &) && (time python3 dataframe.py ${df_num}) 2> ${output_dir}/${file}"
 
         sudo docker cp ${docker_name}:/root/${output_dir}/ ./${output_dir}/${i}/
 
