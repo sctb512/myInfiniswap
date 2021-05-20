@@ -1,6 +1,8 @@
 #!/bin/bash
 
-output_dir="is_result_dataframe_cpu"
+cpu_useage=100
+
+output_dir="is_result_dataframe_cpu_${cpu_useage}"
 
 if [ ! -d ${output_dir} ]; then
     mkdir -p ${output_dir}
@@ -14,8 +16,6 @@ echo "total_mem: ${total_mem}"
 # cd ../setup
 # ./run_infiniswap.sh
 # cd ../exp
-
-cpu_useage=95
 
 ./compile_cpu.sh
 ./cpu ${cpu_useage} &
