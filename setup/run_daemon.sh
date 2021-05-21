@@ -1,5 +1,7 @@
 #!/bin/bash
 
+output_dir="is_result_dataframe"
+
 cd ~/myInfiniswap/setup
 
 ./pull.sh
