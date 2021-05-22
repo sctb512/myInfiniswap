@@ -13,4 +13,5 @@ cd ../exp
 ./cpu_rate_core.sh ${output_dir} &
 cd ../setup
 
-./daemon.sh 192.168.0.112
+# ./daemon.sh 192.168.0.112
+./daemon.sh 192.168.0.$1
