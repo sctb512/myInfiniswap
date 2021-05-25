@@ -1,6 +1,8 @@
 #!/bin/bash
 
-output_dir="is_result_dataframe"
+servers_num=`cat ../setup/portal.list | awk 'NR==1 {print $1}'`
+
+output_dir="is_result_dataframe_${servers_num}_servers"
 
 if [ ! -d ${output_dir} ]; then
     mkdir -p ${output_dir}
@@ -47,18 +49,14 @@ for i in `seq 10`;do
         # dmesg | tail
 
         sudo docker stop $(sudo docker ps -a -q)
-        # sudo docker rm $(sudo docker ps -a -q)
+        sudo docker rm $(sudo docker ps -a -q)
         
-        # sudo docker run -itd -m ${local_mem}K --name ${docker_name} ubuntu
-        sudo docker update -m ${local_mem}K --memory-swap `expr 2 \* ${local_mem}`K ${docker_name}
-        sleep 10
-        sudo docker start ${docker_name}
+        sudo docker run -itd -m ${local_mem}K --name ${docker_name} ubuntu
         sudo docker ps -a
 
         echo "install env in docker..."
-        # sudo docker exec -it ${docker_name} /bin/bash -c "apt-get update && apt-get install python3 -y && python3 -V && apt-get install python3-pip -y && pip3 install pandas" > /dev/null 2>&1
+        sudo docker exec -it ${docker_name} /bin/bash -c "apt-get update && apt-get install python3 -y && python3 -V && apt-get install python3-pip -y && pip3 install pandas" > /dev/null 2>&1
         sudo docker cp dataframe.py ${docker_name}:/root
-        sudo docker exec -it ${docker_name} /bin/bash -c "cd /root && rm -rf ${output_dir}"  >/dev/null 2>&1
         sudo docker exec -it ${docker_name} /bin/bash -c "cd /root && mkdir ${output_dir} && ls && (time python3 dataframe.py ${df_num}) 2> ${output_dir}/${file}"
 
         sudo docker cp ${docker_name}:/root/${output_dir}/ ./${output_dir}/${i}/
