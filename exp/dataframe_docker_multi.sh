@@ -23,6 +23,8 @@ ps -ef | grep cpu_rate_docker.sh | grep /bin/bash | awk '{print $2}' | xargs kil
 ./cpu_rate_docker.sh ${output_dir} &
 ./cpu_rate_core.sh ${output_dir} &
 
+sudo docker cp dataframe.py ${docker_name}:/root
+
 
 for i in `seq 10`;do
     sudo mkdir -p ${output_dir}/${i}
@@ -49,14 +51,20 @@ for i in `seq 10`;do
         # dmesg | tail
 
         sudo docker stop $(sudo docker ps -a -q)
-        sudo docker rm $(sudo docker ps -a -q)
+        # sudo docker rm $(sudo docker ps -a -q)
         
-        sudo docker run -itd -m ${local_mem}K --name ${docker_name} ubuntu
+        # sudo docker run -itd -m ${local_mem}K --name ${docker_name} ubuntu
+        # sudo docker ps -a
+
+        sudo docker update -m ${local_mem}K --memory-swap `expr 2 \* ${local_mem}`K ${docker_name}
+        sleep 10
+        sudo docker start ${docker_name}
         sudo docker ps -a
 
         echo "install env in docker..."
-        sudo docker exec -it ${docker_name} /bin/bash -c "apt-get update && apt-get install python3 -y && python3 -V && apt-get install python3-pip -y && pip3 install pandas" > /dev/null 2>&1
-        sudo docker cp dataframe.py ${docker_name}:/root
+        # sudo docker exec -it ${docker_name} /bin/bash -c "apt-get update && apt-get install python3 -y && python3 -V && apt-get install python3-pip -y && pip3 install pandas" > /dev/null 2>&1
+        # sudo docker cp dataframe.py ${docker_name}:/root
+        sudo docker exec -it ${docker_name} /bin/bash -c "cd /root && rm -rf ${output_dir}"  >/dev/null 2>&1
         sudo docker exec -it ${docker_name} /bin/bash -c "cd /root && mkdir ${output_dir} && ls && (time python3 dataframe.py ${df_num}) 2> ${output_dir}/${file}"
 
         sudo docker cp ${docker_name}:/root/${output_dir}/ ./${output_dir}/${i}/

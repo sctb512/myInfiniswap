@@ -21,6 +21,7 @@ ps -ef | grep cpu_rate_docker.sh | grep /bin/bash | awk '{print $2}' | xargs kil
 ./cpu_rate_docker.sh ${output_dir} &
 ./cpu_rate_core.sh ${output_dir} &
 
+sudo docker cp dataframe.py ${docker_name}:/root
 
 for i in `seq 10`;do
     sudo mkdir -p ${output_dir}/${i}
@@ -57,7 +58,7 @@ for i in `seq 10`;do
 
         echo "install env in docker..."
         # sudo docker exec -it ${docker_name} /bin/bash -c "apt-get update && apt-get install python3 -y && python3 -V && apt-get install python3-pip -y && pip3 install pandas" > /dev/null 2>&1
-        sudo docker cp dataframe.py ${docker_name}:/root
+        # sudo docker cp dataframe.py ${docker_name}:/root
         sudo docker exec -it ${docker_name} /bin/bash -c "cd /root && rm -rf ${output_dir}"  >/dev/null 2>&1
         sudo docker exec -it ${docker_name} /bin/bash -c "cd /root && mkdir ${output_dir} && ls && (time python3 dataframe.py ${df_num}) 2> ${output_dir}/${file}"
 
