@@ -1,5 +1,9 @@
 #!/bin/bash
 
+if [ $# != 2 ];then
+    echo "useage: $0 ib_addr server_num"
+fi
+
 cd ~/myInfiniswap/setup
 
 ./pull.sh
