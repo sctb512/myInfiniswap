@@ -1,6 +1,7 @@
 #!/bin/bash
 
-./install.sh daemon >/dev/null 2>&1
+# ./install.sh daemon >/dev/null 2>&1
+./install.sh daemon
 
 sudo /etc/init.d/openibd restart
 

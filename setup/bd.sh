@@ -14,7 +14,8 @@ sed -i "s/sda3/${dev}/g"  ./old.sh
 swapon -s
 
 echo "install bd ..."
-sudo ./install.sh bd >/dev/null 2>&1
+# sudo ./install.sh bd >/dev/null 2>&1
+sudo ./install.sh bd
 
 echo "confihure ib0 ..."
 sudo /etc/init.d/openibd restart
