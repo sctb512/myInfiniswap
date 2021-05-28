@@ -37,7 +37,7 @@ swapon -s
 
 echo "install bd ..."
 # sudo ./install.sh bd >/dev/null 2>&1
-sudo ./install.sh bd
+sudo ./install.sh bd >/dev/null 2>&1
 
 echo "confihure ib0 ..."
 sudo /etc/init.d/openibd restart
