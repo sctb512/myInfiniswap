@@ -11,19 +11,19 @@ cd ~/myInfiniswap/setup
 
 client=111
 
-if [ $2 == "1" ];then
+if [ $1 == "1" ];then
     echo "server num: 1"
-    client=118
+    client=111
     echo -e "1\n192.168.0.119" | sudo tee portal.list
-elif [ $2 == "2" ];then
+elif [ $1 == "2" ];then
     echo "server num: 2"
     client=116
     echo -e "2\n192.168.0.117\n192.168.0.118" | sudo tee portal.list
-elif [ $2 == "4" ];then
+elif [ $1 == "4" ];then
     echo "server num: 4"
     client=111
     echo -e "4\n192.168.0.112\n192.168.0.113\n192.168.0.114\n192.168.0.115" | sudo tee portal.list
-elif [ $2 == "8" ];then
+elif [ $1 == "8" ];then
     echo "server num: 8"
     client=111
     echo -e "8\n192.168.0.112\n192.168.0.113\n192.168.0.114\n192.168.0.115\n192.168.0.116\n192.168.0.117\n192.168.0.118\n192.168.0.119" | sudo tee portal.list
