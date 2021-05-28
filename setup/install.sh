@@ -95,7 +95,7 @@ echo "........ install infiniswap block device, options:"
 echo "${bd_options}"
 cd ../infiniswap_bd
 sudo make clean
-rm -rf aclocal.m4 autom4te.cache
+# rm -rf aclocal.m4 autom4te.cache
 ./autogen.sh
 ./configure ${bd_options}
 make 

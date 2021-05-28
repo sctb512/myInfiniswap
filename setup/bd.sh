@@ -21,9 +21,9 @@ echo "confihure ib0 ..."
 sudo /etc/init.d/openibd restart
 
 sudo ./ib_setup.sh $1
-ifconfig ib0 | grep "inet addr"
 echo "sleep 10s..."
 sleep 10
+ifconfig ib0 | grep "inet addr"
 
 server=`cat portal.list | tail -n 1| awk -F: '{print $1}'`
 ping -c1 ${server} &>/dev/null
