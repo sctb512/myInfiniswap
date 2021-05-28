@@ -2,6 +2,7 @@
 
 if [ $# != 2 ];then
     echo "useage: $0 ib_addr server_num"
+    exit
 fi
 
 cd ~/myInfiniswap/setup
