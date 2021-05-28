@@ -14,7 +14,7 @@ if [ $2 == "1" ];then
     echo -e "1\n192.168.0.12" | sudo tee portal.list
 elif [ $2 == "2" ];then
     echo "server num: 2"
-    echo -e "2\n192.168.0.122\n192.168.0.123" | sudo tee portal.list
+    echo -e "2\n192.168.0.142\n192.168.0.143" | sudo tee portal.list
 elif [ $2 == "4" ];then
     echo "server num: 4"
     echo -e "4\n192.168.0.112\n192.168.0.113\n192.168.0.114\n192.168.0.115" | sudo tee portal.list
