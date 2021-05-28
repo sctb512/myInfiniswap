@@ -10,12 +10,16 @@ cd ~/myInfiniswap/setup
 ./pull.sh
 
 if [ $2 == "1" ];then
+    echo "server num: 1"
     echo -e "1\n192.168.0.12" | sudo tee portal.list
 elif [ $2 == "2" ];then
+    echo "server num: 2"
     echo -e "2\n192.168.0.122\n192.168.0.123" | sudo tee portal.list
 elif [ $2 == "4" ];then
+    echo "server num: 4"
     echo -e "4\n192.168.0.112\n192.168.0.113\n192.168.0.114\n192.168.0.115" | sudo tee portal.list
 elif [ $2 == "8" ];then
+    echo "server num: 8"
     echo -e "8\n192.168.0.112\n192.168.0.113\n192.168.0.114\n192.168.0.115\n192.168.0.116\n192.168.0.117\n192.168.0.118\n192.168.0.119" | sudo tee portal.list
 fi
 
