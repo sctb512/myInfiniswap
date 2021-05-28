@@ -25,7 +25,7 @@ echo "client ip: 192.168.0.${client}"
 sudo dmesg -C
 
 cd ../infiniswap_bd
-sudo make clean
+sudo make clean >/dev/null 2>&1
 cd ../setup
 
 swapon -s

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd ../infiniswap_daemon
-sudo make clean
+sudo make clean >/dev/null 2>&1
 cd ../setup
 
 # ./install.sh daemon >/dev/null 2>&1
