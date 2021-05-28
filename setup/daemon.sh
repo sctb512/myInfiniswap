@@ -9,8 +9,8 @@ sudo ./install.sh daemon >/dev/null 2>&1
 
 sudo /etc/init.d/openibd restart
 
-echo "sleep 10s..."
-sleep 10
+echo "sleep 20s..."
+sleep 20
 ifconfig ib0 | grep "inet addr"
 
 sudo ./ib_setup.sh $1

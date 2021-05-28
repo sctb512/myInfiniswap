@@ -43,8 +43,8 @@ echo "confihure ib0 ..."
 sudo /etc/init.d/openibd restart
 
 sudo ./ib_setup.sh 192.168.0.${client}
-echo "sleep 10s..."
-sleep 10
+echo "sleep 20s..."
+sleep 20
 ifconfig ib0 | grep "inet addr"
 
 server=`cat portal.list | tail -n 1| awk -F: '{print $1}'`
