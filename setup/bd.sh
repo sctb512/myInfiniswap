@@ -4,7 +4,7 @@ client=111
 
 if [ $1 == "1" ];then
     echo "server num: 1"
-    client=111
+    client=118
     echo -e "1\n192.168.0.119" | sudo tee portal.list
 elif [ $1 == "2" ];then
     echo "server num: 2"
