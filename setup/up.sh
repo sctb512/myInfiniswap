@@ -6,7 +6,7 @@ project=myInfiniswap
 user=bin_tang
 
 # machine_nums=(055 047 062 046 063 039 043 048 061)
-machine_nums=(055 047 062 046 063)
+machine_nums=(039 043 048 061)
 
 echo "StrictHostKeyChecking no" > ~/.ssh/config
 

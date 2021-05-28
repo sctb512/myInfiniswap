@@ -106,8 +106,7 @@ elif [ $1 == "daemon" ]; then
 echo "........ install infiniswap daemon, options:"
 echo "${daemon_options}"
 cd ../infiniswap_daemon
-sudo make clean
-rm -rf aclocal.m4 autom4te.cache
+# rm -rf aclocal.m4 autom4te.cache
 ./autogen.sh
 ./configure ${daemon_options}
 make 
