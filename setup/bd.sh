@@ -26,8 +26,9 @@ fi
 # rm -rf portal.list
 # mv portal_$1.list portal.list
 # echo "servers:"
-cat portal.list
+# cat portal.list
 
+echo ""
 echo "client ip: 192.168.0.${client}"
 
 sudo dmesg -C
