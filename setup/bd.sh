@@ -7,11 +7,11 @@ fi
 
 if [ $1 == "1" ];then
     echo "server num: 1"
-    client=116
+    client=119
     echo -e "1\n192.168.0.117\c" | sudo tee portal.list
 elif [ $1 == "2" ];then
     echo "server num: 2"
-    client=116
+    client=119
     echo -e "2\n192.168.0.117\n192.168.0.118\c" | sudo tee portal.list
 elif [ $1 == "4" ];then
     echo "server num: 4"
