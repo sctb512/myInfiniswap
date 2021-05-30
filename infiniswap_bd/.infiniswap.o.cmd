@@ -1,1 +1,0 @@
-cmd_/root/Infiniswap/infiniswap_bd/infiniswap.o := ld -m elf_x86_64  -z max-page-size=0x200000   -r -o /root/Infiniswap/infiniswap_bd/infiniswap.o /root/Infiniswap/infiniswap_bd/is_configfs.o /root/Infiniswap/infiniswap_bd/is_mq.o /root/Infiniswap/infiniswap_bd/is_main.o 
