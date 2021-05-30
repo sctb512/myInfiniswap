@@ -7,20 +7,20 @@ fi
 
 if [ $1 == "1" ];then
     echo "server num: 1"
-    client=119
-    echo -e "1\n192.168.0.117\c" | sudo tee portal.list
+    client=219
+    echo -e "1\n192.168.0.217\c" | sudo tee portal.list
 elif [ $1 == "2" ];then
     echo "server num: 2"
-    client=119
-    echo -e "2\n192.168.0.117\n192.168.0.118\c" | sudo tee portal.list
+    client=219
+    echo -e "2\n192.168.0.217\n192.168.0.218\c" | sudo tee portal.list
 elif [ $1 == "4" ];then
     echo "server num: 4"
-    client=111
-    echo -e "4\n192.168.0.112\n192.168.0.113\n192.168.0.114\n192.168.0.115\c" | sudo tee portal.list
+    client=211
+    echo -e "4\n192.168.0.212\n192.168.0.213\n192.168.0.214\n192.168.0.215\c" | sudo tee portal.list
 elif [ $1 == "8" ];then
     echo "server num: 8"
-    client=111
-    echo -e "8\n192.168.0.112\n192.168.0.113\n192.168.0.114\n192.168.0.115\n192.168.0.116\n192.168.0.117\n192.168.0.118\n192.168.0.119\c" | sudo tee portal.list
+    client=211
+    echo -e "8\n192.168.0.212\n192.168.0.213\n192.168.0.214\n192.168.0.215\n192.168.0.216\n192.168.0.217\n192.168.0.218\n192.168.0.219\c" | sudo tee portal.list
 fi
 
 # rm -rf portal.list
