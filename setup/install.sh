@@ -94,8 +94,6 @@ if [ $1 == "bd" ]; then
 echo "........ install infiniswap block device, options:"
 echo "${bd_options}"
 cd ../infiniswap_bd
-# sudo make clean
-# sudo rm -rf aclocal.m4 autom4te.cache
 ./autogen.sh
 ./configure ${bd_options}
 make 
@@ -106,7 +104,6 @@ elif [ $1 == "daemon" ]; then
 echo "........ install infiniswap daemon, options:"
 echo "${daemon_options}"
 cd ../infiniswap_daemon
-# sudo rm -rf aclocal.m4 autom4te.cache
 ./autogen.sh
 ./configure ${daemon_options}
 make 
