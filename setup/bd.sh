@@ -5,28 +5,31 @@ if [ $# != 1 ];then
     exit
 fi
 
+sudo rm -rf portal.list
+
 if [ $1 == "1" ];then
     echo "server num: 1"
-    client=219
-    echo -e "1\n192.168.0.217\c" | sudo tee portal.list
+    client=216
+    echo -e "1\n192.168.0.217:9400" | tee portal.list
 elif [ $1 == "2" ];then
     echo "server num: 2"
-    client=219
-    echo -e "2\n192.168.0.217\n192.168.0.218\c" | sudo tee portal.list
+    client=216
+    echo -e "2\n192.168.0.217:9400\n192.168.0.218:9400" | tee portal.list
 elif [ $1 == "4" ];then
     echo "server num: 4"
     client=211
-    echo -e "4\n192.168.0.212\n192.168.0.213\n192.168.0.214\n192.168.0.215\c" | sudo tee portal.list
+    echo -e "4\n192.168.0.212:9400\n192.168.0.213:9400\n192.168.0.214:9400\n192.168.0.215:9400" | tee portal.list
 elif [ $1 == "8" ];then
     echo "server num: 8"
     client=211
-    echo -e "8\n192.168.0.212\n192.168.0.213\n192.168.0.214\n192.168.0.215\n192.168.0.216\n192.168.0.217\n192.168.0.218\n192.168.0.219\c" | sudo tee portal.list
+    echo -e "8\n192.168.0.212:9400\n192.168.0.213:9400\n192.168.0.214:9400\n192.168.0.215:9400\n192.168.0.216:9400\n192.168.0.217:9400\n192.168.0.218:9400\n192.168.0.219:9400" | tee portal.list
 fi
+
 
 # rm -rf portal.list
 # mv portal_$1.list portal.list
-# echo "servers:"
-# cat portal.list
+echo "servers:"
+cat portal.list
 
 echo ""
 echo "client ip: 192.168.0.${client}"
