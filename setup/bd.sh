@@ -35,6 +35,7 @@ sudo dmesg -C
 
 cd ../infiniswap_bd
 sudo make clean >/dev/null 2>&1
+sudo rm -rf config.h.in config.log config.status configure infiniswap.ko infiniswap.mod.c infiniswap.mod.o infiniswap.o is_configfs.c is_configfs.o is_main.o is_main.o.ur-safe is_mq.o is_mq.o.ur-safe Makefile Module.symvers modules.order autom4te.cache
 cd ../setup
 
 swapon -s
