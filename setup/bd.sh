@@ -28,8 +28,8 @@ fi
 
 # rm -rf portal.list
 # mv portal_$1.list portal.list
-echo "servers:"
-cat portal.list
+# echo "servers:"
+# cat portal.list
 
 echo ""
 echo "client ip: 192.168.0.${client}"
@@ -44,7 +44,7 @@ sed -i "s/sda3/${dev}/g"  ./old.sh
 swapon -s
 
 echo "install bd ..."
-# sudo ./install.sh bd
+# sudo ./install.sh bd >/dev/null 2>&1
 sudo ./install.sh bd >/dev/null 2>&1
 
 echo "confihure ib0 ..."
