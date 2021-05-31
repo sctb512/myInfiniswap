@@ -9,11 +9,11 @@ sudo rm -rf portal.list
 
 if [ $1 == "1" ];then
     echo "server num: 1"
-    client=216
+    client=219
     echo -e "1\n192.168.0.217:9400" | tee portal.list
 elif [ $1 == "2" ];then
     echo "server num: 2"
-    client=216
+    client=219
     echo -e "2\n192.168.0.217:9400\n192.168.0.218:9400" | tee portal.list
 elif [ $1 == "4" ];then
     echo "server num: 4"
@@ -44,8 +44,8 @@ sed -i "s/sda3/${dev}/g"  ./old.sh
 swapon -s
 
 echo "install bd ..."
-# sudo ./install.sh bd >/dev/null 2>&1
-sudo ./install.sh bd
+# sudo ./install.sh bd
+sudo ./install.sh bd >/dev/null 2>&1
 
 echo "confihure ib0 ..."
 sudo /etc/init.d/openibd restart
