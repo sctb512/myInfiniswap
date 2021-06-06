@@ -13,8 +13,8 @@ if [ $1 == "1" ];then
     echo -e "1\n192.168.0.217:9400" | tee portal.list
 elif [ $1 == "2" ];then
     echo "server num: 2"
-    client=219
-    echo -e "2\n192.168.0.217:9400\n192.168.0.218:9400" | tee portal.list
+    client=211
+    echo -e "2\n192.168.0.212:9400\n192.168.0.213:9400" | tee portal.list
 elif [ $1 == "4" ];then
     echo "server num: 4"
     client=211
