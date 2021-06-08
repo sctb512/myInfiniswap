@@ -2,7 +2,7 @@
 
 servers_num=$1
 
-output_dir="is_result_dataframe_${servers_num}_servers"
+output_dir="is_result_dataframe_new_${servers_num}_servers"
 
 if [ ! -d ${output_dir} ]; then
     mkdir -p ${output_dir}

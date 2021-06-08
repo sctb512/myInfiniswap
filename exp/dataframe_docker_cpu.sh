@@ -2,7 +2,7 @@
 
 cpu_useage=$1
 
-output_dir="is_result_dataframe_cpu_${cpu_useage}"
+output_dir="is_result_dataframe_new_cpu_${cpu_useage}"
 
 if [ ! -d ${output_dir} ]; then
     mkdir -p ${output_dir}

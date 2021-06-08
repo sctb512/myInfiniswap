@@ -1,6 +1,6 @@
 #!/bin/bash
 
-output_dir="is_result_dataframe"
+output_dir="is_result_dataframe_new"
 
 if [ ! -d ${output_dir} ]; then
     mkdir -p ${output_dir}

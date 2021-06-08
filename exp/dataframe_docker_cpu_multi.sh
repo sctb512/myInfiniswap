@@ -3,7 +3,7 @@
 cpu_useage=$1
 servers_num=$2
 
-output_dir="is_result_dataframe_${servers_num}_servers_cpu_${cpu_useage}"
+output_dir="is_result_dataframe_new_${servers_num}_servers_cpu_${cpu_useage}"
 
 if [ ! -d ${output_dir} ]; then
     mkdir -p ${output_dir}

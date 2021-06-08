@@ -3,7 +3,7 @@
 cpu_useage=$1
 servers_num=$2
 
-output_dir="is_result_dataframe_${servers_num}_servers_cpu_${cpu_useage}_once"
+output_dir="is_result_dataframe_new_${servers_num}_servers_cpu_${cpu_useage}_once"
 once_file="is_once.txt"
 server_distribute="is_server_distribute.txt"
 
