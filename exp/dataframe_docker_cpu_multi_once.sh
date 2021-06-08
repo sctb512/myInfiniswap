@@ -84,18 +84,18 @@ for local in 100 75 50 25;do
     sudo docker exec -it ${docker_name} /bin/bash -c "cd /root && mkdir ${output_dir} && ls && (time python3 dataframe.py ${df_num}) 2> ${output_dir}/${file}"
 
     sudo docker cp ${docker_name}:/root/${output_dir}/ ./${output_dir}/${i}/
-
-    line="${i}"
-    for ib in `seq 212 219`;do
-        num=`dmesg | grep "] cb->cb_index: ., ip: 192.168.0." | grep ${ib} | wc -l`
-        line="${line},${num}"
-    done
-    echo ${line} >> ${server_distribute}
-
+    
     # cd ../setup
     # ./old.sh
     # cd ../exp
 done
+
+line="${i}"
+for ib in `seq 212 219`;do
+    num=`dmesg | grep "] cb->cb_index: ., ip: 192.168.0." | grep ${ib} | wc -l`
+    line="${line},${num}"
+done
+echo ${line} >> ${server_distribute}
 
 i=`expr ${i} + 1`
 echo ${i} > ${once_file}
