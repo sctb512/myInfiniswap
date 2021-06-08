@@ -13,9 +13,9 @@ total_mem=16777216
 docker_name=is_workloads
 echo "total_mem: ${total_mem}"
 
-# cd ../setup
-# ./run_infiniswap.sh
-# cd ../exp
+cd ../setup
+./run_infiniswap.sh 1
+cd ../exp
 
 ./compile_cpu.sh
 ./cpu ${cpu_useage} &

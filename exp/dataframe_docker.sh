@@ -11,9 +11,9 @@ total_mem=16777216
 docker_name=is_workloads
 echo "total_mem: ${total_mem}"
 
-# cd ../setup
-# ./run_infiniswap.sh
-# cd ../exp
+cd ../setup
+./run_infiniswap.sh 1
+cd ../exp
 
 ps -ef | grep cpu_rate_core.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
 ps -ef | grep cpu_rate_docker.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9

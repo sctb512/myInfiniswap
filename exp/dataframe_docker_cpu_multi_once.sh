@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cpu_useage=90
-servers_num=8
+servers_num=$1
 
 output_dir="is_result_dataframe_${servers_num}_servers_cpu_${cpu_useage}_once"
 once_file="is_once.txt"
@@ -22,7 +22,7 @@ docker_name=is_workloads
 echo "total_mem: ${total_mem}"
 
 cd ../setup
-./run_infiniswap.sh
+./run_infiniswap.sh ${servers_num}
 cd ../exp
 ./compile_cpu.sh
 ./cpu ${cpu_useage} &

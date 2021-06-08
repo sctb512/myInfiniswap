@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cpu_useage=90
-servers_num=`cat ../setup/portal.list | awk 'NR==1 {print $1}'`
+servers_num=$1
 
 output_dir="is_result_dataframe_${servers_num}_servers_cpu_${cpu_useage}"
 
@@ -14,9 +14,9 @@ total_mem=16777216
 docker_name=is_workloads
 echo "total_mem: ${total_mem}"
 
-# cd ../setup
-# ./run_infiniswap.sh
-# cd ../exp
+cd ../setup
+./run_infiniswap.sh ${servers_num}
+cd ../exp
 ./compile_cpu.sh
 ./cpu ${cpu_useage} &
 
