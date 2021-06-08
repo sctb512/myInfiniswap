@@ -1,7 +1,7 @@
 #!/bin/bash
 
-cpu_useage=90
-servers_num=$1
+cpu_useage=$1
+servers_num=$2
 
 output_dir="is_result_dataframe_${servers_num}_servers_cpu_${cpu_useage}"
 

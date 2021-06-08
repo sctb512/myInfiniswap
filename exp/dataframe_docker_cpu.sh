@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cpu_useage=100
+cpu_useage=$1
 
 output_dir="is_result_dataframe_cpu_${cpu_useage}"
 
