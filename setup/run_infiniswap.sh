@@ -1,7 +1,8 @@
 #!/bin/bash
 
-user=bin_tang
-servers=(55 62 46 63 39 43 48 61)
+source servers.sh $1
+
+echo "servrs: ${servers}, servers_num: ${servers_num}"
 
 echo "StrictHostKeyChecking no" > ~/.ssh/config
 
@@ -19,7 +20,7 @@ echo "sleep 80s..."
 sleep 80
 
 cd ../setup
-./run_bd.sh 8
+./run_bd.sh $1
 cd ../exp
 dmesg | tail
 
