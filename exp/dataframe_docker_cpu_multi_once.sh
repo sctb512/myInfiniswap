@@ -21,10 +21,6 @@ total_mem=16777216
 docker_name=is_workloads
 echo "total_mem: ${total_mem}"
 
-user=bin_tang
-servers=(55 62 46 63 39 43 48 61)
-
-
 cd ../setup
 ./run_infiniswap.sh
 cd ../exp
