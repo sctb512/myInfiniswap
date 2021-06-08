@@ -2,8 +2,8 @@
 
 servers_num=$2
 
-once_file="is_once.txt"
-server_distribute="is_server_distribute.txt"
+once_file="is_once_${servers_num}.txt"
+server_distribute="is_server_${servers_num}_distribute.txt"
 
 # sudo rm -rf ${output_dir}/*
 
