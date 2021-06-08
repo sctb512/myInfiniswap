@@ -2,8 +2,6 @@
 
 source servers.sh $1
 
-echo "servrs: ${servers}, servers_num: ${servers_num}"
-
 echo "StrictHostKeyChecking no" > ~/.ssh/config
 
 ib=212
