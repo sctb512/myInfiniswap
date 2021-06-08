@@ -1,6 +1,6 @@
 #!/bin/bash
 
-servers_num=$2
+servers_num=$1
 
 once_file="is_once_${servers_num}.txt"
 server_distribute="is_server_${servers_num}_distribute.txt"
