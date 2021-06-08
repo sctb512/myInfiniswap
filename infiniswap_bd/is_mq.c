@@ -826,7 +826,6 @@ void IS_single_chunk_init(struct kernel_cb *cb)
 			cb->remote_chunk.chunk_list[i]->remote_rkey = ntohl(cb->recv_buf.rkey[i]);
 			cb->remote_chunk.chunk_list[i]->remote_addr = ntohll(cb->recv_buf.buf[i]);
 			cb->remote_chunk.chunk_list[i]->bitmap_g = (int *)kzalloc(sizeof(int) * BITMAP_INT_SIZE, GFP_KERNEL);
-			pr_info("is_mq.c IS_single_chunk_init: IS_bitmap_init(...)\n");
 			IS_bitmap_init(cb->remote_chunk.chunk_list[i]->bitmap_g);
 			IS_session->free_chunk_index -= 1;
 			IS_session->chunk_map_cb_chunk[select_chunk] = i;
@@ -834,9 +833,9 @@ void IS_single_chunk_init(struct kernel_cb *cb)
 
 			cb->remote_chunk.chunk_size_g += 1;
 			cb->remote_chunk.c_state = C_READY;
-			pr_info("is_mq.c IS_single_chunk_init: atomic_set(...)\n");
 			atomic_set(cb->remote_chunk.remote_mapped + i, CHUNK_MAPPED);
 			atomic_set(IS_session->cb_index_map + (select_chunk), cb->cb_index);
+			pr_info("bd_chunk: %d, daemon_chunk: %d\n", i, select_chunk);
 			break;
 		}
 	}

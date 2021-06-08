@@ -791,6 +791,10 @@ static int client_recv(struct kernel_cb *cb, struct ib_wc *wc)
 		case INFO_SINGLE:
 			cb->IS_sess->cb_state_list[cb->cb_index] = CB_MAPPED;
 			cb->state = WAIT_OPS;
+
+			//abin,0608
+			pr_info("cb->cb_index: %d, ip: %s\n", cb->cb_index, cb->addr_str);
+
 			IS_single_chunk_init(cb);
 			break;
 		case EVICT:
@@ -1683,6 +1687,7 @@ int IS_single_chunk_map(struct IS_session *IS_session, int select_chunk)
 	}
 	cb_index = free_mem_sorted[0];
 	tmp_cb = IS_session->cb_list[cb_index];
+
 	if (IS_session->cb_state_list[cb_index] == CB_CONNECTED){ 
 		IS_session->mapped_cb_num += 1;
 		IS_ctx_dma_setup(tmp_cb, IS_session, cb_index); 
@@ -1717,6 +1722,9 @@ int IS_session_create(const char *portal, struct IS_session *IS_session)
 		IS_session->cb_state_list[i] = CB_IDLE;	
 		IS_session->cb_list[i] = kzalloc(sizeof(struct kernel_cb), GFP_KERNEL);
 		IS_session->cb_list[i]->port = htons(IS_session->portal_list[i].port);
+
+		IS_session->cb_list[i]->addr_str = (char *)IS_session->portal_list[i].addr;
+
 		in4_pton(IS_session->portal_list[i].addr, -1, IS_session->cb_list[i]->addr, -1, NULL);
 		IS_session->cb_list[i]->cb_index = i;
 	}
