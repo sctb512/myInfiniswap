@@ -91,9 +91,11 @@ for local in 100 75 50 25;do
 done
 
 line="${i}"
-for ib in `seq 212 219`;do
+ib=212
+for m in `seq ${servers_num}`;do
     num=`dmesg | grep "] cb->cb_index: ., ip: 192.168.0." | grep ${ib} | wc -l`
     line="${line},${num}"
+    ib=`expr ${ib} + 1`
 done
 echo ${line} >> ${server_distribute}
 
