@@ -29,7 +29,7 @@ if [ ! -f ${server_distribute} ]; then
     echo ${head} > ${server_distribute}
 fi
 
-sudo fio -filename=/dev/infiniswap0 -direct=1 -iodepth 64 -thread -rw=write -ioengine=psync -bs=32k -size=16G -numjobs=32 -runtime=30 -group_reporting -name=is_server_tmp.txt
+sudo fio -filename=/dev/infiniswap0 -direct=1 -iodepth 64 -thread -rw=write -ioengine=psync -bs=128k -size=32G -numjobs=64 -runtime=30 -group_reporting -name=is_server_tmp.txt
 
 line="${i}"
 ib=212
