@@ -43,8 +43,6 @@ if [ ! -f ${server_distribute} ]; then
     echo ${head} > ${server_distribute}
 fi
 
-sudo dmesg -C
-
 sudo mkdir -p ${output_dir}/${i}
 for local in 100 75 50 25;do
     local_mem=`expr ${total_mem} \* ${local} / 100`
