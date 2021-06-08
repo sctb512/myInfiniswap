@@ -41,10 +41,8 @@ sudo docker cp dataframe.py ${docker_name}:/root
 
 if [ ! -f ${server_distribute} ]; then
     head="turn"
-    k=1
-    for server in ${servers[*]};do
+    for k in `seq ${servers_num}`;do
         head="${head},${k}"
-        k=`expr ${k} + 1` 
     done
     echo ${head} > ${server_distribute}
 fi
@@ -94,11 +92,9 @@ for local in 100 75 50 25;do
     sudo docker cp ${docker_name}:/root/${output_dir}/ ./${output_dir}/${i}/
 
     line="${i}"
-    ib=212
-    for server in ${servers[*]};do
+    for ib in `seq 212 219`;do
         num=`dmesg | grep "] cb->cb_index: ., ip: 192.168.0." | grep ${ib} | wc -l`
         line="${line},${num}"
-        ib=`expr ${ib} + 1`
     done
     echo ${line} >> ${server_distribute}
 
