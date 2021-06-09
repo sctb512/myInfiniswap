@@ -794,6 +794,7 @@ static int client_recv(struct kernel_cb *cb, struct ib_wc *wc)
 
 			//abin,0608
 			pr_info("bd done, daemon ip: %s\n", cb->addr_str);
+			pr_info("**************************************\n");
 
 			IS_single_chunk_init(cb);
 			break;
