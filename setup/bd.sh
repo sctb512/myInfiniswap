@@ -11,7 +11,7 @@ fi
 # cat portal.list
 
 echo ""
-echo "client ip: 192.168.0.${client}"
+echo "client ip: 192.168.0.$1"
 
 sudo dmesg -C
 
@@ -32,7 +32,7 @@ sudo /etc/init.d/openibd restart
 echo "sleep 20s..."
 sleep 20
 
-sudo ./ib_setup.sh 192.168.0.${client}
+sudo ./ib_setup.sh 192.168.0.$1
 ifconfig ib0 | grep "inet addr"
 
 server=`cat portal.list | tail -n 1| awk -F: '{print $1}'`
