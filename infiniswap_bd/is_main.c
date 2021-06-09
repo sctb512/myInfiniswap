@@ -793,7 +793,7 @@ static int client_recv(struct kernel_cb *cb, struct ib_wc *wc)
 			cb->state = WAIT_OPS;
 
 			//abin,0608
-			pr_info("bd done, daemon ip: %s\n", cb->cb_index, cb->addr_str);
+			pr_info("bd done, daemon ip: %s\n", cb->addr_str);
 
 			IS_single_chunk_init(cb);
 			break;
