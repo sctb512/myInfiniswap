@@ -10,7 +10,7 @@ server_distribute="is_server_${servers_num}_distribute.txt"
 
 # sudo rm -rf ${output_dir}/*
 
-total_mem=33554432
+total_mem=16777216
 docker_name=is_workloads
 echo "total_mem: ${total_mem}"
 
@@ -42,7 +42,7 @@ fi
 sudo docker cp dataframe.py ${docker_name}:/root
 
 sudo mkdir -p ${output_dir}/${i}
-local=100
+local=50
 
 local_mem=`expr ${total_mem} \* ${local} / 100`
 df_num=`expr ${total_mem} / 220851`
