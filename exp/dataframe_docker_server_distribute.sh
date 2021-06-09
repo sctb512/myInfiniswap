@@ -1,7 +1,7 @@
 #!/bin/bash
 
 servers_num=$1
-cpu_useage=$2
+cpu_useage=90
 
 once_file="is_once_${servers_num}.txt"
 server_distribute="is_server_${servers_num}_distribute.txt"
