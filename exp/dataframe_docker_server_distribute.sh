@@ -35,7 +35,7 @@ sudo fio -filename=/dev/infiniswap0 -direct=1 -iodepth 64 -thread -rw=write -ioe
 line="${i}"
 ib=212
 for m in `seq ${servers_num}`;do
-    num=`dmesg | grep "] cb->cb_index: ., ip: 192.168.0." | grep ${ib} | wc -l`
+    num=`dmesg | grep "bd done, daemon ip" | grep ${ib} | wc -l`
     line="${line},${num}"
     ib=`expr ${ib} + 1`
 done
