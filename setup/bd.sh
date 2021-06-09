@@ -5,8 +5,6 @@ if [ $# != 1 ];then
     exit
 fi
 
-source servers.sh $1
-
 # rm -rf portal.list
 # mv portal_$1.list portal.list
 # echo "servers:"
