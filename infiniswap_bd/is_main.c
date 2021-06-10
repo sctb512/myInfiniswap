@@ -572,7 +572,7 @@ static int IS_cma_event_handler(struct rdma_cm_id *cma_id,
 		break;
 
 	case RDMA_CM_EVENT_ESTABLISHED:
-		pr_info("ESTABLISHED\n");
+		pr_info("ESTABLISHED, ip: %s\n", cb->addr_str);
 		cb->state = CONNECTED;
 		wake_up_interruptible(&cb->sem);
 		// last connection establish will wake up the IS_session_create()
