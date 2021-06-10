@@ -2,15 +2,15 @@
 
 cd ~
 wget https://enos.itcollege.ee/~jpoial/allalaadimised/jdk8/jdk-8u291-linux-x64.tar.gz
-tar -zxvf jdk-8u65-linux-x64.tar.gz
-mv jdk1.8.0_65 jdk-1.8
+tar -zxvf jdk-8u291-linux-x64.tar.gz
+mv jdk1.8.0_291 jdk-1.8
 
-echo export JAVA_HOME=$(pwd)/jdk-1.8 >> ~/.bashrc
-echo export JRE_HOME=$(pwd)/jdk-1.8 >> ~/.bashrc
-echo export CLASSPATH=$JAVA_HOME/lib:$JRE_HOME/lib:$CLASSPATH >> ~/.bashrc
-echo export PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH >> ~/.bashrc
+echo "export JAVA_HOME=$(pwd)/jdk-1.8" >> ~/.profile
+echo "export JRE_HOME=$(pwd)/jdk-1.8" >> ~/.profile
+echo "export CLASSPATH=${JAVA_HOME}/lib:${JRE_HOME}/lib:${CLASSPATH}" >> ~/.profile
+echo "export PATH=${JAVA_HOME}/bin:${JRE_HOME}/bin:${PATH}" >> ~/.profile
 
-source ~/.bashrc
+source ~/.profile
 java -version
 
 sudo apt-get -y install ant build-essential ant-optional default-jdk python cmake \
@@ -20,7 +20,7 @@ sudo apt-get -y install ant build-essential ant-optional default-jdk python cmak
 ant -version
 gcc -v
 python --version
-cmake -h
+cmake -version
 
 # install voltdb
 git clone https://github.com/VoltDB/voltdb.git

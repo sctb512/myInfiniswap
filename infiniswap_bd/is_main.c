@@ -442,11 +442,17 @@ static int IS_disconnect_handler(struct kernel_cb *cb)
 	int evict_list[STACKBD_SIZE_G];
 	struct request *req;
 
+	int abin=0;
+
 	pr_debug("%s\n", __func__);
+
+	pr_info("[abin] ok: %d\n", abin++);
 
 	for (i=0; i<STACKBD_SIZE_G;i++){
 		evict_list[i] = -1;
 	}
+
+	pr_info("[abin] ok: %d\n", abin++);
 
 	// for connected, but not mapped server
 	if (IS_sess->cb_state_list[cb->cb_index] == CB_CONNECTED){
@@ -456,10 +462,14 @@ static int IS_disconnect_handler(struct kernel_cb *cb)
 		return cb->cb_index;
 	}
 
+	pr_info("[abin] ok: %d\n", abin++);
+
 	//change cb state
 	IS_sess->cb_state_list[cb->cb_index] = CB_FAIL;
 	atomic_set(&IS_sess->trigger_enable, TRIGGER_OFF);
 	atomic_set(&cb->IS_sess->rdma_on, DEV_RDMA_OFF);
+
+	pr_info("[abin] ok: %d\n", abin++);
 
 	//disallow request to those cb chunks 
 	for (i = 0; i < MAX_MR_SIZE_GB; i++) {
@@ -473,10 +483,14 @@ static int IS_disconnect_handler(struct kernel_cb *cb)
 		}
 	}	
 
+	pr_info("[abin] ok: %d\n", abin++);
+
 	pr_debug("%s, unmap %d GB in cb%d \n", __func__, cb->remote_chunk.chunk_size_g, pool_index);
 	cb->remote_chunk.chunk_size_g = 0;
 
 	msleep(10);
+
+	pr_info("[abin] ok: %d\n", abin++);
 
 	for (i=0; i < submit_queues; i++){
 		ctx_pool = IS_sess->IS_conns[i]->ctx_pools[pool_index]->ctx_pool;
@@ -507,6 +521,8 @@ static int IS_disconnect_handler(struct kernel_cb *cb)
 	}	
 	pr_err("%s, finish handling in-flight request\n", __func__);
 
+	pr_info("[abin] ok: %d\n", abin++);
+
 	for (i = 0; i < MAX_MR_SIZE_GB; i++) {
 		sess_chunk_index = cb_chunk_map[i];
 		if (sess_chunk_index != -1) { 
@@ -517,6 +533,8 @@ static int IS_disconnect_handler(struct kernel_cb *cb)
 		}
 	}
 
+	pr_info("[abin] ok: %d\n", abin++);
+
 	//free conn->ctx_pools[cb_index]
 	for (i =0; i<submit_queues; i++){
 		kfree(IS_sess->IS_conns[i]->ctx_pools[pool_index]->ctx_pool);
@@ -526,12 +544,16 @@ static int IS_disconnect_handler(struct kernel_cb *cb)
 		IS_sess->IS_conns[i]->ctx_pools[pool_index] = (struct ctx_pool_list *)kzalloc(sizeof(struct ctx_pool_list), GFP_KERNEL);
 	}
 
+	pr_info("[abin] ok: %d\n", abin++);
+
 	atomic_set(&cb->IS_sess->rdma_on, DEV_RDMA_ON);
 	for (i=0; i<STACKBD_SIZE_G; i++){
 		if (evict_list[i] == 1){
 			IS_single_chunk_map(IS_sess, i);
 		}
 	}
+
+	pr_info("[abin] ok: %d\n", abin++);
 
 	atomic_set(&IS_sess->trigger_enable, TRIGGER_ON);
 
@@ -597,6 +619,7 @@ static int IS_cma_event_handler(struct rdma_cm_id *cma_id,
 		printk(KERN_ERR PFX "DISCONNECT EVENT...\n");
 		cb->state = CM_DISCONNECT;
 		// RDMA is off
+		pr_info("[abin] cb: %p\n", cb);
 		IS_disconnect_handler(cb);
 		break;
 
