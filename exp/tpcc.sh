@@ -5,12 +5,12 @@ wget https://enos.itcollege.ee/~jpoial/allalaadimised/jdk8/jdk-8u291-linux-x64.t
 tar -zxvf jdk-8u291-linux-x64.tar.gz
 mv jdk1.8.0_291 jdk-1.8
 
-echo "export JAVA_HOME=$(pwd)/jdk-1.8" >> ~/.profile
-echo "export JRE_HOME=$(pwd)/jdk-1.8" >> ~/.profile
-echo "export CLASSPATH=${JAVA_HOME}/lib:${JRE_HOME}/lib:${CLASSPATH}" >> ~/.profile
-echo "export PATH=${JAVA_HOME}/bin:${JRE_HOME}/bin:${PATH}" >> ~/.profile
+echo "export JAVA_HOME=$(pwd)/jdk-1.8" >> ~/.zshrc
+echo "export JRE_HOME=$(pwd)/jdk-1.8" >> ~/.zshrc
+echo "export CLASSPATH=${JAVA_HOME}/lib:${JRE_HOME}/lib:${CLASSPATH}" >> ~/.zshrc
+echo "export PATH=${JAVA_HOME}/bin:${JRE_HOME}/bin:${PATH}" >> ~/.zshrc
 
-source ~/.profile
+source ~/.zshrc
 java -version
 
 sudo apt-get -y install ant build-essential ant-optional default-jdk python cmake \
