@@ -480,11 +480,9 @@ static int IS_disconnect_handler(struct kernel_cb *cb)
 
 	msleep(10);
 
-	pr_info("[abin] here---> %d\n", abin++);
-
 	for (i=0; i < submit_queues; i++){
 		ctx_pool = IS_sess->IS_conns[i]->ctx_pools[pool_index]->ctx_pool;
-		pr_info("[%d]ctx_pool: %p\n", i, ctx_pool);
+		// pr_info("[%d]ctx_pool: %p\n", i, ctx_pool);
 		if (ctx_pool) {
 			for (j=0; j < IS_QUEUE_DEPTH; j++){
 				ctx = ctx_pool + j;
@@ -514,8 +512,6 @@ static int IS_disconnect_handler(struct kernel_cb *cb)
 	}	
 	pr_err("%s, finish handling in-flight request\n", __func__);
 
-	pr_info("[abin] ok: %d\n", abin++);
-
 	for (i = 0; i < MAX_MR_SIZE_GB; i++) {
 		sess_chunk_index = cb_chunk_map[i];
 		if (sess_chunk_index != -1) { 
@@ -530,7 +526,9 @@ static int IS_disconnect_handler(struct kernel_cb *cb)
 
 	//free conn->ctx_pools[cb_index]
 	for (i =0; i<submit_queues; i++){
-		kfree(IS_sess->IS_conns[i]->ctx_pools[pool_index]->ctx_pool);
+		if(IS_sess->IS_conns[i]->ctx_pools[pool_index]->ctx_pool) {
+			kfree(IS_sess->IS_conns[i]->ctx_pools[pool_index]->ctx_pool);
+		}
 		kfree(IS_sess->IS_conns[i]->ctx_pools[pool_index]->free_ctxs->ctx_list);
 		kfree(IS_sess->IS_conns[i]->ctx_pools[pool_index]->free_ctxs);
 		kfree(IS_sess->IS_conns[i]->ctx_pools[pool_index]);
