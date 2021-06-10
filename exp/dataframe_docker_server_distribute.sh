@@ -10,7 +10,7 @@ server_distribute="is_server_${servers_num}_distribute.txt"
 
 # sudo rm -rf ${output_dir}/*
 
-total_mem=33554432
+total_mem=16777216
 docker_name=is_workloads
 echo "total_mem: ${total_mem}"
 
