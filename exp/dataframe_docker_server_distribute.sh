@@ -26,8 +26,8 @@ cd ../exp
 ./compile_cpu.sh
 ./cpu ${cpu_useage} &
 
-echo "after run infiniswap, sleep 10s..."
-sleep 10
+echo "run infiniswap, sleep 40s..."
+sleep 40
 
 if [ ! -f ${server_distribute} ]; then
     head="turn"
