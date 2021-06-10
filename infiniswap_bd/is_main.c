@@ -485,28 +485,30 @@ static int IS_disconnect_handler(struct kernel_cb *cb)
 	for (i=0; i < submit_queues; i++){
 		ctx_pool = IS_sess->IS_conns[i]->ctx_pools[pool_index]->ctx_pool;
 		pr_info("[%d]ctx_pool: %p\n", i, ctx_pool);
-		for (j=0; j < IS_QUEUE_DEPTH; j++){
-			ctx = ctx_pool + j;
-			switch (atomic_read(&ctx->in_flight)){
-				case CTX_R_IN_FLIGHT:
-					req = ctx->req;
-					atomic_set(&ctx->in_flight, CTX_IDLE);
-					IS_mq_request_stackbd2(req);
-					IS_insert_ctx(ctx);
-					break;
-				case CTX_W_IN_FLIGHT:
-					atomic_set(&ctx->in_flight, CTX_IDLE);
-					if (ctx->req == NULL){ 
+		if (ctx_pool) {
+			for (j=0; j < IS_QUEUE_DEPTH; j++){
+				ctx = ctx_pool + j;
+				switch (atomic_read(&ctx->in_flight)){
+					case CTX_R_IN_FLIGHT:
+						req = ctx->req;
+						atomic_set(&ctx->in_flight, CTX_IDLE);
+						IS_mq_request_stackbd2(req);
+						IS_insert_ctx(ctx);
 						break;
-					}
-				#if LINUX_VERSION_CODE >= KERNEL_VERSION(3, 18, 0)
-					blk_mq_end_request(ctx->req, 0);
-				#else
-					blk_mq_end_io(ctx->req, 0);
-				#endif
-					break;
-				default:
-					;
+					case CTX_W_IN_FLIGHT:
+						atomic_set(&ctx->in_flight, CTX_IDLE);
+						if (ctx->req == NULL){ 
+							break;
+						}
+					#if LINUX_VERSION_CODE >= KERNEL_VERSION(3, 18, 0)
+						blk_mq_end_request(ctx->req, 0);
+					#else
+						blk_mq_end_io(ctx->req, 0);
+					#endif
+						break;
+					default:
+						;
+				}
 			}
 		}
 	}	
