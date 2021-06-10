@@ -15,7 +15,7 @@ done
 echo "sleep 100s..."
 sleep 100
 
-echo 0 | sudo tee /proc/sys/kernel/hung_task_timeout_secs
+# echo 0 | sudo tee /proc/sys/kernel/hung_task_timeout_secs
 
 cd ../setup
 ./run_bd.sh $1
