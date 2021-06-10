@@ -2,7 +2,7 @@
 
 num=$1
 
-source servers.sh $1{num}
+source servers.sh ${num}
 
 echo "StrictHostKeyChecking no" > ~/.ssh/config
 
