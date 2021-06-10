@@ -29,6 +29,9 @@ cd voltdb
 ant clean
 ant
 
+echo "export PATH=$(pwd)/voltdb/bin:${PATH}" >> ~/.zshrc
+source ~/.zshrc
+
 # run tpc-c
 cd ~/voltdb/tests/test_apps/tpcc/
 ./run.sh
