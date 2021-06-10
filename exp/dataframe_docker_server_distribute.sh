@@ -42,6 +42,7 @@ fi
 sudo docker cp dataframe.py ${docker_name}:/root
 
 sudo mkdir -p ${output_dir}/${i}
+
 local=100
 
 local_mem=`expr ${total_mem} \* ${local} / 100`
