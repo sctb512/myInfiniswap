@@ -12,8 +12,10 @@ for server in ${servers[*]};do
     ib=`expr ${ib} + 1`
 done
 
-echo "sleep 80s..."
-sleep 80
+echo "sleep 100s..."
+sleep 100
+
+echo 0 | sudo tee /proc/sys/kernel/hung_task_timeout_secs
 
 cd ../setup
 ./run_bd.sh $1
