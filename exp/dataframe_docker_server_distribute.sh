@@ -20,9 +20,10 @@ fi
 i=`cat ${once_file}`
 
 
-# cd ../setup
-# ./run_infiniswap.sh ${servers_num}
-# cd ../exp
+cd ../setup
+./run_infiniswap.sh ${servers_num}
+cd ../exp
+
 ./compile_cpu.sh
 ./cpu ${cpu_useage} &
 
