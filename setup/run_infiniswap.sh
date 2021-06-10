@@ -20,7 +20,9 @@ sleep 100
 cd ../setup
 ./run_bd.sh $1
 cd ../exp
-dmesg | tail
+
+sleep 20
+echo "connected server: `dmesg | grep 'ESTABLISHED, ip' | wc -l`"
 
 echo "sleep 10s..."
 sleep 10
