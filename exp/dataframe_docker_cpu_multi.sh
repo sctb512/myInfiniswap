@@ -10,7 +10,7 @@ if [ ! -d ${output_dir} ]; then
 fi
 # sudo rm -rf ${output_dir}/*
 
-total_mem=33554432
+total_mem=25165824
 docker_name=is_workloads
 echo "total_mem: ${total_mem}"
 
