@@ -3,14 +3,14 @@
 cpu_useage=$1
 servers_num=$2
 
-output_dir="is_result_tpcc_${servers_num}_servers_cpu_${cpu_useage}"
+output_dir="as_result_tpcc_${servers_num}_servers_cpu_${cpu_useage}"
 
 if [ ! -d ${output_dir} ]; then
     mkdir -p ${output_dir}
 fi
 # sudo rm -rf ${output_dir}/*
 
-total_mem=25165824
+total_mem=14557477
 docker_name=is_workloads
 echo "total_mem: ${total_mem}"
 
@@ -26,10 +26,9 @@ ps -ef | grep cpu_rate_docker.sh | grep /bin/bash | awk '{print $2}' | xargs kil
 ./cpu_rate_docker.sh ${output_dir} &
 ./cpu_rate_core.sh ${output_dir} &
 
-
 for i in `seq 10`;do
     sudo mkdir -p ${output_dir}/${i}
-    for local in 100 90 80 70 60 50 40 30 20 10;do
+    for local in 100 75 50 25;do
         local_mem=`expr ${total_mem} \* ${local} / 100`
         echo "local_mem: ${local_mem}"
 
