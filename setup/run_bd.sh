@@ -11,7 +11,7 @@ cd ~/myInfiniswap/setup
 
 sudo rm -rf portal.list
 
-client=213
+client=211
 if [ $1 == "1" ];then
     echo "server num: 1"
     echo -e "1\n192.168.0.212:9400" | tee portal.list
