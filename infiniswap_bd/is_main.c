@@ -784,8 +784,8 @@ static void client_recv_stop(struct kernel_cb *cb)
 static int client_recv(struct kernel_cb *cb, struct ib_wc *wc)
 {
 	if (wc->byte_len != sizeof(cb->recv_buf)) {
-		printk(KERN_ERR PFX "Received bogus data, size %d\n", 
-		       wc->byte_len);
+		printk(KERN_ERR PFX "Received bogus data, size %d, sizeof(cb->recv_buf): %d\n", 
+		       wc->byte_len, sizeof(cb->recv_buf));
 		return -1;
 	}	
 	if (cb->state < CONNECTED){
