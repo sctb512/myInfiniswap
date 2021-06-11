@@ -48,6 +48,8 @@ for i in `seq 10`;do
         echo "install env in docker..."
         sudo docker exec -it ${docker_name} /bin/bash -c "cd /root && rm -rf ${output_dir}"  >/dev/null 2>&1
         sudo docker exec -it ${docker_name} /bin/bash -c "cd ~/voltdb/tests/test_apps/tpcc/ && ./run.sh server >/dev/null 2>&1 &"  
+        echo "sleep 30s..."
+        sleep 30
         sudo docker exec -it ${docker_name} /bin/bash -c "cd /root && mkdir ${output_dir} && ls && cd ~/voltdb/tests/test_apps/tpcc/ && ./run.sh init && ./run.sh client 2> /root/${output_dir}/${file}"
 
         sudo docker cp ${docker_name}:/root/${output_dir}/ ./${output_dir}/${i}/
