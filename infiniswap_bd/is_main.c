@@ -784,7 +784,7 @@ static void client_recv_stop(struct kernel_cb *cb)
 static int client_recv(struct kernel_cb *cb, struct ib_wc *wc)
 {
 	if (wc->byte_len != sizeof(cb->recv_buf)) {
-		printk(KERN_ERR PFX "Received bogus data, size %d, sizeof(cb->recv_buf): %d\n", 
+		printk(KERN_ERR PFX "Received bogus data, size %d, sizeof(cb->recv_buf): %ld\n", 
 		       wc->byte_len, sizeof(cb->recv_buf));
 		return -1;
 	}	
@@ -910,7 +910,7 @@ static void rdma_cq_event_handler(struct ib_cq * cq, void *ctx)
 					wc.wr_id, wc.status, wc.opcode, wc.vendor_err);
 				
 				pr_info("IB_WC_SUCCESS: %d\n", IB_WC_SUCCESS);
-				pr_info("wc->byte_len: %d, sizeof(cb->recv_buf): %d\n", wc->byte_len, sizeof(cb->recv_buf));
+				pr_info("wc->byte_len: %d, sizeof(cb->recv_buf): %ld\n", wc.byte_len, sizeof(cb->recv_buf));
 				if (wc.status == IB_WC_LOC_LEN_ERR) {
 					pr_info("wc.status: IB_WC_LOC_LEN_ERR!\n");
 				}
