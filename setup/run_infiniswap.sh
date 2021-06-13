@@ -10,7 +10,7 @@ ib=212
 for server in ${servers[*]};do
     echo "cp-${server}, ib: 192.168.0.${ib}, running..."
     ssh ${user}@128.110.96.${server} "ps -ef | grep run_daemon.sh | grep /bin/bash | awk '{print \$2}' | xargs kill -s 9"
-    sleep 4
+    sleep 2
     ssh ${user}@128.110.96.${server} "cd ~/myInfiniswap/setup && ./run_daemon.sh ${ib} > /dev/null 2>&1 &" 
     ib=`expr ${ib} + 1`
 done
