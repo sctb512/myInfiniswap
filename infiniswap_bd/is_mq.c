@@ -835,7 +835,7 @@ void IS_single_chunk_init(struct kernel_cb *cb)
 			cb->remote_chunk.c_state = C_READY;
 			atomic_set(cb->remote_chunk.remote_mapped + i, CHUNK_MAPPED);
 			atomic_set(IS_session->cb_index_map + (select_chunk), cb->cb_index);
-			pr_info("bd_chunk: %d, daemon_chunk: %d\n", i, select_chunk);
+			pr_info("bd_chunk: %d, daemon_chunk: %d\n", select_chunk, i);
 			break;
 		}
 	}

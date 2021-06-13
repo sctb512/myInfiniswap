@@ -34,7 +34,7 @@ if [ ! -f ${server_distribute} ]; then
     echo ${head} > ${server_distribute}
 fi
 
-dd if=/dev/zero of=/dev/infiniswap0 count=512 bs=64MB
+sudo dd if=/dev/zero of=/dev/infiniswap0 count=512 bs=64MB
 
 echo "sleep 80s..."
 sleep 80
