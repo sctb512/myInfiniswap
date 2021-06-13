@@ -17,6 +17,9 @@ echo "total_mem: ${total_mem}"
 cd ../setup
 ./run_infiniswap.sh ${servers_num}
 cd ../exp
+
+ps -ef | grep "cpu " | awk '{print $2}' | xargs kill -s 9
+
 ./compile_cpu.sh
 ./cpu ${cpu_useage} &
 
@@ -25,6 +28,9 @@ ps -ef | grep cpu_rate_docker.sh | grep /bin/bash | awk '{print $2}' | xargs kil
 
 ./cpu_rate_docker.sh ${output_dir} &
 ./cpu_rate_core.sh ${output_dir} &
+
+sudo bash -c "echo never > /sys/kernel/mm/transparent_hugepage/enabled"
+sudo bash -c "echo never > /sys/kernel/mm/transparent_hugepage/defrag"
 
 for i in `seq 10`;do
     sudo mkdir -p ${output_dir}/${i}
@@ -47,10 +53,10 @@ for i in `seq 10`;do
 
         echo "install env in docker..."
         sudo docker exec -it ${docker_name} /bin/bash -c "cd /root && rm -rf ${output_dir}"  >/dev/null 2>&1
-        sudo docker exec -it ${docker_name} /bin/bash -c "cd ~/voltdb/tests/test_apps/tpcc/ && ./run.sh server >/dev/null 2>&1 &"  
+        sudo docker exec -it ${docker_name} /bin/bash -c "cd ~/voltdb/tests/test_apps/tpcc/ && ./run.sh server >/dev/null 2>\&1 \&"
         echo "sleep 30s..."
         sleep 30
-        sudo docker exec -it ${docker_name} /bin/bash -c "cd /root && mkdir ${output_dir} && ls && cd ~/voltdb/tests/test_apps/tpcc/ && ./run.sh init && ./run.sh client 2> /root/${output_dir}/${file}"
+        sudo docker exec -it ${docker_name} /bin/bash -c "cd /root && mkdir ${output_dir} && ls && cd ~/voltdb/tests/test_apps/tpcc/ && ./run.sh server >/dev/null 2>&1 &  && sleep 20 && ./run.sh init && ./run.sh client 2> /root/${output_dir}/${file}"
 
         sudo docker cp ${docker_name}:/root/${output_dir}/ ./${output_dir}/${i}/
     done
