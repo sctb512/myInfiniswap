@@ -14,9 +14,9 @@ total_mem=14557477
 docker_name=is_workloads
 echo "total_mem: ${total_mem}"
 
-cd ../setup
-./run_infiniswap.sh ${servers_num}
-cd ../exp
+# cd ../setup
+# ./run_infiniswap.sh ${servers_num}
+# cd ../exp
 
 ps -ef | grep "cpu " | awk '{print $2}' | xargs kill -s 9
 
@@ -56,7 +56,7 @@ for i in `seq 10`;do
         sudo docker exec -it ${docker_name} /bin/bash -c "cd /root/voltdb/tests/test_apps/tpcc/ && ./run.sh server >/dev/null 2>&1 &"
         echo "sleep 30s..."
         sleep 30
-        sudo docker exec -it ${docker_name} /bin/bash -c "cd /root && mkdir ${output_dir} && ls && cd ~/voltdb/tests/test_apps/tpcc/ && ./run.sh server >/dev/null 2>&1 &  && sleep 20 && ./run.sh init && ./run.sh client 2> /root/${output_dir}/${file}"
+        sudo docker exec -it ${docker_name} /bin/bash -c "cd /root && mkdir ${output_dir} && ls && cd /root/voltdb/tests/test_apps/tpcc/ && ./run.sh init && ./run.sh client 2> /root/${output_dir}/${file}"
 
         sudo docker cp ${docker_name}:/root/${output_dir}/ ./${output_dir}/${i}/
     done
