@@ -53,7 +53,7 @@ for i in `seq 10`;do
 
         echo "install env in docker..."
         sudo docker exec -it ${docker_name} /bin/bash -c "cd /root && rm -rf ${output_dir}"  >/dev/null 2>&1
-        sudo docker exec -it ${docker_name} /bin/bash -c "cd ~/voltdb/tests/test_apps/tpcc/ && ./run.sh server >/dev/null 2>\&1 \&"
+        sudo docker exec -it ${docker_name} /bin/bash -c "cd /root/voltdb/tests/test_apps/tpcc/ && ./run.sh server >/dev/null 2>&1 &"
         echo "sleep 30s..."
         sleep 30
         sudo docker exec -it ${docker_name} /bin/bash -c "cd /root && mkdir ${output_dir} && ls && cd ~/voltdb/tests/test_apps/tpcc/ && ./run.sh server >/dev/null 2>&1 &  && sleep 20 && ./run.sh init && ./run.sh client 2> /root/${output_dir}/${file}"
