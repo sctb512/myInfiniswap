@@ -901,7 +901,11 @@ static void rdma_cq_event_handler(struct ib_cq * cq, void *ctx)
 
 	while ((ret = ib_poll_cq(cb->cq, 1, &wc)) == 1) {
 		if (wc.status) {
-			if (wc.status == IB_WC_WR_FLUSH_ERR) {
+			if (wc.status == IB_WC_WR_FLUSH_ERR || wc.byte_len<0) {
+				if (wc.status == IB_WC_LOC_LEN_ERR) {
+					pr_info("wc.status: IB_WC_LOC_LEN_ERR!\n");
+					pr_info("wc->byte_len: %d, sizeof(cb->recv_buf): %ld\n", wc.byte_len, sizeof(cb->recv_buf));
+				}
 				pr_info("cq flushed\n");
 				continue;
 			} else {
@@ -909,11 +913,11 @@ static void rdma_cq_event_handler(struct ib_cq * cq, void *ctx)
 				       "wr_id %Lx status %d opcode %d vender_err %x\n",
 					wc.wr_id, wc.status, wc.opcode, wc.vendor_err);
 				
-				pr_info("IB_WC_SUCCESS: %d\n", IB_WC_SUCCESS);
-				pr_info("wc->byte_len: %d, sizeof(cb->recv_buf): %ld\n", wc.byte_len, sizeof(cb->recv_buf));
-				if (wc.status == IB_WC_LOC_LEN_ERR) {
-					pr_info("wc.status: IB_WC_LOC_LEN_ERR!\n");
-				}
+				// pr_info("IB_WC_SUCCESS: %d\n", IB_WC_SUCCESS);
+				// pr_info("wc->byte_len: %d, sizeof(cb->recv_buf): %ld\n", wc.byte_len, sizeof(cb->recv_buf));
+				// if (wc.status == IB_WC_LOC_LEN_ERR) {
+				// 	pr_info("wc.status: IB_WC_LOC_LEN_ERR!\n");
+				// }
 				goto error;
 			}
 		}	
