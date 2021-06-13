@@ -56,7 +56,7 @@ for i in `seq 10`;do
         sudo docker exec -d ${docker_name} /bin/bash -c "cd /root/voltdb/tests/test_apps/tpcc/ && ./run.sh server"
         echo "sleep 30s..."
         sleep 30
-        sudo docker exec -d ${docker_name} /bin/bash -c "cd /root && mkdir ${output_dir} && ls && cd /root/voltdb/tests/test_apps/tpcc/ && ./run.sh init"
+        sudo docker exec -d ${docker_name} /bin/bash -c "cd /root/voltdb/tests/test_apps/tpcc/ && ./run.sh init"
         sleep 10
         sudo docker exec -it ${docker_name} /bin/bash -c "cd /root && mkdir ${output_dir} && ls && cd /root/voltdb/tests/test_apps/tpcc/ && ./run.sh client 1> /root/${output_dir}/${file}"
 
