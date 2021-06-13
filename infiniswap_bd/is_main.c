@@ -528,11 +528,11 @@ static int IS_disconnect_handler(struct kernel_cb *cb)
 	for (i =0; i<submit_queues; i++){
 		if(IS_sess->IS_conns[i]->ctx_pools[pool_index]->ctx_pool) {
 			kfree(IS_sess->IS_conns[i]->ctx_pools[pool_index]->ctx_pool);
+			kfree(IS_sess->IS_conns[i]->ctx_pools[pool_index]->free_ctxs->ctx_list);
+			kfree(IS_sess->IS_conns[i]->ctx_pools[pool_index]->free_ctxs);
+			kfree(IS_sess->IS_conns[i]->ctx_pools[pool_index]);
+			IS_sess->IS_conns[i]->ctx_pools[pool_index] = (struct ctx_pool_list *)kzalloc(sizeof(struct ctx_pool_list), GFP_KERNEL);
 		}
-		kfree(IS_sess->IS_conns[i]->ctx_pools[pool_index]->free_ctxs->ctx_list);
-		kfree(IS_sess->IS_conns[i]->ctx_pools[pool_index]->free_ctxs);
-		kfree(IS_sess->IS_conns[i]->ctx_pools[pool_index]);
-		IS_sess->IS_conns[i]->ctx_pools[pool_index] = (struct ctx_pool_list *)kzalloc(sizeof(struct ctx_pool_list), GFP_KERNEL);
 	}
 
 	pr_info("[abin] ok: %d\n", abin++);
