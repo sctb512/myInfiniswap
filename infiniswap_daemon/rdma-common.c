@@ -54,7 +54,8 @@ uint64_t htonll(uint64_t value)
 void die(const char *reason)
 {
   fprintf(stderr, "%s\n", reason);
-  exit(EXIT_FAILURE);
+  // exit(EXIT_FAILURE);
+  return;
 }
 
 long get_free_mem(void)
@@ -515,8 +516,10 @@ void on_completion(struct ibv_wc *wc)
 {
   struct connection *conn = (struct connection *)(uintptr_t)wc->wr_id;
 
-  if (wc->status != IBV_WC_SUCCESS)
+  if (wc->status != IBV_WC_SUCCESS) {
+
     die("on_completion: status is not IBV_WC_SUCCESS.");
+  }
 
   if (wc->opcode == IBV_WC_RECV){ //Recv
     switch (conn->recv_msg->type){

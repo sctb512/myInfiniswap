@@ -919,6 +919,7 @@ static void rdma_cq_event_handler(struct ib_cq * cq, void *ctx)
 				if (wc.status == IB_WC_LOC_LEN_ERR) {
 					pr_info("wc.status: IB_WC_LOC_LEN_ERR!\n");
 				}
+				//abin,here
 				goto error;
 			}
 		}	
