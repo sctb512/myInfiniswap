@@ -610,7 +610,7 @@ static int IS_cma_event_handler(struct rdma_cm_id *cma_id,
 		printk(KERN_ERR PFX "DISCONNECT EVENT...\n");
 		cb->state = CM_DISCONNECT;
 		// RDMA is off
-		pr_info("[abin] cb: %p\n", cb);
+		pr_info("ip: %p\n", cb->addr_str);
 		IS_disconnect_handler(cb);
 		break;
 
