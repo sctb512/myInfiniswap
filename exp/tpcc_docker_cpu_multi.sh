@@ -58,7 +58,7 @@ for i in `seq 10`;do
         sleep 30
         sudo docker exec -d ${docker_name} /bin/bash -c "cd /root/voltdb/tests/test_apps/tpcc/ && ./run.sh init"
         sleep 10
-        sudo docker exec -it ${docker_name} /bin/bash -c "cd /root && mkdir ${output_dir} && ls && cd /root/voltdb/tests/test_apps/tpcc/ && ./run.sh client 1> /root/${output_dir}/${file}"
+        sudo docker exec -it ${docker_name} /bin/bash -c "cd /root && mkdir ${output_dir} && ls && cd /root/voltdb/tests/test_apps/tpcc/ && ./run.sh client 1> /root/${output_dir}/${file} 2>/dev/null"
 
         sudo docker cp ${docker_name}:/root/${output_dir}/ ./${output_dir}/${i}/
     done
