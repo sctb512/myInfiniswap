@@ -72,8 +72,6 @@ for i in `seq 10`;do
 
         sudo docker cp ${docker_name}:/root/${output_dir}/ ./${output_dir}/${i}/
 
-        # cd ../setup
-        # ./old.sh
-        # cd ../exp
+        sleep 20
     done
 done
