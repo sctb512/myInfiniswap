@@ -33,7 +33,7 @@ for i in `seq 10`;do
     sudo mkdir -p ${output_dir}/${i}
     for local in 100 90 80 70 60 50 40 30 20 10;do
         local_mem=`expr ${total_mem} \* ${local} / 100`
-        df_num=`expr ${local_mem} / 220851`
+        df_num=`expr ${total_mem} / 220851`
         echo "local_mem: ${local_mem}, df_num: ${df_num}"
 
         file="total_mem${total_mem}_local_mem${local_mem}_local${local}.txt"
