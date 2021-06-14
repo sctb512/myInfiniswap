@@ -5,8 +5,24 @@ servers_num=$2
 
 output_dir="is_result_dataframe_new_${servers_num}_servers_cpu_${cpu_useage}"
 
+once_file="${output_dir}_once.txt"
+server_distribute="${output_dir}_distribute.csv"
+
 if [ ! -d ${output_dir} ]; then
     mkdir -p ${output_dir}
+fi
+
+if [ ! -f ${once_file} ]; then
+    echo 1 > ${once_file}
+fi
+index=`cat ${once_file}`
+
+if [ ! -f ${server_distribute} ]; then
+    head="turn"
+    for k in `seq ${servers_num}`;do
+        head="${head},${k}"
+    done
+    echo ${head} > ${server_distribute}
 fi
 # sudo rm -rf ${output_dir}/*
 
@@ -81,3 +97,15 @@ for i in `seq 10`;do
         # cd ../exp
     done
 done
+
+line="${index}"
+ib=212
+for m in `seq ${servers_num}`;do
+    num=`dmesg | grep "bd done, daemon ip" | grep ${ib} | wc -l`
+    line="${line},${num}"
+    ib=`expr ${ib} + 1`
+done
+echo ${line} >> ${server_distribute}
+
+index=`expr ${index} + 1`
+echo ${index} > ${once_file}
