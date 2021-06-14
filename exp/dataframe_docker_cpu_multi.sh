@@ -17,6 +17,10 @@ echo "total_mem: ${total_mem}"
 cd ../setup
 ./run_infiniswap.sh ${servers_num}
 cd ../exp
+
+
+ps -ef | grep "cpu " | awk '{print $2}' | xargs kill -s 9
+
 ./compile_cpu.sh
 ./cpu ${cpu_useage} &
 
