@@ -23,11 +23,11 @@ ps -ef | grep "cpu " | awk '{print $2}' | xargs kill -s 9
 ./compile_cpu.sh
 ./cpu ${cpu_useage} &
 
-ps -ef | grep cpu_rate_core.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
+# ps -ef | grep cpu_rate_core.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
 ps -ef | grep cpu_rate_docker.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
 
 ./cpu_rate_docker.sh ${output_dir} &
-./cpu_rate_core.sh ${output_dir} &
+# ./cpu_rate_core.sh ${output_dir} &
 
 sudo bash -c "echo never > /sys/kernel/mm/transparent_hugepage/enabled"
 sudo bash -c "echo never > /sys/kernel/mm/transparent_hugepage/defrag"
