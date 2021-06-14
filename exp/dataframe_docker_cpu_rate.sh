@@ -3,7 +3,7 @@
 cpu_useage=$1
 servers_num=$2
 
-output_dir="is_result_dataframe_new_${servers_num}_servers_cpu_${cpu_useage}"
+output_dir="is_result_dataframe_cpu_rate_${servers_num}_servers_cpu_${cpu_useage}"
 
 if [ ! -d ${output_dir} ]; then
     mkdir -p ${output_dir}
@@ -32,7 +32,7 @@ ps -ef | grep cpu_rate_docker.sh | grep /bin/bash | awk '{print $2}' | xargs kil
 sudo docker cp dataframe.py ${docker_name}:/root
 
 
-for i in `seq 10`;do
+for i in `seq 2`;do
     sudo mkdir -p ${output_dir}/${i}
     for local in 100 75 50 25;do
         local_mem=`expr ${total_mem} \* ${local} / 100`
