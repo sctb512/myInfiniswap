@@ -32,9 +32,9 @@ ps -ef | grep cpu_rate_docker.sh | grep /bin/bash | awk '{print $2}' | xargs kil
 sudo docker cp dataframe.py ${docker_name}:/root
 
 
-for i in `seq 2`;do
+for i in `seq 8`;do
     sudo mkdir -p ${output_dir}/${i}
-    for local in 100 75 50 25;do
+    for local in 100;do
         local_mem=`expr ${total_mem} \* ${local} / 100`
         df_num=`expr ${local_mem} / 220851`
         echo "local_mem: ${local_mem}, df_num: ${df_num}"
