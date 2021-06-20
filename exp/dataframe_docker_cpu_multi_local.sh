@@ -51,7 +51,7 @@ sudo docker cp dataframe.py ${docker_name}:/root
 
 for i in `seq 10`;do
     sudo mkdir -p ${output_dir}/${i}
-    for local in 100 90 80 70 60 50 40 30 20 10;do
+    for local in 100 75 50 25;do
         local_mem=`expr ${total_mem} \* ${local} / 100`
         df_num=`expr ${total_mem} / 220851`
         echo "local_mem: ${local_mem}, df_num: ${df_num}"
