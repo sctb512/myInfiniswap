@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ $# != 1 ];then
+if [ $# != 2 ];then
     echo "useage: $0 server_num"
     exit
 fi
