@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ $# != 2 ];then
-    echo "useage: $0 server_num"
+    echo "useage: $0 server_num client_ib"
     exit
 fi
 
