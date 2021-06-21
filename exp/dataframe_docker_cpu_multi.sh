@@ -26,7 +26,7 @@ if [ ! -f ${server_distribute} ]; then
 fi
 # sudo rm -rf ${output_dir}/*
 
-total_mem=25165824
+total_mem=16777216
 docker_name=is_workloads
 echo "total_mem: ${total_mem}"
 
