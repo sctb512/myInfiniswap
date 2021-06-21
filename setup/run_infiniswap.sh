@@ -22,7 +22,7 @@ sleep 60
 # echo 0 | sudo tee /proc/sys/kernel/hung_task_timeout_secs
 
 cd ../setup
-./run_bd.sh ${num} ${client}
+./run_bd.sh ${num}
 cd ../exp
 
 sleep 20
