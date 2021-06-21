@@ -6,7 +6,7 @@ source servers.sh ${num}
 
 echo "StrictHostKeyChecking no" > ~/.ssh/config
 
-for i in `seq ${#servers[@]}`;do
+for i in ${!servers[@]};do
     server=${servers[${i}]}
     ib=${ibs[${i}]}
 
