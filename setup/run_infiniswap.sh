@@ -6,9 +6,9 @@ source servers.sh ${num}
 
 echo "StrictHostKeyChecking no" > ~/.ssh/config
 
-for i in ${!servers[@]};do
-    server=${servers}[${i}]
-    ib=${ibs}[${i}]
+for i in `seq ${#servers[@]}`;do
+    server=${servers[${i}]}
+    ib=${ibs[${i}]}
 
     echo "cp-${server}, ib: 192.168.0.${ib}, running..."
     ssh ${user}@128.110.96.${server} "ps -ef | grep run_daemon.sh | grep /bin/bash | awk '{print \$2}' | xargs kill -s 9"
