@@ -59,7 +59,7 @@ for i in `seq 10`;do
         echo "sleep 10s..."
         sleep 10
 
-        local_mem=expr ${total_mem}
+        local_mem=${total_mem}
         df_num=`expr ${local_mem} / 220851`
         echo "local_mem: ${local_mem}, df_num: ${df_num}"
 
