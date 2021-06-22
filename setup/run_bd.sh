@@ -11,7 +11,7 @@ source servers.sh ${num}
 
 cd ~/myInfiniswap/setup
 
-./pull.sh
+# ./pull.sh
 
 sudo rm -rf portal.list
 
