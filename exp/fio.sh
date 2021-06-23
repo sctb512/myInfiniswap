@@ -5,6 +5,11 @@ if [ ! -d ${output_dir} ]; then
     mkdir -p ${output_dir}
 fi
 
+servers_num=$1
+cd ../setup
+./run_infiniswap.sh ${servers_num}
+cd ../exp
+
 ok="\033[32m[√] \033[0m"
 err="\033[31m[x] \033[0m"
 info="[.] "
