@@ -2,7 +2,7 @@
 
 servers_num=$1
 
-output_dir="is_result_dataframe_new_${servers_num}_servers_cpu_more"
+output_dir="is_result_dataframe_${servers_num}_servers_cpu_more"
 
 once_file="${output_dir}_once.txt"
 server_distribute="${output_dir}_distribute.csv"
