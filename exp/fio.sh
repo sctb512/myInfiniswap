@@ -16,7 +16,7 @@ info="[.] "
 
 sudo apt-get install fio -y >/dev/null 2>&1
 
-for rw in "randread" "randwrite" "read" "write"; do
+for rw in "read" "write"; do
     for block_size in 4 8 16 32 64 128; do
         for thread in 1 2 4 8 16 32; do
             for iodepth in 2 3 8 16 32 64; do
