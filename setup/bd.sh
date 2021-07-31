@@ -36,6 +36,7 @@ sudo ./ib_setup.sh 192.168.0.$1
 ifconfig ib0 | grep "inet addr"
 
 server=`cat portal.list | tail -n 1| awk -F: '{print $1}'`
+echo "ping ${server}..."
 ping -c1 ${server} &>/dev/null
 while [ $? -eq 1 ];do
     ping -c1 ${server} &>/dev/null
