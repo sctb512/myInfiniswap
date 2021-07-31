@@ -3,7 +3,7 @@
 # ./install.sh daemon >/dev/null 2>&1
 sudo ./install.sh daemon >/dev/null 2>&1
 
-sudo /etc/init.d/openibd restart
+# sudo /etc/init.d/openibd restart
 
 echo "sleep 20s..."
 sleep 20

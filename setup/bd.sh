@@ -27,7 +27,7 @@ echo "install bd ..."
 sudo ./install.sh bd >/dev/null 2>&1
 
 echo "confihure ib0 ..."
-sudo /etc/init.d/openibd restart
+# sudo /etc/init.d/openibd restart
 
 echo "sleep 20s..."
 sleep 20
