@@ -13,6 +13,9 @@ for code in ${codes[*]};do
     for data in ${datas[*]};do
         cname=`echo ${code} | awk -F. '{print $1}'`
         outfile="output/${pfx}_${cname}_${data}"
+        if [ -f "${outfile}" ];then
+            continue
+        fi
         # echo output/${pfx}_${cname}_${data}
         cmd="source /etc/profile && conda activate base && cd /root/graph-benchmarks && bash run_profiler.sh code/${code} data/${data} 100 ${outfile}"
         echo ${cmd}
