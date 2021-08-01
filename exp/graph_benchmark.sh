@@ -14,9 +14,11 @@ for code in ${codes[*]};do
         cname=`echo ${code} | awk -F. '{print $1}'`
         outfile="output/${pfx}_${code}_${data}"
         # echo output/${pfx}_${cname}_${data}
-        sudo docker exec -i ${docker_name} /bin/bash -c "cd /root/graph-benchmarks && bash run_profiler.sh code/${code} data/${data} 100 ${outfile}"
+        sudo docker exec -i ${docker_name} /bin/bash -c "conda activate && cd /root/graph-benchmarks && bash run_profiler.sh code/${code} data/${data} 100 ${outfile}"
     done
 done
 
-mkdir ${pfx}_graph_benchmark
+if [ ! -d "${pfx}_graph_benchmark" ];then
+    mkdir ${pfx}_graph_benchmark
+fi
 sudo docker cp ${docker_name}:/root/graph-benchmarks/output/ ${pfx}_graph_benchmark/
