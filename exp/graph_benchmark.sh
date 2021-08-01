@@ -15,6 +15,7 @@ for code in ${codes[*]};do
         outfile="output/${pfx}_${code}_${data}"
         # echo output/${pfx}_${cname}_${data}
         sudo docker exec -i ${docker_name} /bin/bash -c "conda activate && cd /root/graph-benchmarks && bash run_profiler.sh code/${code} data/${data} 100 ${outfile}"
+        exit
     done
 done
 
