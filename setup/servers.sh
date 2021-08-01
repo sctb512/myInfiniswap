@@ -7,18 +7,18 @@ if [ $1 == "8" ];then
     client=211
     ibs=(212 213 214 215 216 217 218 219)
 elif [ $1 == "4" ];then
-    servers=(25 26 17 14)
-    ips=(25 26 17 14)
+    servers=(05 04 08 25)
+    ips=(5 4 8 25)
     client=211
     ibs=(212 213 214 215)
 elif [ $1 == "2" ];then
-    servers=(25 26)
-    ips=(25 26)
+    servers=(05 04)
+    ips=(5 4)
     client=211
     ibs=(212 213)
 elif [ $1 == "1" ];then
-    servers=(25)
-    ips=(25)
+    servers=(05)
+    ips=(5)
     client=211
     ibs=(212)
 fi
