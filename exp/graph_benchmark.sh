@@ -14,7 +14,7 @@ for code in ${codes[*]};do
         cname=`echo ${code} | awk -F. '{print $1}'`
         outfile="output/${pfx}_${code}_${data}"
         # echo output/${pfx}_${cname}_${data}
-        sudo docker exec -i ${docker_name} /bin/bash -c "bash /opt/conda/etc/profile.d/conda.sh && source /etc/profile && conda activate && cd /root/graph-benchmarks && bash run_profiler.sh code/${code} data/${data} 100 ${outfile}"
+        sudo docker exec -i ${docker_name} /bin/bash -c "cd /root/graph-benchmarks && bash run_profiler.sh code/${code} data/${data} 100 ${outfile}"
     done
 done
 
