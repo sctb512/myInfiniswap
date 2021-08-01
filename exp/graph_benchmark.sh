@@ -2,7 +2,7 @@
 
 docker_name=is_workloads
 
-pfx=is
+pfx=none
 
 codes=(graphtool_profile.py lightgraphs.jl networkx_profile.py igraph_profile.py networkit_profile.py snap_profile.py)
 datas=(amazon.txt enron.txt google.txt pokec.txt)
