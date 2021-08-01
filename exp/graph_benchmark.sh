@@ -9,13 +9,12 @@ datas=(amazon.txt enron.txt google.txt pokec.txt)
 
 sudo docker exec -i ${docker_name} /bin/bash -c "cd /root/graph-benchmarks/output/ && rm -rf *"
 
-eval "$(conda shell.bash hook)"
 for code in ${codes[*]};do
     for data in ${datas[*]};do
         cname=`echo ${code} | awk -F. '{print $1}'`
         outfile="output/${pfx}_${code}_${data}"
         # echo output/${pfx}_${cname}_${data}
-        sudo docker exec -i ${docker_name} /bin/bash -c "source /etc/profile && conda activate && cd /root/graph-benchmarks && bash run_profiler.sh code/${code} data/${data} 100 ${outfile}"
+        sudo docker exec -i ${docker_name} /bin/bash -c "eval "$(conda shell.bash hook)" && source /etc/profile && conda activate && cd /root/graph-benchmarks && bash run_profiler.sh code/${code} data/${data} 100 ${outfile}"
     done
 done
 
