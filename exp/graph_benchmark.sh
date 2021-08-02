@@ -3,6 +3,7 @@
 docker_name=is_workloads
 
 pfx=none
+localdir="${pfx}_graph_benchmark"
 
 codes=(graphtool_profile.py lightgraphs.jl networkx_profile.py igraph_profile.py networkit_profile.py snap_profile.py)
 datas=(amazon.txt enron.txt google.txt pokec.txt)
@@ -13,7 +14,7 @@ for code in ${codes[*]};do
     for data in ${datas[*]};do
         cname=`echo ${code} | awk -F. '{print $1}'`
         outfile="output/${pfx}_${cname}_${data}"
-        if [ -f "${pfx}_graph_benchmark/${outfile}" ];then
+        if [ -f "${localdir}/${outfile}" ];then
             continue
         fi
         # echo output/${pfx}_${cname}_${data}
@@ -23,7 +24,7 @@ for code in ${codes[*]};do
     done
 done
 
-if [ ! -d "${pfx}_graph_benchmark" ];then
-    mkdir ${pfx}_graph_benchmark
+if [ ! -d "${localdir}" ];then
+    mkdir ${localdir}
 fi
-sudo docker cp ${docker_name}:/root/graph-benchmarks/output/ ${pfx}_graph_benchmark/
+sudo docker cp ${docker_name}:/root/graph-benchmarks/output/ ${localdir}/
