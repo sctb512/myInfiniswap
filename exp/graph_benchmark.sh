@@ -39,8 +39,8 @@ docker_name=is_workloads
 pfx=none
 localdir="${pfx}_graph_benchmark_servers${servers_num}"
 
-codes=(graphtool_profile.py lightgraphs.jl networkx_profile.py igraph_profile.py networkit_profile.py snap_profile.py)
-datas=(amazon.txt enron.txt google.txt pokec.txt)
+codes=graphtool_profile.py lightgraphs.jl networkx_profile.py igraph_profile.py networkit_profile.py snap_profile.py
+datas=amazon.txt enron.txt google.txt pokec.txt
 
 total_mem=14557477
 docker_name=is_workloads
