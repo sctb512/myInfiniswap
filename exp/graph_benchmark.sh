@@ -13,7 +13,7 @@ for code in ${codes[*]};do
     for data in ${datas[*]};do
         cname=`echo ${code} | awk -F. '{print $1}'`
         outfile="output/${pfx}_${cname}_${data}"
-        if [ -f "${outfile}" ];then
+        if [ -f "${pfx}_graph_benchmark/${outfile}" ];then
             continue
         fi
         # echo output/${pfx}_${cname}_${data}
