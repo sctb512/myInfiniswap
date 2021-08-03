@@ -15,7 +15,10 @@ fi
 for code in ${codes[*]};do
     for data in ${datas[*]};do
         cname=`echo ${code} | awk -F. '{print $1}'`
-        outfile="output/${pfx}_${cname}_${data}"
+        dname=`echo ${data} | awk -F. '{print $1}'`
+        outfile="output/${pfx}_${cname}_${dname}.txt"
+
+        echo "${localdir}/${outfile}"
         if [ -f "${localdir}/${outfile}" ];then
             continue
         fi
