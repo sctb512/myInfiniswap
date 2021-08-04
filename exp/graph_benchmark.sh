@@ -5,7 +5,8 @@ docker_name=is_workloads
 pfx=none
 localdir="${pfx}_graph_benchmark"
 
-codes=(graphtool_profile.py lightgraphs.jl networkx_profile.py igraph_profile.py networkit_profile.py snap_profile.py)
+# codes=(graphtool_profile.py lightgraphs.jl networkx_profile.py igraph_profile.py networkit_profile.py snap_profile.py)
+codes=(graphtool_profile.py networkx_profile.py igraph_profile.py networkit_profile.py snap_profile.py)
 # datas=(amazon.txt enron.txt google.txt pokec.txt)
 datas=(amazon.txt google.txt enron.txt)
 
