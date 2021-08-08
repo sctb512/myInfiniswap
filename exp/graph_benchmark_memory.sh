@@ -39,7 +39,7 @@ for code in ${codes[*]};do
                 sleep 10
 
                 runpid=`ps -ef | grep run_profiler.sh | grep code | awk '{print $2}'`
-                while [ ${runpid} ];do
+                while [ "${runpid}" ];do
                     runpid=`ps -ef | grep run_profiler.sh | grep code | awk '{print $2}'`
                     sleep 1
                     mem_cur=`free | awk '/Mem/ {print $3}'`
