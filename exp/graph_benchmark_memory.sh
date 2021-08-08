@@ -3,7 +3,7 @@
 tmpdir=graph_benchmark_memory
 
 outfile=${tmpdir}.csv
-if [ ! -f ${outfile}];then
+if [ ! -f ${outfile} ];then
     headline="type,repetition,memory_used(kB)"
     echo "${headline}" > ${outfile}
 fi
