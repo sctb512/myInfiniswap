@@ -8,8 +8,6 @@ if [ ! -f "${outfile}" ];then
     echo "${headline}" > ${outfile}
 fi
 
-exit
-
 # codes=(graphtool_profile.py lightgraphs.jl networkx_profile.py igraph_profile.py networkit_profile.py snap_profile.py)
 codes=(graphtool_profile.py networkx_profile.py igraph_profile.py networkit_profile.py snap_profile.py)
 # datas=(amazon.txt enron.txt google.txt pokec.txt)
