@@ -20,7 +20,7 @@ for code in ${codes[*]};do
     for i in `seq 5`;do
         mem_base=`free | awk '/Mem/ {print $3}'`
         mem_max=0
-        source /etc/profile && conda activate base && cd /root/graph-benchmarks && bash run_profiler.sh code/${code} data/${data} 100 graph_benchmark_time_tmp.txt &
+        source /etc/profile && conda activate base && cd ~/graph-benchmarks && bash run_profiler.sh code/${code} data/${data} 100 graph_benchmark_time_tmp.txt &
         sleep 10
         mem_cur=`free | awk '/Mem/ {print $3}'`
         used=`expr ${mem_cur} - ${mem_base}`
