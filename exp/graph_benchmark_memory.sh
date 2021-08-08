@@ -26,9 +26,11 @@ for code in ${codes[*]};do
             cname=`echo ${code} | awk -F. '{print $1}'`
             dname=`echo ${data} | awk -F. '{print $1}'`
             line="${code}_${data},${repetition}"	
-            for i in `seq 5`;do
+            for i in `seq 4`;do
                 mem_base=`free | awk '/Mem/ {print $3}'`
                 mem_max=0
+
+                echo "${curdir}/${tmpdir}/graph_benchmark_time_${cname}_${dname}_${repetition}.txt"
                 source /etc/profile && conda activate base && cd ~/graph-benchmarks && bash run_profiler.sh code/${code} data/${data} ${repetition} ${curdir}/${tmpdir}/graph_benchmark_time_${cname}_${dname}_${repetition}.txt &
                 sleep 10
 
