@@ -25,7 +25,7 @@ for code in ${codes[*]};do
         for repetition in ${repetitions[*]};do
             cname=`echo ${code} | awk -F. '{print $1}'`
             dname=`echo ${data} | awk -F. '{print $1}'`
-            line="${code}_${data},${repetition}"	
+            line="${cname}_${dname},${repetition}"	
             for i in `seq 4`;do
                 mem_base=`free | awk '/Mem/ {print $3}'`
                 mem_max=0

@@ -48,7 +48,7 @@ servers_num=$1
 
 docker_name=is_workloads
 
-pfx=none
+pfx=is
 localdir="${pfx}_graph_benchmark_servers${servers_num}"
 
 # codes=(graphtool_profile.py lightgraphs.jl networkx_profile.py igraph_profile.py networkit_profile.py snap_profile.py)
@@ -56,9 +56,7 @@ codes=(graphtool_profile.py networkx_profile.py igraph_profile.py networkit_prof
 # datas=(amazon.txt enron.txt google.txt pokec.txt)
 datas=(amazon.txt google.txt enron.txt)
 
-total_mem=14557477
 docker_name=is_workloads
-echo "total_mem: ${total_mem}"
 
 cd ../setup
 ./run_infiniswap.sh ${servers_num}
@@ -71,14 +69,18 @@ fi
 sudo bash -c "echo never > /sys/kernel/mm/transparent_hugepage/enabled"
 sudo bash -c "echo never > /sys/kernel/mm/transparent_hugepage/defrag"
 
+repetition=100
+
 for code in ${codes[*]};do
     for data in ${datas[*]};do
+        total_mem=14557477
+        echo "total_mem: ${total_mem}"
         for local in 100 90 80 70 60 50;do
             cname=`echo ${code} | awk -F. '{print $1}'`
             dname=`echo ${data} | awk -F. '{print $1}'`
             outfile="output/${pfx}_${cname}_${dname}_total${total_mem}_local${local}.txt"
             if [ -f "${localdir}/${outfile}" ];then
-                echo "${localdir}/${outfile} existed, continue..."
+                echo "${localdir}/${outfile} existed."
                 continue
             fi
 
@@ -92,7 +94,7 @@ for code in ${codes[*]};do
 
             sudo docker exec -i ${docker_name} /bin/bash -c "cd /root/graph-benchmarks/output/ && rm -rf *"
             # echo output/${pfx}_${cname}_${data}
-            cmd="source /etc/profile && conda activate base && cd /root/graph-benchmarks && bash run_profiler.sh code/${code} data/${data} 100 ${outfile}"
+            cmd="source /etc/profile && conda activate base && cd /root/graph-benchmarks && bash run_profiler.sh code/${code} data/${data} ${repetition} ${outfile}"
             echo "command: ${cmd}"
             sudo docker exec -i ${docker_name} /bin/bash -c "${cmd}"
 
