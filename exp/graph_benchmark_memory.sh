@@ -3,7 +3,7 @@
 tmpdir=graph_benchmark_memory
 
 outfile=${tmpdir}.csv
-if [ ! -f ${outfile} ];then
+if [ ! -f "${outfile}" ];then
     headline="type,repetition,memory_used(kB)"
     echo "${headline}" > ${outfile}
 fi
@@ -16,7 +16,7 @@ repetitions=(20 40 60 80 100)
 
 curdir=`pwd`
 
-if [ ! -d ${tmpdir} ];then
+if [ ! -d "${tmpdir}" ];then
     mkdir ${tmpdir}
 fi
 
@@ -31,7 +31,7 @@ for code in ${codes[*]};do
                 mem_max=0
 
                 tmp_outfile="${curdir}/${tmpdir}/graph_benchmark_time_${cname}_${dname}_${repetition}_times${i}.txt"
-                if [ -f ${tmp_outfile} ];then
+                if [ -f "${tmp_outfile}" ];then
                     echo "${tmp_outfile} existed."
                     continue
                 fi
