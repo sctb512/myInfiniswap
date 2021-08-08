@@ -31,7 +31,7 @@ for code in ${codes[*]};do
                 mem_max=0
 
                 echo "${curdir}/${tmpdir}/graph_benchmark_time_${cname}_${dname}_${repetition}.txt"
-                source /etc/profile && conda activate base && cd ~/graph-benchmarks && bash run_profiler.sh code/${code} data/${data} ${repetition} ${curdir}/${tmpdir}/graph_benchmark_time_${cname}_${dname}_${repetition}.txt &
+                # source /etc/profile && conda activate base && cd ~/graph-benchmarks && bash run_profiler.sh code/${code} data/${data} ${repetition} ${curdir}/${tmpdir}/graph_benchmark_time_${cname}_${dname}_${repetition}.txt &
                 sleep 10
 
                 runpid=`ps -ef | grep run_profiler.sh | grep code | awk '{print $2}'`
