@@ -1,10 +1,8 @@
 #!/bin/bash
 
-headline="graph_benchmark"
-
 headline="type,repetition,memory_used(kB)"
 
-outfile=${graph_benchmark}_memory.csv
+outfile=graph_benchmark_memory.csv
 echo "${headline}" > ${outfile}
 
 rm -rf test*.csv
