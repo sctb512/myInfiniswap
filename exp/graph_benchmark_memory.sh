@@ -27,7 +27,7 @@ for code in ${codes[*]};do
             for i in `seq 5`;do
                 mem_base=`free | awk '/Mem/ {print $3}'`
                 mem_max=0
-                source /etc/profile && conda activate base && cd ~/graph-benchmarks && bash run_profiler.sh code/${code} data/${data} ${repetition} ${tmpdir}/graph_benchmark_time_${cname}_${dname}_${repetition}.txt &
+                source /etc/profile && conda activate base && cd ~/graph-benchmarks && bash run_profiler.sh code/${code} data/${data} ${repetition} ./${tmpdir}/graph_benchmark_time_${cname}_${dname}_${repetition}.txt &
                 sleep 10
 
                 runpid=`ps -ef | grep run_profiler.sh | grep code | awk '{print $2}'`
