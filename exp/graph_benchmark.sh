@@ -60,9 +60,9 @@ total_mem=14557477
 docker_name=is_workloads
 echo "total_mem: ${total_mem}"
 
-# cd ../setup
-# ./run_activeswap.sh ${servers_num}
-# cd ../exp
+cd ../setup
+./run_infiniswap.sh ${servers_num}
+cd ../exp
 
 if [ ! -d "${localdir}" ];then
     mkdir ${localdir}
