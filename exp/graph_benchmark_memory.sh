@@ -12,7 +12,8 @@ fi
 codes=(graphtool_profile.py networkx_profile.py igraph_profile.py networkit_profile.py snap_profile.py)
 # datas=(amazon.txt enron.txt google.txt pokec.txt)
 datas=(amazon.txt google.txt enron.txt)
-repetitions=(20 40 60 80 100)
+# repetitions=(20 40 60 80 100)
+repetitions=(100)
 
 curdir=`pwd`
 
