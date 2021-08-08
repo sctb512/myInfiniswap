@@ -13,6 +13,8 @@ codes=(graphtool_profile.py networkx_profile.py igraph_profile.py networkit_prof
 datas=(amazon.txt google.txt enron.txt)
 repetitions=(20 40 60 80 100)
 
+curdir=`$(cd $(dirname $0); pwd)`
+
 tmpdir=graph_benchmark_time
 if [ ! -d ${tmpdir} ];then
     mkdir ${tmpdir}
@@ -27,7 +29,7 @@ for code in ${codes[*]};do
             for i in `seq 5`;do
                 mem_base=`free | awk '/Mem/ {print $3}'`
                 mem_max=0
-                source /etc/profile && conda activate base && cd ~/graph-benchmarks && bash run_profiler.sh code/${code} data/${data} ${repetition} ${tmpdir}\/graph_benchmark_time_${cname}_${dname}_${repetition}.txt &
+                source /etc/profile && conda activate base && cd ~/graph-benchmarks && bash run_profiler.sh code/${code} data/${data} ${repetition} ${curdir}/${tmpdir}/graph_benchmark_time_${cname}_${dname}_${repetition}.txt &
                 sleep 10
 
                 runpid=`ps -ef | grep run_profiler.sh | grep code | awk '{print $2}'`
