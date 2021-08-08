@@ -13,7 +13,7 @@ codes=(graphtool_profile.py networkx_profile.py igraph_profile.py networkit_prof
 datas=(amazon.txt google.txt enron.txt)
 repetitions=(20 40 60 80 100)
 
-curdir=`$(cd $(dirname $0); pwd)`
+curdir=`pwd`
 
 tmpdir=graph_benchmark_time
 if [ ! -d ${tmpdir} ];then
