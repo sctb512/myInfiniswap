@@ -50,6 +50,7 @@ docker_name=is_workloads
 
 pfx=is
 localdir="${pfx}_graph_benchmark_servers${servers_num}"
+memoryfile=graph_benchmark_memory.csv
 
 # codes=(graphtool_profile.py lightgraphs.jl networkx_profile.py igraph_profile.py networkit_profile.py snap_profile.py)
 codes=(graphtool_profile.py networkx_profile.py igraph_profile.py networkit_profile.py snap_profile.py)
@@ -71,13 +72,16 @@ sudo bash -c "echo never > /sys/kernel/mm/transparent_hugepage/defrag"
 
 repetition=100
 
+./cpu_rate_docker.sh ${localdir} &
+
 for code in ${codes[*]};do
     for data in ${datas[*]};do
-        total_mem=14557477
+        cname=`echo ${code} | awk -F. '{print $1}'`
+        dname=`echo ${data} | awk -F. '{print $1}'`
+        total_mem=`awk -F, 'NR>1{print $1,$2,$3,$4,$5,$6,($3+$4+$5+$6)/4}' ${memoryfile} | grep ${cname} | grep ${dname} | grep " 100 " | awk '{print $7}'`
         echo "total_mem: ${total_mem}"
         for local in 100 90 80 70 60 50;do
-            cname=`echo ${code} | awk -F. '{print $1}'`
-            dname=`echo ${data} | awk -F. '{print $1}'`
+            
             outfile="output/${pfx}_${cname}_${dname}_total${total_mem}_local${local}.txt"
             if [ -f "${localdir}/${outfile}" ];then
                 echo "${localdir}/${outfile} existed."
