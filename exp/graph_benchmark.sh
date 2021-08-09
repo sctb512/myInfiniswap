@@ -72,7 +72,7 @@ sudo bash -c "echo never > /sys/kernel/mm/transparent_hugepage/defrag"
 
 repetition=100
 
-./cpu_rate_docker.sh ${localdir} &
+# ./cpu_rate_docker.sh ${localdir} &
 
 for code in ${codes[*]};do
     for data in ${datas[*]};do
