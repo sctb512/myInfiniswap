@@ -72,6 +72,7 @@ sudo bash -c "echo never > /sys/kernel/mm/transparent_hugepage/defrag"
 
 repetition=100
 
+ps -ef | grep cpu_rate_docker.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
 ./cpu_rate_docker.sh ${localdir} &
 
 for code in ${codes[*]};do
@@ -96,7 +97,7 @@ for code in ${codes[*]};do
             sudo docker start ${docker_name}
             sudo docker ps -a
 
-            # sudo docker exec -i ${docker_name} /bin/bash -c "cd /root/graph-benchmarks/output/ && ls"
+            sudo docker exec -i ${docker_name} /bin/bash -c "apt-get install libgdk3.0-cil" >/dev/null 2>&1
             sudo docker exec -i ${docker_name} /bin/bash -c "cd /root/graph-benchmarks/output/ && rm -rf *"
             # echo output/${pfx}_${cname}_${data}
             cmd="source /etc/profile && conda activate base && cd /root/graph-benchmarks && bash run_profiler.sh code/${code} data/${data} ${repetition} ${outfile}"
