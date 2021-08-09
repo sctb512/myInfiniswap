@@ -59,9 +59,9 @@ datas=(amazon.txt google.txt enron.txt)
 
 docker_name=is_workloads
 
-cd ../setup
-./run_infiniswap.sh ${servers_num}
-cd ../exp
+# cd ../setup
+# ./run_infiniswap.sh ${servers_num}
+# cd ../exp
 
 if [ ! -d "${localdir}" ];then
     mkdir ${localdir}
@@ -96,13 +96,14 @@ for code in ${codes[*]};do
             sudo docker start ${docker_name}
             sudo docker ps -a
 
-            sudo docker exec -i ${docker_name} /bin/bash -c "cd /root/graph-benchmarks/output/ && rm -rf *"
-            # echo output/${pfx}_${cname}_${data}
-            cmd="source /etc/profile && conda activate base && cd /root/graph-benchmarks && bash run_profiler.sh code/${code} data/${data} ${repetition} ${outfile}"
-            echo "command: ${cmd}"
-            sudo docker exec -i ${docker_name} /bin/bash -c "${cmd}"
+            sudo docker exec -i ${docker_name} /bin/bash -c "cd /root/graph-benchmarks/output/ && ls"
+            # sudo docker exec -i ${docker_name} /bin/bash -c "cd /root/graph-benchmarks/output/ && rm -rf *"
+            # # echo output/${pfx}_${cname}_${data}
+            # cmd="source /etc/profile && conda activate base && cd /root/graph-benchmarks && bash run_profiler.sh code/${code} data/${data} ${repetition} ${outfile}"
+            # echo "command: ${cmd}"
+            # sudo docker exec -i ${docker_name} /bin/bash -c "${cmd}"
 
-            sudo docker cp ${docker_name}:/root/graph-benchmarks/output/ ${localdir}/
+            # sudo docker cp ${docker_name}:/root/graph-benchmarks/output/ ${localdir}/
         done
     done
 done
