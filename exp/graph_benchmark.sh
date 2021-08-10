@@ -57,8 +57,6 @@ codes=(graphtool_profile.py networkx_profile.py igraph_profile.py networkit_prof
 # datas=(amazon.txt enron.txt google.txt pokec.txt)
 datas=(amazon.txt google.txt enron.txt)
 
-docker_name=is_workloads
-
 cd ../setup
 ./run_infiniswap.sh ${servers_num}
 cd ../exp
