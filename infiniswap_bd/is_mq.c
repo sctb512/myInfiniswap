@@ -424,6 +424,7 @@ void IS_mq_request_stackbd2(struct request *req)
 
 static int IS_request(struct request *req, struct IS_queue *xq)
 {
+	pr_info("req: %p, req->rq_disk: %s, req->rq_disk->private_data:%s, xq: %p, xq->IS_conn: %p, xq->IS_conn->IS_sess: %p", req, req->rq_disk, req->rq_disk->private_data, xq, xq->IS_conn, xq->IS_conn->IS_sess);
 	struct IS_file *xdev = req->rq_disk->private_data;
 	int write = rq_data_dir(req) == WRITE;
 	unsigned long start = blk_rq_pos(req) << IS_SECT_SHIFT;
