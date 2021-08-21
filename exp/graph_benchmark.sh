@@ -53,7 +53,7 @@ localdir="${pfx}_graph_benchmark_servers${servers_num}"
 memoryfile=graph_benchmark_memory.csv
 
 # codes=(graphtool_profile.py lightgraphs.jl networkx_profile.py igraph_profile.py networkit_profile.py snap_profile.py)
-codes=(graphtool_profile.py networkx_profile.py igraph_profile.py networkit_profile.py snap_profile.py)
+codes=(graphtool_profile.py igraph_profile.py networkit_profile.py snap_profile.py)
 # datas=(amazon.txt enron.txt google.txt pokec.txt)
 datas=(amazon.txt google.txt enron.txt)
 
