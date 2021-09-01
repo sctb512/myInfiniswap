@@ -53,7 +53,8 @@ localdir="${pfx}_graph_benchmark_servers${servers_num}"
 memoryfile=graph_benchmark_memory.csv
 
 # codes=(graphtool_profile.py lightgraphs.jl networkx_profile.py igraph_profile.py networkit_profile.py snap_profile.py)
-codes=(graphtool_profile.py igraph_profile.py snap_profile.py)
+# codes=(graphtool_profile.py igraph_profile.py snap_profile.py)
+codes=(networkx_profile.py networkit_profile.py)
 # datas=(amazon.txt enron.txt google.txt pokec.txt)
 datas=(amazon.txt google.txt enron.txt)
 
@@ -68,7 +69,7 @@ fi
 sudo bash -c "echo never > /sys/kernel/mm/transparent_hugepage/enabled"
 sudo bash -c "echo never > /sys/kernel/mm/transparent_hugepage/defrag"
 
-repetition=100
+repetition=10
 memorymin=1048576
 
 ps -ef | grep cpu_rate_docker.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
