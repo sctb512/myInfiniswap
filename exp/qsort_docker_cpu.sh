@@ -43,7 +43,7 @@ for i in `seq 10`;do
 
         echo "install env in docker..."
         sudo docker exec -it ${docker_name} /bin/bash -c "cd /root && rm -rf ${output_dir}"  >/dev/null 2>&1
-        sudo docker exec -it ${docker_name} /bin/bash -c "cd /root && mkdir ${output_dir} && ls && (time /root/qsbench/qsbench -m ${qsort_mem}) 2> ${output_dir}/${file}"
+        sudo docker exec -it ${docker_name} /bin/bash -c "cd /root && mkdir ${output_dir} && (time /root/qsbench/qsbench -m ${qsort_mem}) 2> ${output_dir}/${file}"
 
         sudo docker cp ${docker_name}:/root/${output_dir}/ ./${output_dir}/${i}/
 
