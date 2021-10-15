@@ -1,6 +1,6 @@
 #!/bin/bash
 
-servers_num=$2
+servers_num=$1
 
 output_dir="is_result_qsort_${servers_num}"
 
