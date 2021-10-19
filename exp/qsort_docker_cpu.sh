@@ -10,7 +10,7 @@ fi
 
 qsort_mem=8192
 
-total_mem=$((${qsort_mem}*1024))
+total_mem=$((${qsort_mem}*1024+200*1024))
 docker_name=is_workloads
 echo "total_mem: ${total_mem}"
 
@@ -49,15 +49,3 @@ for i in `seq 10`;do
 
     done
 done
-
-line="${index}"
-ib=212
-for m in `seq ${servers_num}`;do
-    num=`dmesg | grep "bd done, daemon ip" | grep ${ib} | wc -l`
-    line="${line},${num}"
-    ib=`expr ${ib} + 1`
-done
-echo ${line} >> ${server_distribute}
-
-index=`expr ${index} + 1`
-echo ${index} > ${once_file}
