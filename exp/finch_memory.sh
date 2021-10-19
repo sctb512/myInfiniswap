@@ -17,8 +17,8 @@ for data in `seq 8 8 256`;do
 		mem_cur=`free | awk '/Mem/ {print $3}'`
 		used=`expr ${mem_cur} - ${mem_base}`
 		gb=`expr 1024 \* 1024`
-		mb=1024
-		while [ ${used} -gt ${gb} ];do
+		mb=$((1024*200))
+		while [ ${used} -gt ${mb} ];do
 			sleep 1
 			mem_cur=`free | awk '/Mem/ {print $3}'`
 			if [ ${mem_cur} -gt ${mem_max} ];then
