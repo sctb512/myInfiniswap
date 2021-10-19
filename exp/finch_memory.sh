@@ -12,7 +12,7 @@ for data in `seq 8 8 256`;do
 	for i in `seq 5`;do
 		mem_base=`free | awk '/Mem/ {print $3}'`
 		mem_max=0
-		python3 finch.py --data-path ../data/mnist10k/data.csv --output-path out &
+		python3 /users/bin_tang/FINCH-Clustering/python/finch.py --data-path /users/bin_tang/FINCH-Clustering/data/mnist10k/data.csv --output-path out &
 		sleep 10
 		mem_cur=`free | awk '/Mem/ {print $3}'`
 		used=`expr ${mem_cur} - ${mem_base}`
