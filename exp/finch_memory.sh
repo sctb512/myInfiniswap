@@ -4,7 +4,7 @@ headline="finch"
 for i in `seq 5`;do
 	headline="${headline},${i}_memory_used(kB)"
 done
-echo "${headline}" > create_csv_memory.csv
+echo "${headline}" > finch_memory.csv
 
 for data in `seq 8 8 256`;do
 	rm -rf test*.csv
