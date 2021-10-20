@@ -8,17 +8,14 @@ out_dir="out"
 if [ ! -d ${output_dir} ]; then
     mkdir -p ${output_dir}
 fi
-if [ ! -d ${out_dir} ]; then
-    mkdir -p ${out_dir}
-fi
 
 total_mem=19092340
 docker_name=is_workloads
 echo "total_mem: ${total_mem}"
 
-cd ../setup
-./run_infiniswap.sh ${servers_num}
-cd ../exp
+# cd ../setup
+# ./run_infiniswap.sh ${servers_num}
+# cd ../exp
 
 
 ps -ef | grep cpu_rate_docker.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
