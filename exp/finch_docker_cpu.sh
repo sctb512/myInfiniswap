@@ -42,7 +42,7 @@ for i in `seq 10`;do
 
         echo "install env in docker..."
         sudo docker exec -it ${docker_name} /bin/bash -c "cd /root && rm -rf ${output_dir} && rm -rf ${out_dir}"  >/dev/null 2>&1
-        sudo docker exec -it ${docker_name} /bin/bash -c "cd /root && mkdir ${output_dir} && mkdir ${out_dir} && (time python3 /root/FINCH-Clustering/python/finch.py --data-path /root/FINCH-Clustering/data/mnist10k/data.csv --output-path ${out_dir}) 2> ${output_dir}/${file}"
+        sudo docker exec -it ${docker_name} /bin/bash -c "cd /root && mkdir ${output_dir} && mkdir ${out_dir} && (time /root/miniconda3/bin/python3 /root/FINCH-Clustering/python/finch.py --data-path /root/FINCH-Clustering/data/mnist10k/data.csv --output-path ${out_dir}) 2> ${output_dir}/${file}"
 
         sudo docker cp ${docker_name}:/root/${output_dir}/ ./${output_dir}/${i}/
 
