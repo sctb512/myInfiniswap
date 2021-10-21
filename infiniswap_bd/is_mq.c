@@ -230,11 +230,11 @@ void stackbd_make_request2(struct request_queue *q, struct request *req)
         printk("stackbd: Device not active yet, aborting\n");
         goto abort;
     }
-    for (i=0; i<len -1; i++){
-    	bio = bio_clone(b, GFP_ATOMIC);
-    	bio_list_add(&stackbd.bio_list, bio);
-    	b = b->bi_next;
-	}
+    // for (i=0; i<len -1; i++){
+    // 	bio = bio_clone(b, GFP_ATOMIC);
+    // 	bio_list_add(&stackbd.bio_list, bio);
+    // 	b = b->bi_next;
+	// }
 
 	for (; b; b = b->bi_next)
 	{
