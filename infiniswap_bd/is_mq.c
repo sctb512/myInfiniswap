@@ -219,6 +219,8 @@ void stackbd_make_request2(struct request_queue *q, struct request *req)
     // int i;
     // int len = req->nr_phys_segments;
 
+	printk("*b: %p\n", b);
+
     spin_lock_irq(&stackbd.lock);
     if (!stackbd.bdev_raw)
     {
