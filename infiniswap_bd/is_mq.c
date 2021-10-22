@@ -215,7 +215,7 @@ abort:
 void stackbd_make_request2(struct request_queue *q, struct request *req)
 {
     struct bio *bio = NULL;
-	printk("*req: %p\n", req);
+	// printk("*req: %p\n", req);
 	if (!req)
     {
         printk("stackbd: Request is NULL, aborting\n");
@@ -225,7 +225,7 @@ void stackbd_make_request2(struct request_queue *q, struct request *req)
     // int i;
     // int len = req->nr_phys_segments;
 
-	printk("*b: %p\n", b);
+	// printk("*b: %p\n", b);
 	
 	if (!b)
     {
