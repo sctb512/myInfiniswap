@@ -24,7 +24,8 @@ ps -ef | grep cpu_rate_docker.sh | grep /bin/bash | awk '{print $2}' | xargs kil
 
 for i in `seq 10`;do
     sudo mkdir -p ${output_dir}/${i}
-    for local in 100 95 90 85 80 75 70 65 60 55 50;do
+    for local in 100 95 90 85 80 75;do
+    # for local in 70 65 60 55 50;do
         local_mem=`expr ${total_mem} \* ${local} / 100`
 
         file="total_mem${total_mem}_local_mem${local_mem}_local${local}.txt"
