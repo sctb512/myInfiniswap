@@ -20,7 +20,7 @@ echo "total_mem: ${total_mem}"
 
 ps -ef | grep cpu_rate_docker.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
 
-./cpu_rate_docker.sh ${output_dir} &
+# ./cpu_rate_docker.sh ${output_dir} &
 
 for i in `seq 10`;do
     sudo mkdir -p ${output_dir}/${i}
