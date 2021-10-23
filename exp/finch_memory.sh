@@ -6,7 +6,7 @@ for i in `seq 5`;do
 done
 echo "${headline}" > finch_memory.csv
 
-for data in `seq 8 8 256`;do
+for data in `seq 8 8 32`;do
 	rm -rf test*.csv
 	line="${data}"	
 	for i in `seq 5`;do
