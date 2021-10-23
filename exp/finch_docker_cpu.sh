@@ -9,7 +9,8 @@ if [ ! -d ${output_dir} ]; then
     mkdir -p ${output_dir}
 fi
 
-total_mem=19092340
+# total_mem=19092340
+total_mem=5287770
 docker_name=is_workloads
 echo "total_mem: ${total_mem}"
 
