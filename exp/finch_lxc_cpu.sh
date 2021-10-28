@@ -49,7 +49,7 @@ for i in `seq 10`;do
         sudo lxc exec ${docker_name} -- su ubuntu -c "cd /root && rm -rf ${output_dir} && rm -rf ${out_dir}"  >/dev/null 2>&1
         sudo lxc exec ${docker_name} -- su ubuntu -c "cd /root && mkdir ${output_dir} && mkdir ${out_dir} && (time /root/miniconda3/bin/python3 /root/FINCH-Clustering/python/finch.py --data-path /root/FINCH-Clustering/data/mnist10k/data.csv --output-path ${out_dir}) 2> ${output_dir}/${file}"
 
-        sudo lxc file pull ${docker_name}/home/ubuntu/${output_dir}/ ./${output_dir}/${i}/
+        sudo lxc file pull ${docker_name}/home/ubuntu/${output_dir}/${file} ./${output_dir}/${i}/
 
     done
 done

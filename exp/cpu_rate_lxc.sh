@@ -3,7 +3,7 @@
 file="$1_cpu_rate.csv"
 docker_name=$2
 
-echo "num,total,used,available" > ${file}
+echo "num,total,used,available,usr,sys,rate" > ${file}
 
 i=0
 while [ True ];do
