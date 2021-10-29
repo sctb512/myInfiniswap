@@ -11,7 +11,6 @@ fi
 
 total_mem=19092340
 # total_mem=5287770
-total_mem=`expr ${total_mem} \* 1024`
 
 docker_name=is-workloads
 echo "total_mem: ${total_mem}"
@@ -35,11 +34,11 @@ for i in `seq 10`;do
 
         file="total_mem${total_mem}_local_mem${local_mem}_local${local}.txt"
 
-        if [ -f ${output_dir}/${i}/${output_dir}/${file} ];then
+        if [ -f ${output_dir}/${i}/${file} ];then
             continue
         fi
 
-        sudo lxc config set ${docker_name} limits.memory ${local_mem}
+        sudo lxc config set ${docker_name} limits.memory ${local_mem}kB
 
         sleep 10
         sudo lxc list
