@@ -26,7 +26,7 @@ sudo lxc config set is-workloads limits.memory.swap true
 
 ps -ef | grep cpu_rate_lxc.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
 
-# ./cpu_rate_lxc.sh ${output_dir} ${docker_name} &
+./cpu_rate_lxc.sh ${output_dir} ${docker_name} &
 
 for i in $(seq 10); do
     sudo mkdir -p ${output_dir}/${i}
