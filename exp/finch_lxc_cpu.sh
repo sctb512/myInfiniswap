@@ -37,6 +37,7 @@ for i in $(seq 10); do
         file="total_mem${total_mem}_local_mem${local_mem}_local${local}.txt"
 
         if [ -f ${output_dir}/${i}/${file} ]; then
+            echo "file ${file} existed, continue..."
             continue
         fi
 
