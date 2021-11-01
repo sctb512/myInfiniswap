@@ -30,7 +30,7 @@ ps -ef | grep cpu_rate_lxc.sh | grep /bin/bash | awk '{print $2}' | xargs kill -
 
 for i in $(seq 10); do
     sudo mkdir -p ${output_dir}/${i}
-    for local in 100 95 90 85 80 75; do
+    for local in 100 95 90 85 80 75 70 65 60 55 50; do
         # for local in 70 65 60 55 50;do
         local_mem=$(expr ${total_mem} \* ${local} / 100)
 
@@ -48,8 +48,10 @@ for i in $(seq 10); do
 
         echo "install env in lxc..."
 
-        sudo lxc exec ${docker_name} -- su root -c "cd /root && rm -rf ${output_dir} && rm -rf ${out_dir}" >/dev/null 2>&1
-        sudo lxc exec ${docker_name} -- su root -c "cd /root && mkdir ${output_dir} && mkdir ${out_dir} && (time /usr/bin/python3 /root/FINCH-Clustering/python/finch.py --data-path /root/FINCH-Clustering/data/mnist10k/data.csv --output-path ${out_dir}) 2> ${output_dir}/${file}"
+        sudo lxc exec ${docker_name} -- sudo --login --user root bash -ic "cd /root && rm -rf ${output_dir} && rm -rf ${out_dir}" >/dev/null 2>&1
+
+        echo "total: ${total_mem} local: ${local} running..."
+        sudo lxc exec ${docker_name} -- sudo --login --user root bash -ic "cd /root && mkdir ${output_dir} && mkdir ${out_dir} && (time /usr/bin/python3 /root/FINCH-Clustering/python/finch.py --data-path /root/FINCH-Clustering/data/mnist10k/data.csv --output-path ${out_dir}) 2> ${output_dir}/${file}"
 
         sudo lxc file pull ${docker_name}/root/${output_dir}/${file} ./${output_dir}/${i}/
 
