@@ -15,9 +15,12 @@ total_mem=19092340
 docker_name=is-workloads
 echo "total_mem: ${total_mem}"
 
-# cd ../setup
-# ./run_infiniswap.sh ${servers_num}
-# cd ../exp
+eval $(ssh-agent -s)
+ssh-add ~/.ssh/cloud
+
+cd ../setup
+./run_infiniswap.sh ${servers_num}
+cd ../exp
 
 sudo lxc start ${docker_name}
 
@@ -31,6 +34,13 @@ ps -ef | grep cpu_rate_lxc.sh | grep /bin/bash | awk '{print $2}' | xargs kill -
 for i in $(seq 10); do
     sudo mkdir -p ${output_dir}/${i}
     for local in 100 95 90 85 80 75 70 65 60 55 50; do
+
+        chunk_num=$(dmesg | grep "\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*" | wc -l)
+
+        if [ ${chunk_num} -gt 28 ]; then
+            sudo reboot
+        fi
+
         # for local in 70 65 60 55 50;do
         local_mem=$(expr ${total_mem} \* ${local} / 100)
 
