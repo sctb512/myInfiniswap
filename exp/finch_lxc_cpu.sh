@@ -19,12 +19,15 @@ echo "total_mem: ${total_mem}"
 # ./run_infiniswap.sh ${servers_num}
 # cd ../exp
 
+sudo lxc start ${docker_name}
+
+sudo lxc config set is-workloads limits.memory.swap.priority 10
+sudo lxc config set is-workloads limits.memory.swap true
 
 ps -ef | grep cpu_rate_lxc.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
 
 # ./cpu_rate_lxc.sh ${output_dir} ${docker_name} &
 
-sudo lxc start ${docker_name}
 
 for i in `seq 10`;do
     sudo mkdir -p ${output_dir}/${i}
@@ -39,6 +42,7 @@ for i in `seq 10`;do
         fi
 
         sudo lxc config set ${docker_name} limits.memory ${local_mem}kB
+        echo $((${local_mem}*1024+32*1024*1024*1024)) | sudo tee /sys/fs/cgroup/memory/lxc/${docker_name}/memory.memsw.limit_in_bytes
 
         sleep 10
         sudo lxc list
