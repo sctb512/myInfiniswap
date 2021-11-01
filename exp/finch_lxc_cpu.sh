@@ -21,7 +21,7 @@ echo "total_mem: ${total_mem}"
 
 sudo lxc start ${docker_name}
 
-sudo lxc config set is-workloads limits.memory.swap.priority 10
+sudo lxc config set is-workloads limits.memory.swap.priority 50
 sudo lxc config set is-workloads limits.memory.swap true
 
 ps -ef | grep cpu_rate_lxc.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
