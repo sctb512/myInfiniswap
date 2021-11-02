@@ -16,7 +16,7 @@ docker_name=is-workloads
 echo "total_mem: ${total_mem}"
 
 eval $(ssh-agent -s)
-ssh-add ~/.ssh/cloud
+ssh-add /users/bin_tang/.ssh/cloud
 
 cd ../setup
 ./run_infiniswap.sh ${servers_num}
