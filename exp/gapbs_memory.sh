@@ -16,7 +16,7 @@ for func in ${functoins[*]}; do
         mem_base=$(free | awk '/Mem/ {print $3}')
         mem_max=0
         if [ "${func}" == "converter" ]; then
-            ${gapbs_dir}/${func} -u 26 &
+            ${gapbs_dir}/${func} -u 26 -b converter.graph &
         else
             ${gapbs_dir}/${func} -u 26 -n 1 &
         fi
