@@ -9,7 +9,7 @@ num=$1
 
 source servers.sh ${num}
 
-cd ~/myInfiniswap/setup
+cd ../setup
 
 # ./pull.sh
 
