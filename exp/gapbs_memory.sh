@@ -1,18 +1,21 @@
 #!/bin/bash
 
-headline="finch"
+gapbs_dir="/users/bin_tang/gapbs"
+
+headline="functoin"
 for i in `seq 5`;do
 	headline="${headline},${i}_memory_used(kB)"
 done
-echo "${headline}" > finch_memory.csv
+echo "${headline}" > gapbs_memory.csv
 
-for data in `seq 8 8 32`;do
-	rm -rf test*.csv
-	line="${data}"
-	for i in `seq 5`;do
-		mem_base=`free | awk '/Mem/ {print $3}'`
+functoins=(bc bfs cc_sv converter pr_spmv tc cc pr sssp)
+
+for func in ${functoins[*]};do
+    line="${func}"
+    for i in `seq 5`;do
+        mem_base=`free | awk '/Mem/ {print $3}'`
 		mem_max=0
-		python3 /users/bin_tang/FINCH-Clustering/python/finch.py --data-path /users/bin_tang/FINCH-Clustering/data/mnist10k/data.csv --output-path out &
+		${gapbs_dir}/${func} -u 26 -n 1 &
 		sleep 10
 		mem_cur=`free | awk '/Mem/ {print $3}'`
 		used=`expr ${mem_cur} - ${mem_base}`
@@ -28,9 +31,9 @@ for data in `seq 8 8 32`;do
 		done
 		used_kB=`expr ${mem_max} - ${mem_base}`
 		line="${line},${used_kB}"
-        pkill python3
+        pkill ${func}
 		sleep 10
-	done
-	echo "${line}"
+    done
+    echo "${line}"
 	echo "${line}" >> finch_memory.csv
 done
