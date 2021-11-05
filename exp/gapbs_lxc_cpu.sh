@@ -14,7 +14,9 @@ if [ ! -d ${output_dir} ]; then
 fi
 
 docker_name=is-workloads
-echo "total_mem: ${total_mem}"
+
+eval $(ssh-agent -s)
+ssh-add /users/bin_tang/.ssh/cloud
 
 cd ../setup
 ./run_infiniswap.sh ${servers_num}
