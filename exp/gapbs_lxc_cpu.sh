@@ -2,14 +2,18 @@
 
 servers_num=$1
 
-output_dir="is_lxc_result_finch_${servers_num}"
-out_dir="out"
+output_dir="is_lxc_result_gapbs_${servers_num}"
+
+gapbs_dir="/root/gapbs"
+
+functions=(bc bfs cc_sv pr_spmv tc cc pr sssp)
+total_memorys=(18186932 18188654 18132460 18232750 18218126 18133960 18131084 33498212)
 
 if [ ! -d ${output_dir} ]; then
     mkdir -p ${output_dir}
 fi
 
-total_mem=19092340
+# total_mem=19092340
 # total_mem=5287770
 
 docker_name=is-workloads
@@ -26,34 +30,50 @@ sudo lxc config set ${docker_name} limits.memory.swap true
 
 ps -ef | grep cpu_rate_lxc.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
 
-./cpu_rate_lxc.sh ${output_dir} ${docker_name} &
+# ./cpu_rate_lxc.sh ${output_dir} ${docker_name} &
 
-for i in $(seq 10); do
-    sudo mkdir -p ${output_dir}/${i}
-    for local in 100 95 90 85 80 75; do
-        # for local in 70 65 60 55 50;do
-        local_mem=$(expr ${total_mem} \* ${local} / 100)
 
-        file="total_mem${total_mem}_local_mem${local_mem}_local${local}.txt"
+for i in ${!functions[@]};do
+    function=${functions[${i}]}
+    total_memory=${total_memorys[${i}]}
 
-        if [ -f ${output_dir}/${i}/${file} ]; then
-            continue
-        fi
+    echo "function: ${function}, total_memory: ${total_memory}"
 
-        sudo lxc config set ${docker_name} limits.memory ${local_mem}kB
-        echo $((${local_mem} * 1024 + 32 * 1024 * 1024 * 1024)) | sudo tee /sys/fs/cgroup/memory/lxc/${docker_name}/memory.memsw.limit_in_bytes
+    cur_output_dir=${output_dir}/${function}
+    if [ ! -d ${cur_output_dir} ]; then
+        mkdir -p ${cur_output_dir}
+    fi
 
-        sleep 10
-        sudo lxc list
+    for i in $(seq 10); do
+        sudo mkdir -p ${cur_output_dir}/${i}
+        for local in 100 95 90 85 80 75; do
+            # for local in 70 65 60 55 50;do
+            local_mem=$(expr ${total_memory} \* ${local} / 100)
 
-        echo "install env in lxc..."
+            file="total_mem${total_memory}_local_mem${local_mem}_local${local}.txt"
 
-        sudo lxc exec ${docker_name} -- sudo --login --user root bash -ic "cd /root && rm -rf ${output_dir} && rm -rf ${out_dir}" >/dev/null 2>&1
+            if [ -f ${cur_output_dir}/${i}/${file} ]; then
+                continue
+            fi
 
-        echo "total: ${total_mem} local: ${local} running..."
-        sudo lxc exec ${docker_name} -- sudo --login --user root bash -ic "cd /root && mkdir ${output_dir} && mkdir ${out_dir} && (time /usr/bin/python3 /root/FINCH-Clustering/python/finch.py --data-path /root/FINCH-Clustering/data/mnist10k/data.csv --output-path ${out_dir}) 2> ${output_dir}/${file}"
+            sudo lxc config set ${docker_name} limits.memory ${local_mem}kB
+            echo $((${local_mem} * 1024 + 32 * 1024 * 1024 * 1024)) | sudo tee /sys/fs/cgroup/memory/lxc/${docker_name}/memory.memsw.limit_in_bytes
 
-        sudo lxc file pull ${docker_name}/root/${output_dir}/${file} ./${output_dir}/${i}/
+            sleep 10
+            sudo lxc list
 
+            echo "install env in lxc..."
+
+            sudo lxc exec ${docker_name} -- sudo --login --user root bash -ic "cd /root && rm -rf ${cur_output_dir}" >/dev/null 2>&1
+
+            echo "total: ${total_mem} local: ${local} running..."
+            sudo lxc exec ${docker_name} -- sudo --login --user root bash -ic "cd /root && mkdir -p ${cur_output_dir} && (time ${gapbs_dir}/${function} -u 26 -n 1) 2> ${output_dir}/${file}"
+
+            sudo lxc file pull ${docker_name}/root/${cur_output_dir}/${file} ./${cur_output_dir}/${i}/
+
+        done
     done
+
 done
+
+

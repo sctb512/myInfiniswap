@@ -8,18 +8,15 @@ for i in $(seq 5); do
 done
 echo "${headline}" >gapbs_memory.csv
 
-functoins=(bc bfs cc_sv converter pr_spmv tc cc pr sssp)
+# functoins=(bc bfs cc_sv converter pr_spmv tc cc pr sssp)
+functoins=(bc bfs cc_sv pr_spmv tc cc pr sssp)
 
 for func in ${functoins[*]}; do
     line="${func}"
     for i in $(seq 5); do
         mem_base=$(free | awk '/Mem/ {print $3}')
         mem_max=0
-        if [ "${func}" == "converter" ]; then
-            ${gapbs_dir}/${func} -u 26 -b converter.graph &
-        else
-            ${gapbs_dir}/${func} -u 26 -n 1 &
-        fi
+        ${gapbs_dir}/${func} -u 26 -n 1 &
         sleep 10
         mem_cur=$(free | awk '/Mem/ {print $3}')
         used=$(expr ${mem_cur} - ${mem_base})
