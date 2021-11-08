@@ -38,7 +38,7 @@ for i in $(seq 2); do
         # for local in 55 50; do
         chunk_num=$(dmesg | grep "\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*" | wc -l)
 
-        if [ ${chunk_num} -gt 28 ]; then
+        if [ ${chunk_num} -gt 27 ]; then
             sudo reboot
         fi
 
