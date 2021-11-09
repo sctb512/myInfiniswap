@@ -3,10 +3,14 @@
 servers_num=$1
 
 output_dir="is_lxc_result_finch_${servers_num}"
+cpu_rate_dir="${output_dir}_cpu_rate"
 out_dir="out"
 
 if [ ! -d ${output_dir} ]; then
     mkdir -p ${output_dir}
+fi
+if [ ! -d ${cpu_rate_dir} ]; then
+    mkdir -p ${cpu_rate_dir}
 fi
 
 total_mem=19092340
@@ -29,7 +33,7 @@ sudo lxc config set ${docker_name} limits.memory.swap true
 
 ps -ef | grep cpu_rate_lxc.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
 
-./cpu_rate_lxc.sh ${output_dir} ${docker_name} &
+./cpu_rate_lxc.sh ${output_dir} ${docker_name} ${cpu_rate_dir} &
 
 # for i in $(seq 10); do
 for i in $(seq 2); do

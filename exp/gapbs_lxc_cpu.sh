@@ -3,6 +3,7 @@
 servers_num=$1
 
 output_dir="is_lxc_result_gapbs_${servers_num}"
+cpu_rate_dir="${output_dir}_cpu_rate"
 
 gapbs_dir="/root/gapbs"
 
@@ -11,6 +12,9 @@ total_memorys=(18186932 18188654 18132460 18232750 18218126 18133960 18131084 33
 
 if [ ! -d ${output_dir} ]; then
     mkdir -p ${output_dir}
+fi
+if [ ! -d ${cpu_rate_dir} ]; then
+    mkdir -p ${cpu_rate_dir}
 fi
 
 docker_name=is-workloads
@@ -37,7 +41,7 @@ for i in ${!functions[@]};do
     echo "function: ${function}, total_memory: ${total_memory}"
 
     ps -ef | grep cpu_rate_lxc.sh | grep "/bin/bash" | awk '{print $2}' | xargs kill -9
-    ./cpu_rate_lxc.sh ${function} ${docker_name} &
+    ./cpu_rate_lxc.sh ${function} ${docker_name} ${cpu_rate_dir} &
 
     cur_output_dir=${output_dir}/${function}
 

@@ -1,6 +1,12 @@
 #!/bin/bash
 
-file="$1_cpu_rate.csv"
+if [ $# != 3 ];then
+    echo "useage: $0 file_name dockere_name file_dir"
+    exit
+fi
+
+dir=$3
+file="${dir}/$1_cpu_rate.csv"
 docker_name=$2
 
 if [ ! -f ${file} ];then
