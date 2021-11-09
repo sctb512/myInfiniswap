@@ -1,13 +1,14 @@
 #!/bin/bash
 
-if [ $# != 1 ];then
-    echo "useage: $0 server_num"
+if [ $# != 2 ];then
+    echo "useage: $0 server_num configure_file"
     exit
 fi
 
 num=$1
+conf=$2
 
-source servers.sh ${num}
+source ${conf} ${num}
 
 cd ../setup
 

@@ -1,8 +1,14 @@
 #!/bin/bash
 
-num=$1
+if [ $# != 2 ];then
+    echo "useage: $0 server_num configure_file"
+    exit
+fi
 
-source servers.sh ${num}
+num=$1
+conf=$2
+
+source ${conf} ${num}
 
 echo "StrictHostKeyChecking no" > ~/.ssh/config
 
@@ -23,7 +29,7 @@ sleep 60
 # echo 0 | sudo tee /proc/sys/kernel/hung_task_timeout_secs
 
 cd ../setup
-./run_bd.sh ${num}
+./run_bd.sh ${num} ${conf}
 cd ../exp
 
 sleep 20
