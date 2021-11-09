@@ -19,7 +19,7 @@ eval $(ssh-agent -s)
 ssh-add /users/bin_tang/.ssh/cloud
 
 cd ../setup
-./run_infiniswap.sh ${servers_num}
+./run_infiniswap.sh ${servers_num}  ./config2.sh
 cd ../exp
 
 sudo lxc start ${docker_name}
