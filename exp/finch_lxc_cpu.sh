@@ -63,7 +63,7 @@ for i in $(seq 2); do
         sudo lxc exec ${docker_name} -- sudo --login --user root /usr/bin/zsh -ic "cd /root && rm -rf ${output_dir} && rm -rf ${out_dir}" >/dev/null 2>&1
 
         echo "total: ${total_mem} local: ${local} running..."
-        sudo lxc exec ${docker_name} -- sudo --login --user root /usr/bin/zsh -ic "cd /root && mkdir ${output_dir} && mkdir ${out_dir} && (time /usr/bin/python3 /root/FINCH-Clustering/python/finch.py --data-path /root/FINCH-Clustering/data/mnist10k/data.csv --output-path ${out_dir}) 2> ${output_dir}/${file}"
+        sudo lxc exec ${docker_name} -- sudo --login --user root /usr/bin/zsh -ic "cd /root && mkdir ${output_dir} && mkdir ${out_dir} && (time /usr/bin/python3 /root/FINCH-Clustering/python/finch.py --data-path /root/FINCH-Clustering/data/mnist10k/data.csv --output-path ${out_dir}) > ${output_dir}/${file} 2>&1"
 
         sudo lxc file pull ${docker_name}/root/${output_dir}/${file} ./${output_dir}/${i}/
 
