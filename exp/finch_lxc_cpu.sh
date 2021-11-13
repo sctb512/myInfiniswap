@@ -38,7 +38,7 @@ ps -ef | grep cpu_rate_lxc.sh | grep /bin/bash | awk '{print $2}' | xargs kill -
 ./cpu_rate_lxc.sh ${output_dir} ${docker_name} ${cpu_rate_dir} &
 
 # for i in $(seq 10); do
-for i in $(seq 2); do
+for i in $(seq 10); do
     sudo mkdir -p ${output_dir}/${i}
     for local in 100 95 90 85 80 75 70; do
         # for local in 65 60 55 50; do
