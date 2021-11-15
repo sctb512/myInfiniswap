@@ -22,7 +22,7 @@ echo "total_mem: ${total_mem}"
 eval $(ssh-agent -s)
 ssh-add /users/bin_tang/.ssh/cloud
 
-echo 0 | sudo tee  /proc/sys/kernel/hung_task_timeout_secs
+# echo 0 | sudo tee  /proc/sys/kernel/hung_task_timeout_secs
 
 cd ../setup
 ./run_infiniswap.sh ${servers_num}  ./config1.sh
