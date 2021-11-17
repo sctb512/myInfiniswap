@@ -11,4 +11,5 @@ while true;do
     if [ ${cur_file_num} -le ${file_num} ];then
         sudo rboot
     fi
+    file_num=${cur_file_num}
 done
