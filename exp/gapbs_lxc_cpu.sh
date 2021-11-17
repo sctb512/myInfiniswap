@@ -62,8 +62,6 @@ for i in ${!functions[@]};do
                 sudo reboot
             fi
 
-            echo "time: $(date "+%Y-%m-%d %H:%M:%S")"
-
             local_mem=$(expr ${total_memory} \* ${local} / 100)
 
             file="total_mem${total_memory}_local_mem${local_mem}_local${local}.txt"
@@ -71,6 +69,7 @@ for i in ${!functions[@]};do
             if [ -f ${cur_output_dir}/${i}/${file} ]; then
                 continue
             fi
+            echo "time: $(date "+%Y-%m-%d %H:%M:%S")"
 
             sudo lxc config set ${docker_name} limits.memory ${local_mem}kB
             echo $((${local_mem} * 1024 + 32 * 1024 * 1024 * 1024)) | sudo tee /sys/fs/cgroup/memory/lxc/${docker_name}/memory.memsw.limit_in_bytes
