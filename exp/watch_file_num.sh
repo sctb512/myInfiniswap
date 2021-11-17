@@ -9,7 +9,7 @@ while true;do
     cur_file_num=$(ls -lR ${dir} |grep "^-" | wc -l)
 
     if [ ${cur_file_num} -le ${file_num} ];then
-        sudo rboot
+        sudo reboot
     fi
     file_num=${cur_file_num}
 done
