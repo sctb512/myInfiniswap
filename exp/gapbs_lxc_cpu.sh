@@ -34,7 +34,7 @@ sudo lxc config set ${docker_name} limits.memory.swap.priority 50
 sudo lxc config set ${docker_name} limits.memory.swap true
 
 ps -ef | grep cpu_rate_lxc.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
-
+./watch_file_num.sh ${output_dir} &
 
 for i in ${!functions[@]};do
     function=${functions[${i}]}
@@ -63,7 +63,7 @@ for i in ${!functions[@]};do
             fi
 
             echo "time: $(date "+%Y-%m-%d %H:%M:%S")"
-            
+
             local_mem=$(expr ${total_memory} \* ${local} / 100)
 
             file="total_mem${total_memory}_local_mem${local_mem}_local${local}.txt"
