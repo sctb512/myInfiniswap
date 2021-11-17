@@ -62,6 +62,8 @@ for i in ${!functions[@]};do
                 sudo reboot
             fi
 
+            echo "time: $(date "+%Y-%m-%d %H:%M:%S")"
+            
             local_mem=$(expr ${total_memory} \* ${local} / 100)
 
             file="total_mem${total_memory}_local_mem${local_mem}_local${local}.txt"

@@ -48,7 +48,8 @@ for i in $(seq 10); do
             sudo reboot
         fi
 
-        # for local in 70 65 60 55 50;do
+        echo "time: $(date "+%Y-%m-%d %H:%M:%S")"
+
         local_mem=$(expr ${total_mem} \* ${local} / 100)
 
         file="total_mem${total_mem}_local_mem${local_mem}_local${local}.txt"
