@@ -47,6 +47,7 @@ for i in $(seq 2); do
 
         if [ ${chunk_num} -gt $((27*${servers_num})) ]; then
             sudo reboot
+            exit
         fi
 
         local_mem=$(expr ${total_mem} \* ${local} / 100)
