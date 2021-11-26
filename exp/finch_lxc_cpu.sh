@@ -45,7 +45,7 @@ for i in $(seq 2); do
         # for local in 65 60 55 50; do
         chunk_num=$(dmesg | grep "\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*" | wc -l)
 
-        if [ ${chunk_num} -gt 27 ]; then
+        if [ ${chunk_num} -gt $((27*${servers_num})) ]; then
             sudo reboot
         fi
 
