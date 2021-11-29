@@ -45,7 +45,7 @@ ps -ef | grep cpu_rate_docker.sh | grep /bin/bash | awk '{print $2}' | xargs kil
 ./cpu_rate_docker.sh ${output_dir} &
 # ./cpu_rate_core.sh ${output_dir} &
 
-sudo lxc file push dataframe.py ${docker_name}/root
+sudo lxc file push dataframe.py ${docker_name}/root/
 
 # for i in $(seq 10); do
 for i in $(seq 2); do
