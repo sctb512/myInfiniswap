@@ -41,6 +41,8 @@ cd ../setup
 ./run_infiniswap.sh ${servers_num} ./config1.sh
 cd ../exp
 
+sudo lxc start ${docker_name}
+
 ps -ef | grep "cpu " | awk '{print $2}' | xargs kill -s 9
 
 ./compile_cpu.sh
