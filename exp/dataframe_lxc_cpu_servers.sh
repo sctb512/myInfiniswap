@@ -4,12 +4,16 @@ cpu_useage=$1
 servers_num=$2
 
 output_dir="is_result_dataframe_lxc_${servers_num}_servers_cpu_${cpu_useage}"
+cpu_rate_dir="${output_dir}_cpu_rate"
 
 once_file="${output_dir}_once.txt"
 server_distribute="${output_dir}_distribute.csv"
 
 if [ ! -d ${output_dir} ]; then
     mkdir -p ${output_dir}
+fi
+if [ ! -d ${cpu_rate_dir} ]; then
+    mkdir -p ${cpu_rate_dir}
 fi
 
 if [ ! -f ${once_file} ]; then
@@ -45,8 +49,9 @@ ps -ef | grep "cpu " | awk '{print $2}' | xargs kill -s 9
 # ps -ef | grep cpu_rate_core.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
 ps -ef | grep cpu_rate_docker.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
 
-./cpu_rate_docker.sh ${output_dir} &
+./cpu_rate_lxc.sh ${output_dir} ${docker_name} ${cpu_rate_dir} &
 # ./cpu_rate_core.sh ${output_dir} &
+./watch_file_num.sh ${output_dir} &
 
 sudo lxc file push dataframe.py ${docker_name}/root/
 
