@@ -60,7 +60,7 @@ sudo lxc file push dataframe.py ${docker_name}/root/
 # for i in $(seq 10); do
 for i in $(seq 2); do
     sudo mkdir -p ${output_dir}/${i}
-    for local in 100 80 75 60 50 40 25; do
+    for local in 100 90 80 70 60 50 40; do
         local_mem=$((${total_mem} * ${local} / 100))
         df_num=$((${total_mem} / 220851))
         echo "local_mem: ${local_mem}, df_num: ${df_num}"
