@@ -85,7 +85,7 @@ for i in $(seq 2); do
 
         file="total_mem${total_mem}_local_mem${local_mem}_local${local}.txt"
 
-        if [ -f ${output_dir}/${i}/${output_dir}/${file} ]; then
+        if [ -f ${output_dir}/${i}/${file} ]; then
             continue
         fi
 
