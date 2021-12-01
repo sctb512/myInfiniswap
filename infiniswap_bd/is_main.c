@@ -1298,8 +1298,10 @@ static int rdma_trigger(void *data)
 	}
 
 	while (1) {
+
 		struct timespec period_start,period_end;
 		getnstimeofday(&period_start);
+
 		for (i=0; i<STACKBD_SIZE_G; i++){
 			spin_lock_irq(&IS_sess->write_ops_lock[i]);
 			cur_write_ops = IS_sess->write_ops[i];
@@ -1316,7 +1318,15 @@ static int rdma_trigger(void *data)
 				if (atomic_read(&IS_sess->trigger_enable) == TRIGGER_ON){
 					if (atomic_read(IS_sess->cb_index_map + i) == NO_CB_MAPPED ){
 						do {
+
+							struct timespec map_start,map_end;
+							getnstimeofday(&map_start);
+
 							map_res = IS_single_chunk_map(IS_sess, i);
+
+							getnstimeofday(&map_end);
+							pr_info("map_time: %ld\n", map_end.tv_nsec-map_start.tv_nsec);
+
 							map_count += 1;
 						} while (map_res == -1 && map_count < 1);
 						map_count = 0;
@@ -1324,8 +1334,10 @@ static int rdma_trigger(void *data)
 				}
 			}
 		}
+
 		getnstimeofday(&period_end);
 		pr_info("period_time: %ld\n", period_end.tv_nsec-period_start.tv_nsec);
+
 		msleep(RDMA_TRIGGER_PERIOD);
 	}	
 
@@ -1638,6 +1650,9 @@ int IS_single_chunk_map(struct IS_session *IS_session, int select_chunk)
 	unsigned int random_cb_selection[NUM_CB];
 	unsigned int random_num;
 
+	struct timespec select_server_start,select_server_end;
+	getnstimeofday(&select_server_start);
+
 	for (j = 0; j < SERVER_SELECT_NUM; j++){
 		selection[j] = NUM_CB; //no server 
 		free_mem[j] = -1;
@@ -1719,16 +1734,44 @@ int IS_single_chunk_map(struct IS_session *IS_session, int select_chunk)
 	cb_index = free_mem_sorted[0];
 	tmp_cb = IS_session->cb_list[cb_index];
 
+	getnstimeofday(&select_server_end);
+	pr_info("select_server_time: %ld\n", select_server_end.tv_nsec-select_server_start.tv_nsec);
+
+
 	if (IS_session->cb_state_list[cb_index] == CB_CONNECTED){ 
 		IS_session->mapped_cb_num += 1;
+
+		struct timespec dma_start,dma_end;
+		getnstimeofday(&dma_start);
+
 		IS_ctx_dma_setup(tmp_cb, IS_session, cb_index); 
+
+		getnstimeofday(&dma_end);
+		pr_info("setup_dma_time: %ld\n", dma_end.tv_nsec-dma_start.tv_nsec);
+
+
+		struct timespec evict_handler_start,evict_handler_end;
+		getnstimeofday(&evict_handler_start);
+
 		memset(name, '\0', 2);
 		name[0] = (char)((cb_index/26) + 97);
 		tmp_cb->remote_chunk.evict_handle_thread = kthread_create(evict_handler, tmp_cb, name);
 		wake_up_process(tmp_cb->remote_chunk.evict_handle_thread);	
+
+		getnstimeofday(&evict_handler_end);
+		pr_info("evict_handler_time: %ld\n", evict_handler_end.tv_nsec-evict_handler_start.tv_nsec);
+
 	}
+
+	struct timespec remote_map_start,remote_map_end;
+	getnstimeofday(&remote_map_start);
+
 	IS_send_bind_single(tmp_cb, need_chunk);
 	wait_event_interruptible(tmp_cb->sem, tmp_cb->state == WAIT_OPS);
+
+	getnstimeofday(&remote_map_end);
+	pr_info("remote_map_time: %ld\n", remote_map_end.tv_nsec-remote_map_start.tv_nsec);
+
 	atomic_set(&IS_session->rdma_on, DEV_RDMA_ON); 
 	return need_chunk;
 }
