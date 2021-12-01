@@ -1298,6 +1298,8 @@ static int rdma_trigger(void *data)
 	}
 
 	while (1) {
+		struct timespec period_start,period_end;
+		getnstimeofday(&period_start);
 		for (i=0; i<STACKBD_SIZE_G; i++){
 			spin_lock_irq(&IS_sess->write_ops_lock[i]);
 			cur_write_ops = IS_sess->write_ops[i];
@@ -1322,6 +1324,8 @@ static int rdma_trigger(void *data)
 				}
 			}
 		}
+		getnstimeofday(&period_end);
+		pr_info("period_time: %lld\n", period_end.tv_nsec-period_start.tv_nsec);
 		msleep(RDMA_TRIGGER_PERIOD);
 	}	
 
