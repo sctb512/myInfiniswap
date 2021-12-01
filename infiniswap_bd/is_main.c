@@ -1325,7 +1325,7 @@ static int rdma_trigger(void *data)
 			}
 		}
 		getnstimeofday(&period_end);
-		pr_info("period_time: %lld\n", period_end.tv_nsec-period_start.tv_nsec);
+		pr_info("period_time: %ld\n", period_end.tv_nsec-period_start.tv_nsec);
 		msleep(RDMA_TRIGGER_PERIOD);
 	}	
 
