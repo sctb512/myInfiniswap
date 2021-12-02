@@ -1301,6 +1301,7 @@ static int rdma_trigger(void *data)
 		
 		int map_flag=0;
 		struct timespec period_start,period_end;
+		long long period_time;
 		getnstimeofday(&period_start);
 
 		for (i=0; i<STACKBD_SIZE_G; i++){
@@ -1341,7 +1342,8 @@ static int rdma_trigger(void *data)
 
 		if(map_flag==1) {
 			getnstimeofday(&period_end);
-			pr_info("period_time: %ld\n", period_end.tv_nsec-period_start.tv_nsec);
+			period_time=period_end.tv_sec*1000000000+period_end.tv_nsec-period_start.tv_sec*1000000000+period_start.tv_nsec;
+			pr_info("period_time: %lld\n", period_time);
 		}
 
 		msleep(RDMA_TRIGGER_PERIOD);
