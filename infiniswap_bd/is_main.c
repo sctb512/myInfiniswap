@@ -1320,12 +1320,15 @@ static int rdma_trigger(void *data)
 						do {
 
 							struct timespec map_start,map_end;
+							long long map_time;
 							getnstimeofday(&map_start);
 
 							map_res = IS_single_chunk_map(IS_sess, i);
 
 							getnstimeofday(&map_end);
-							pr_info("map_time: %ld\n", map_end.tv_nsec-map_start.tv_nsec);
+							map_time=map_end.tv_sec*1000000000+map_end.tv_nsec - map_start.tv_sec*1000000000+map_start.tv_nsec;
+							pr_info("map_time: %lld\n", map_time);
+
 
 							map_count += 1;
 						} while (map_res == -1 && map_count < 1);
