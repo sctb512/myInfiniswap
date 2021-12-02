@@ -1651,6 +1651,7 @@ int IS_single_chunk_map(struct IS_session *IS_session, int select_chunk)
 	unsigned int random_num;
 
 	struct timespec select_server_start,select_server_end;
+	long long select_server_time;
 	getnstimeofday(&select_server_start);
 
 	for (j = 0; j < SERVER_SELECT_NUM; j++){
@@ -1735,22 +1736,26 @@ int IS_single_chunk_map(struct IS_session *IS_session, int select_chunk)
 	tmp_cb = IS_session->cb_list[cb_index];
 
 	getnstimeofday(&select_server_end);
-	pr_info("select_server_time: %ld\n", select_server_end.tv_nsec-select_server_start.tv_nsec);
+	select_server_time=select_server_end.tv_sec*1000000000+select_server_end.tv_nsec - select_server_start.tv_sec*1000000000+select_server_start.tv_nsec;
+	pr_info("select_server_time: %lld\n", select_server_time);
 
 
 	if (IS_session->cb_state_list[cb_index] == CB_CONNECTED){ 
 		IS_session->mapped_cb_num += 1;
 
 		struct timespec dma_start,dma_end;
+		long long dma_time;
 		getnstimeofday(&dma_start);
 
 		IS_ctx_dma_setup(tmp_cb, IS_session, cb_index); 
 
 		getnstimeofday(&dma_end);
-		pr_info("setup_dma_time: %ld\n", dma_end.tv_nsec-dma_start.tv_nsec);
+		dma_time=dma_end.tv_sec*1000000000+dma_end.tv_nsec - dma_start.tv_sec*1000000000+dma_start.tv_nsec;
+		pr_info("dma_time: %lld\n", dma_time);
 
 
 		struct timespec evict_handler_start,evict_handler_end;
+		long long evict_handler_time;
 		getnstimeofday(&evict_handler_start);
 
 		memset(name, '\0', 2);
@@ -1759,18 +1764,21 @@ int IS_single_chunk_map(struct IS_session *IS_session, int select_chunk)
 		wake_up_process(tmp_cb->remote_chunk.evict_handle_thread);	
 
 		getnstimeofday(&evict_handler_end);
-		pr_info("evict_handler_time: %ld\n", evict_handler_end.tv_nsec-evict_handler_start.tv_nsec);
+		evict_handler_time=evict_handler_end.tv_sec*1000000000+evict_handler_end.tv_nsec - evict_handler_start.tv_sec*1000000000+evict_handler_start.tv_nsec;
+		pr_info("evict_handler_time: %lld\n", evict_handler_time);
 
 	}
 
 	struct timespec remote_map_start,remote_map_end;
+	long long remote_map_time;
 	getnstimeofday(&remote_map_start);
 
 	IS_send_bind_single(tmp_cb, need_chunk);
 	wait_event_interruptible(tmp_cb->sem, tmp_cb->state == WAIT_OPS);
 
 	getnstimeofday(&remote_map_end);
-	pr_info("remote_map_time: %ld\n", remote_map_end.tv_nsec-remote_map_start.tv_nsec);
+	remote_map_time=remote_map_end.tv_sec*1000000000+remote_map_end.tv_nsec - remote_map_start.tv_sec*1000000000+remote_map_start.tv_nsec;
+	pr_info("remote_map_time: %lld\n", remote_map_time);
 
 	atomic_set(&IS_session->rdma_on, DEV_RDMA_ON); 
 	return need_chunk;
