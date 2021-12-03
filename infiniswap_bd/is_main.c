@@ -1342,6 +1342,8 @@ static int rdma_trigger(void *data)
 
 		if(map_flag==1) {
 			getnstimeofday(&period_end);
+			pr_info("period_end.tv_sec: %ld, period_end.tv_nsec: %ld\n", period_end.tv_sec, period_end.tv_nsec);
+			pr_info("period_start.tv_sec: %ld, period_start.tv_nsec: %ld\n", period_start.tv_sec, period_start.tv_nsec);
 			period_time=period_end.tv_sec*1000000000+period_end.tv_nsec-period_start.tv_sec*1000000000+period_start.tv_nsec;
 			pr_info("period_time: %lld\n", period_time);
 		}
