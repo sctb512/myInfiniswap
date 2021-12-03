@@ -43,6 +43,9 @@ cd ../exp
 
 sudo lxc start ${docker_name}
 
+sudo lxc config set ${docker_name} limits.memory.swap.priority 50
+sudo lxc config set ${docker_name} limits.memory.swap true
+
 ps -ef | grep "cpu " | awk '{print $2}' | xargs kill -s 9
 
 ./compile_cpu.sh
@@ -60,7 +63,8 @@ sudo lxc file push dataframe.py ${docker_name}/root/
 # for i in $(seq 10); do
 for i in $(seq 2); do
     sudo mkdir -p ${output_dir}/${i}
-    for local in 100 90 80 70 60 50 40; do
+    for local in 100 90 80 70 60; do
+    # for local in 100 90 80 70 60 50 40; do
         local_mem=$((${total_mem} * ${local} / 100))
         df_num=$((${total_mem} / 220851))
         echo "local_mem: ${local_mem}, df_num: ${df_num}"
