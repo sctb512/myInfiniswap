@@ -800,6 +800,7 @@ static int client_recv(struct kernel_cb *cb, struct ib_wc *wc)
 		case INFO:
 			cb->IS_sess->cb_state_list[cb->cb_index] = CB_MAPPED;
 			cb->state = WAIT_OPS;
+
 			IS_chunk_list_init(cb);
 			break;
 		case INFO_SINGLE:
@@ -809,8 +810,17 @@ static int client_recv(struct kernel_cb *cb, struct ib_wc *wc)
 			//abin,0608
 			pr_info("bd done, daemon ip: %s\n", cb->addr_str);
 			pr_info("**************************************\n");
+			
+			struct timespec remote_map_chunk_init_start,remote_map_chunk_init_end;
+			long long remote_map_chunk_init_time;
+			getnstimeofday(&remote_map_chunk_init_start);
 
 			IS_single_chunk_init(cb);
+
+			getnstimeofday(&remote_map_chunk_init_end);
+			remote_map_chunk_init_time=remote_map_chunk_init_end.tv_sec*1000000000+remote_map_chunk_init_end.tv_nsec - remote_map_chunk_init_start.tv_sec*1000000000+remote_map_chunk_init_start.tv_nsec;
+			pr_info("remote_map_chunk_init_time: %lld\n", remote_map_chunk_init_time);
+
 			break;
 		case EVICT:
 			cb->state = RECV_EVICT;
@@ -1783,7 +1793,16 @@ int IS_single_chunk_map(struct IS_session *IS_session, int select_chunk)
 	long long remote_map_time;
 	getnstimeofday(&remote_map_start);
 
+	struct timespec remote_map_send_request_start,remote_map_send_request_end;
+	long long remote_map_send_request_time;
+	getnstimeofday(&remote_map_send_request_start);
+
 	IS_send_bind_single(tmp_cb, need_chunk);
+
+	getnstimeofday(&remote_map_send_request_end);
+	remote_map_send_request_time=remote_map_send_request_end.tv_sec*1000000000+remote_map_send_request_end.tv_nsec - remote_map_send_request_start.tv_sec*1000000000+remote_map_send_request_start.tv_nsec;
+	pr_info("remote_map_send_request_time: %lld\n", remote_map_send_request_time);
+
 	wait_event_interruptible(tmp_cb->sem, tmp_cb->state == WAIT_OPS);
 
 	getnstimeofday(&remote_map_end);
