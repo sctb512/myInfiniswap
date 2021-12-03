@@ -1338,6 +1338,8 @@ static int rdma_trigger(void *data)
 							map_res = IS_single_chunk_map(IS_sess, i);
 
 							getnstimeofday(&map_end);
+							pr_info("map_end.tv_sec: %ld, map_end.tv_nsec: %ld\n", map_end.tv_sec, map_end.tv_nsec);
+							pr_info("map_start.tv_sec: %ld, map_start.tv_nsec: %ld\n", map_start.tv_sec, map_start.tv_nsec);
 							map_time=map_end.tv_sec*1000000000+map_end.tv_nsec - map_start.tv_sec*1000000000+map_start.tv_nsec;
 							pr_info("map_time: %lld\n", map_time);
 							map_flag=1;
@@ -1800,12 +1802,16 @@ int IS_single_chunk_map(struct IS_session *IS_session, int select_chunk)
 	IS_send_bind_single(tmp_cb, need_chunk);
 
 	getnstimeofday(&remote_map_send_request_end);
+	pr_info("remote_map_send_request_end.tv_sec: %ld, remote_map_send_request_end.tv_nsec: %ld\n", remote_map_send_request_end.tv_sec, remote_map_send_request_end.tv_nsec);
+	pr_info("remote_map_send_request_start.tv_sec: %ld, remote_map_send_request_start.tv_nsec: %ld\n", remote_map_send_request_start.tv_sec, remote_map_send_request_start.tv_nsec);
 	remote_map_send_request_time=remote_map_send_request_end.tv_sec*1000000000+remote_map_send_request_end.tv_nsec - remote_map_send_request_start.tv_sec*1000000000+remote_map_send_request_start.tv_nsec;
 	pr_info("remote_map_send_request_time: %lld\n", remote_map_send_request_time);
 
 	wait_event_interruptible(tmp_cb->sem, tmp_cb->state == WAIT_OPS);
 
 	getnstimeofday(&remote_map_end);
+	pr_info("remote_map_end.tv_sec: %ld, remote_map_end.tv_nsec: %ld\n", remote_map_end.tv_sec, remote_map_end.tv_nsec);
+	pr_info("remote_map_start.tv_sec: %ld, remote_map_start.tv_nsec: %ld\n", remote_map_start.tv_sec, remote_map_start.tv_nsec);
 	remote_map_time=remote_map_end.tv_sec*1000000000+remote_map_end.tv_nsec - remote_map_start.tv_sec*1000000000+remote_map_start.tv_nsec;
 	pr_info("remote_map_time: %lld\n", remote_map_time);
 
