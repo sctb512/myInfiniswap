@@ -268,17 +268,12 @@ int IS_rdma_write(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_in
 	ctx->rdma_sq_wr.rkey = chunk->remote_rkey;
 	ctx->rdma_sq_wr.remote_addr = chunk->remote_addr + offset;
 	ctx->rdma_sq_wr.wr.opcode = IB_WR_RDMA_WRITE;
-
-	pr_info("RDMA write, addr: 0x%016llx, length: %lu\n", ctx->rdma_sq_wr.wr.sg_list->addr, ctx->rdma_sq_wr.wr.sg_list->length);
 #else
 	ctx->rdma_sq_wr.sg_list->length = len;
 	ctx->rdma_sq_wr.wr.rdma.rkey = chunk->remote_rkey;
 	ctx->rdma_sq_wr.wr.rdma.remote_addr = chunk->remote_addr + offset;
 	ctx->rdma_sq_wr.opcode = IB_WR_RDMA_WRITE;
-
-	pr_info("RDMA write, addr: 0x%016llx, length: %lu\n", ctx->rdma_sq_wr.sg_list->addr, ctx->rdma_sq_wr.sg_list->length);
 #endif
-
 	ret = ib_post_send(cb->qp, (struct ib_send_wr *) &ctx->rdma_sq_wr, &bad_wr);
 	if (ret) {
 		printk(KERN_ALERT PFX "client post write %d, wr=%p\n", ret, &ctx->rdma_sq_wr);
@@ -1467,8 +1462,6 @@ static int IS_ctx_init(struct IS_connection *IS_conn, struct kernel_cb *cb, int 
 		ctx->IS_conn = IS_conn;
 		ctx->free_ctxs = tmp_pool->free_ctxs;
 		ctx->rdma_buf = kzalloc(cb->size, GFP_KERNEL);
-
-		pr_info(PFX "rdma_buf cb->size: %d\n", cb->size);
 
 		if (!ctx->rdma_buf) {
 			pr_info(PFX "rdma_buf malloc failed\n");
