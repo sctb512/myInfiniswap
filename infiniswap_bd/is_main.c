@@ -274,6 +274,9 @@ int IS_rdma_write(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_in
 	ctx->rdma_sq_wr.wr.rdma.remote_addr = chunk->remote_addr + offset;
 	ctx->rdma_sq_wr.opcode = IB_WR_RDMA_WRITE;
 #endif
+
+	pr_info("RDMA write, addr: 0x%016lx, length: %d,", ctx->rdma_sq_wr.sg_list->addr, ctx->rdma_sq_wr.sg_list->length);
+
 	ret = ib_post_send(cb->qp, (struct ib_send_wr *) &ctx->rdma_sq_wr, &bad_wr);
 	if (ret) {
 		printk(KERN_ALERT PFX "client post write %d, wr=%p\n", ret, &ctx->rdma_sq_wr);
