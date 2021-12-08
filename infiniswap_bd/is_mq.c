@@ -840,7 +840,7 @@ void IS_unregister_block_device(struct IS_file *IS_file)
 
 void IS_single_chunk_init(struct kernel_cb *cb)
 {
-	int i = 0;
+	int i = 0, j=0;
 	int select_chunk = cb->recv_buf.size_gb;
 	struct IS_session *IS_session = cb->IS_sess;
 
@@ -851,6 +851,15 @@ void IS_single_chunk_init(struct kernel_cb *cb)
 			cb->remote_chunk.chunk_list[i]->remote_addr = ntohll(cb->recv_buf.buf[i]);
 			cb->remote_chunk.chunk_list[i]->bitmap_g = (int *)kzalloc(sizeof(int) * BITMAP_INT_SIZE, GFP_KERNEL);
 			IS_bitmap_init(cb->remote_chunk.chunk_list[i]->bitmap_g);
+
+
+			/* for xor encrypt */
+			cb->remote_chunk.chunk_list[i]->key_g = (int *)kzalloc(sizeof(int) * BITMAP_INT_SIZE, GFP_KERNEL);
+
+			for(j=0; j<BITMAP_INT_SIZE; j++) {
+				get_random_bytes(cb->remote_chunk.chunk_list[i]->key_g+j*sizeof(int), sizeof(int));
+			}
+
 			IS_session->free_chunk_index -= 1;
 			IS_session->chunk_map_cb_chunk[select_chunk] = i;
 			cb->remote_chunk.chunk_map[i] = select_chunk;
@@ -878,7 +887,7 @@ void IS_chunk_list_init(struct kernel_cb *cb)
 			pr_info("Received rkey %x addr %llx from peer\n", ntohl(cb->recv_buf.rkey[i]), (unsigned long long)ntohll(cb->recv_buf.buf[i]));	
 			cb->remote_chunk.chunk_list[i]->remote_rkey = ntohl(cb->recv_buf.rkey[i]);
 			cb->remote_chunk.chunk_list[i]->remote_addr = ntohll(cb->recv_buf.buf[i]);
-			
+
 			cb->remote_chunk.chunk_list[i]->bitmap_g = (int *)kzalloc(sizeof(int) * BITMAP_INT_SIZE, GFP_KERNEL);
 			IS_bitmap_init(cb->remote_chunk.chunk_list[i]->bitmap_g);
 

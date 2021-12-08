@@ -219,6 +219,20 @@ void mem_gather(char *rdma_buf, struct request *req)
 	}
 }
 
+void encrypt(u64 addr, u32 length, struct remote_chunk_g *chunk) {
+	/* get key start */
+	// chunk->key_g + offset;
+	int key_start = -1;
+
+	for(int i=0;i<length;i++) {
+		addr[i] ^= key_start[i];
+	}
+}
+
+void decrypt(u64 addr, u32 length, struct remote_chunk_g *chunk) {
+	
+}
+
 int IS_rdma_write(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_index, int chunk_index, struct remote_chunk_g *chunk, unsigned long offset, unsigned long len, struct request *req, struct IS_queue *q)
 {
 	int ret;
