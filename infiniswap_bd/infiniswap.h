@@ -316,6 +316,8 @@ struct remote_chunk_g {
 	uint64_t remote_addr;		/* remote guys TO */
 	//uint64_t remote_len;		/* remote guys LEN */
 	int *bitmap_g;	//1GB bitmap
+
+	int *key_g;		//key for xor encrypt
 };
 
 #define CHUNK_MAPPED 1

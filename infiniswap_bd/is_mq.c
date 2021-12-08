@@ -878,8 +878,10 @@ void IS_chunk_list_init(struct kernel_cb *cb)
 			pr_info("Received rkey %x addr %llx from peer\n", ntohl(cb->recv_buf.rkey[i]), (unsigned long long)ntohll(cb->recv_buf.buf[i]));	
 			cb->remote_chunk.chunk_list[i]->remote_rkey = ntohl(cb->recv_buf.rkey[i]);
 			cb->remote_chunk.chunk_list[i]->remote_addr = ntohll(cb->recv_buf.buf[i]);
+			
 			cb->remote_chunk.chunk_list[i]->bitmap_g = (int *)kzalloc(sizeof(int) * BITMAP_INT_SIZE, GFP_KERNEL);
 			IS_bitmap_init(cb->remote_chunk.chunk_list[i]->bitmap_g);
+
 			atomic_set(cb->remote_chunk.remote_mapped + i, CHUNK_MAPPED);
 			sess_free_chunk = IS_session->unmapped_chunk_list[IS_session->free_chunk_index];
 			IS_session->free_chunk_index -= 1;
