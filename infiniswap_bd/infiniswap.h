@@ -667,5 +667,8 @@ struct IS_session *IS_session_find_by_portal(struct list_head *s_data_list,
 const char* IS_device_state_str(struct IS_file *dev);
 int IS_set_device_state(struct IS_file *dev, enum IS_dev_state state);
 
+void xor_encrypt(int *local_addr, int offset, struct remote_chunk_g *chunk);
+void xor_decrypt(int *local_addr, int offset, struct remote_chunk_g *chunk);
+
 #endif  /* INFINISWAP_H */
 

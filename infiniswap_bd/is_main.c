@@ -130,6 +130,8 @@ int IS_rdma_read(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_ind
 	struct ib_send_wr *bad_wr;
 	struct rdma_ctx *ctx = NULL;
 	int ctx_loop = 0;
+
+	int *local_addr = NULL;
 	
 	// get ctx_buf based on request address
 	#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 4, 0)
@@ -172,12 +174,18 @@ int IS_rdma_read(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_ind
 	ctx->rdma_sq_wr.wr.rdma.remote_addr = chunk->remote_addr + offset;
 	ctx->rdma_sq_wr.opcode = IB_WR_RDMA_READ;
 	#endif	
+
+	local_addr = (int *)ctx->rdma_sq_wr.wr.sg_list->addr;
+
 	ret = ib_post_send(cb->qp, (struct ib_send_wr *) &ctx->rdma_sq_wr, &bad_wr);
 
 	if (ret) {
 		printk(KERN_ALERT PFX "client post read %d, wr=%p\n", ret, &ctx->rdma_sq_wr);
 		return ret;
-	}	
+	}
+
+	xor_decrypt(local_addr, offset, chunk);
+
 	return 0;
 }
 
@@ -219,18 +227,32 @@ void mem_gather(char *rdma_buf, struct request *req)
 	}
 }
 
-void encrypt(u64 addr, u32 length, struct remote_chunk_g *chunk) {
-	/* get key start */
-	// chunk->key_g + offset;
-	int key_start = -1;
+void xor_encrypt(int *local_addr, int offset, struct remote_chunk_g *chunk) {
+	int i,j, start_page, len_page;
 
-	for(int i=0;i<length;i++) {
-		addr[i] ^= key_start[i];
+	start_page = (int)(offset/IS_PAGE_SIZE);	
+	len_page = (int)(len/IS_PAGE_SIZE);
+
+	/* get key start */
+	for (i=0; i<len_page; i++){
+		for(int j=0;j<IS_PAGE_SIZE/sizeof(int);j++) {
+			local_addr[j] ^= chunk->key_g[start_page + i+j];
+		}
 	}
 }
 
-void decrypt(u64 addr, u32 length, struct remote_chunk_g *chunk) {
-	
+void xor_decrypt(int *local_addr, int offset, struct remote_chunk_g *chunk) {
+	int i,j, start_page, len_page;
+
+	start_page = (int)(offset/IS_PAGE_SIZE);	
+	len_page = (int)(len/IS_PAGE_SIZE);
+
+	/* get key start */
+	for (i=0; i<len_page; i++){
+		for(int j=0;j<IS_PAGE_SIZE/sizeof(int);j++) {
+			local_addr[j] ^= chunk->key_g[start_page + i+j];
+		}
+	}
 }
 
 int IS_rdma_write(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_index, int chunk_index, struct remote_chunk_g *chunk, unsigned long offset, unsigned long len, struct request *req, struct IS_queue *q)
@@ -239,6 +261,8 @@ int IS_rdma_write(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_in
 	struct ib_send_wr *bad_wr;	
 	struct rdma_ctx *ctx;
 	int ctx_loop = 0;
+
+	int *local_addr = NULL;
 
 	// get ctx_buf based on request address
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 4, 0)
@@ -277,27 +301,35 @@ int IS_rdma_write(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_in
 
 	mem_gather(ctx->rdma_buf, req);
 	stackbd_bio_generate(ctx, req);
+
+	
+
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 4, 0)
 	ctx->rdma_sq_wr.wr.sg_list->length = len;
 	ctx->rdma_sq_wr.rkey = chunk->remote_rkey;
 	ctx->rdma_sq_wr.remote_addr = chunk->remote_addr + offset;
 	ctx->rdma_sq_wr.wr.opcode = IB_WR_RDMA_WRITE;
-
 	// pr_info("RDMA write, addr: 0x%016llx, length: %lu\n", ctx->rdma_sq_wr.wr.sg_list->addr, ctx->rdma_sq_wr.wr.sg_list->length);
 #else
 	ctx->rdma_sq_wr.sg_list->length = len;
 	ctx->rdma_sq_wr.wr.rdma.rkey = chunk->remote_rkey;
 	ctx->rdma_sq_wr.wr.rdma.remote_addr = chunk->remote_addr + offset;
 	ctx->rdma_sq_wr.opcode = IB_WR_RDMA_WRITE;
-
 	// pr_info("RDMA write, addr: 0x%016llx, length: %lu\n", ctx->rdma_sq_wr.sg_list->addr, ctx->rdma_sq_wr.sg_list->length);
 #endif
+
+	local_addr = (int *)ctx->rdma_sq_wr.wr.sg_list->addr;
+
+	xor_encrypt(local_addr, offset, chunk);
 
 	ret = ib_post_send(cb->qp, (struct ib_send_wr *) &ctx->rdma_sq_wr, &bad_wr);
 	if (ret) {
 		printk(KERN_ALERT PFX "client post write %d, wr=%p\n", ret, &ctx->rdma_sq_wr);
 		return ret;
 	}
+
+	xor_decrypt(local_addr, offset, chunk);
+
 	return 0;
 }
 
