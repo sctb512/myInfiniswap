@@ -653,6 +653,10 @@ void send_single_mr(void *context, int client_chunk_index)
   struct connection *conn = (struct connection *)context;
   int i = 0;
 
+  struct timespec daemon_map_chunk_start,daemon_map_chunk_end;
+	long long daemon_map_chunk_time;
+  int status = clock_gettime(CLOCK_REALTIME, &daemon_map_chunk_start);
+
   conn->send_msg->size_gb = client_chunk_index;
   for (i=0; i<MAX_FREE_MEM_GB;i++){
     conn->send_msg->rkey[i] = 0;
@@ -672,7 +676,17 @@ void send_single_mr(void *context, int client_chunk_index)
   conn->mapped_chunk_size += 1;
   conn->send_msg->type = INFO_SINGLE;
 
+  daemon_map_chunk_time=(daemon_map_chunk_end.tv_sec-daemon_map_chunk_start.tv_sec)*1000000000+daemon_map_chunk_end.tv_nsec - daemon_map_chunk_start.tv_nsec;
+	pr_info("daemon_map_chunk_time: %lldns\n", daemon_map_chunk_time);
+
+  struct timespec daemon_send_message_start,daemon_send_message_end;
+	long long daemon_send_message_time;
+  int status = clock_gettime(CLOCK_REALTIME, &daemon_send_message_start);
+
   send_message(conn);
+
+  daemon_send_message_time=(daemon_send_message_end.tv_sec-daemon_send_message_start.tv_sec)*1000000000+daemon_send_message_end.tv_nsec - daemon_send_message_start.tv_nsec;
+	pr_info("daemon_send_message_time: %lldns\n", daemon_send_message_time);
 }
 void send_mr(void *context, int size)
 {
