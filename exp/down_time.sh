@@ -13,6 +13,9 @@ if [ ! -d ${nodown_dir} ]; then
     mkdir -p ${nodown_dir}
 fi
 
+eval $(ssh-agent -s)
+ssh-add /users/bin_tang/.ssh/cloud
+
 cd ../setup
 ./run_infiniswap.sh ${servers_num}  ./config1.sh
 cd ../exp
