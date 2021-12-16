@@ -33,7 +33,9 @@ for RW in randread randwrite read write;do
             nohup sudo fio -bs=4k -rw=${RW} -ioengine=libaio -numjobs=1 -runtime=60 -iodepth=${OIDEPTH} -filename=/dev/infiniswap0 -name=${RW}-${IODEPTH} -ramp_time=10 -output=${DAEMON}/${RW}-${IODEPTH}.txt &
             if [ "${DAEMON}" == "down" ];then
                 sleep 30
+                cd ../setup
                 source ./config1.sh ${servers_num}
+                cd ../exp
 
                 for i in ${!servers[@]};do
                     server=${servers[${i}]}
