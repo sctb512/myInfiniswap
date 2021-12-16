@@ -676,6 +676,7 @@ void send_single_mr(void *context, int client_chunk_index)
   conn->mapped_chunk_size += 1;
   conn->send_msg->type = INFO_SINGLE;
 
+  clock_gettime(CLOCK_REALTIME, &daemon_map_chunk_end);
   daemon_map_chunk_time=(daemon_map_chunk_end.tv_sec-daemon_map_chunk_start.tv_sec)*1000000000+daemon_map_chunk_end.tv_nsec - daemon_map_chunk_start.tv_nsec;
 	printf("daemon_map_chunk_time: %lldns\n", daemon_map_chunk_time);
 
@@ -685,6 +686,7 @@ void send_single_mr(void *context, int client_chunk_index)
 
   send_message(conn);
 
+  clock_gettime(CLOCK_REALTIME, &daemon_send_message_end);
   daemon_send_message_time=(daemon_send_message_end.tv_sec-daemon_send_message_start.tv_sec)*1000000000+daemon_send_message_end.tv_nsec - daemon_send_message_start.tv_nsec;
 	printf("daemon_send_message_time: %lldns\n", daemon_send_message_time);
 }
