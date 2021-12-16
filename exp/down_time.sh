@@ -2,8 +2,16 @@
 
 servers_num=$1
 
-down_dir="down"
-nodown_dir="nodown"
+output_dir="down_time_${servers_num}"
+down_dir="${output_dir}/down"
+nodown_dir="${output_dir}/nodown"
+
+if [ ! -d ${down_dir} ]; then
+    mkdir -p ${down_dir}
+fi
+if [ ! -d ${nodown_dir} ]; then
+    mkdir -p ${nodown_dir}
+fi
 
 cd ../setup
 ./run_infiniswap.sh ${servers_num}  ./config1.sh
