@@ -30,6 +30,9 @@ for RW in randread randwrite read write;do
                 echo "file ${DAEMON}/${RW}-${IODEPTH}.txt existed, continue..."
                 continue
             fi
+            
+            echo "rw: ${RW}, iodepth: ${IODEPTH} running..."
+
             nohup sudo fio -bs=4k -rw=${RW} -ioengine=libaio -numjobs=1 -runtime=60 -iodepth=${OIDEPTH} -filename=/dev/infiniswap0 -name=${RW}-${IODEPTH} -ramp_time=10 -output=${DAEMON}/${RW}-${IODEPTH}.txt &
             if [ "${DAEMON}" == "down" ];then
                 sleep 30
@@ -48,7 +51,7 @@ for RW in randread randwrite read write;do
                     ssh ${user}@128.110.96.${ip} "reboot" 
                 done
             fi
-            echo "rw: ${RW}, iodepth: ${IODEPTH} running..."
+            
             sleep 100
 
             sudo reboot
