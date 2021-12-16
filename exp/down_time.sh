@@ -26,15 +26,23 @@ echo "StrictHostKeyChecking no" > ~/.ssh/config
 for RW in randread randwrite read write;do
     for IODEPTH in 1 4 16 32 64;do
         for DAEMON in down nodown;do
-            if [ -f ${DAEMON}/${RW}-${IODEPTH}.txt ]; then
-                echo "file ${DAEMON}/${RW}-${IODEPTH}.txt existed, continue..."
+            if [ "${DAEMON}" == "down" ];then
+                out_file="${down_dir}/${RW}-${IODEPTH}.txt"
+            else
+                out_file="${nodown_dir}/${RW}-${IODEPTH}.txt"
+            fi
+
+            if [ -f ${out_file} ]; then
+                echo "file ${out_file} existed, continue..."
                 continue
             fi
 
             echo "rw: ${RW}, iodepth: ${IODEPTH} running..."
 
-            echo "sudo fio -bs=4k -rw=${RW} -ioengine=libaio -numjobs=1 -runtime=60 -iodepth=${IODEPTH} -filename=/dev/infiniswap0 -name=${RW}-${IODEPTH} -ramp_time=10 -output=${DAEMON}/${RW}-${IODEPTH}.txt"
-            nohup sudo fio -bs=4k -rw=${RW} -ioengine=libaio -numjobs=1 -runtime=60 -iodepth=${IODEPTH} -filename=/dev/infiniswap0 -name=${RW}-${IODEPTH} -ramp_time=10 -output=${DAEMON}/${RW}-${IODEPTH}.txt &
+            
+
+            echo "sudo fio -bs=4k -rw=${RW} -ioengine=libaio -numjobs=1 -runtime=60 -iodepth=${IODEPTH} -filename=/dev/infiniswap0 -name=${RW}-${IODEPTH} -ramp_time=10 -output=${out_file}"
+            nohup sudo fio -bs=4k -rw=${RW} -ioengine=libaio -numjobs=1 -runtime=60 -iodepth=${IODEPTH} -filename=/dev/infiniswap0 -name=${RW}-${IODEPTH} -ramp_time=10 -output=${out_file} &
             if [ "${DAEMON}" == "down" ];then
                 sleep 30
                 cd ../setup
@@ -56,6 +64,7 @@ for RW in randread randwrite read write;do
             sleep 100
 
             sudo reboot
+            exit
         done
     done
 done
