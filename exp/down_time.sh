@@ -41,10 +41,10 @@ for RW in randread randwrite read write;do
 
             
 
-            echo "sudo fio -bs=4k -rw=${RW} -ioengine=libaio -numjobs=1 -runtime=60 -iodepth=${IODEPTH} -filename=/dev/infiniswap0 -name=${RW}-${IODEPTH} -ramp_time=10 -output=${out_file}"
-            nohup sudo fio -bs=4k -rw=${RW} -ioengine=libaio -numjobs=1 -runtime=60 -iodepth=${IODEPTH} -filename=/dev/infiniswap0 -name=${RW}-${IODEPTH} -ramp_time=10 -output=${out_file} &
+            echo "sudo fio -bs=4k -rw=${RW} -ioengine=libaio -numjobs=1 -runtime=100 -iodepth=${IODEPTH} -filename=/dev/infiniswap0 -name=${RW}-${IODEPTH} -ramp_time=10 -output=${out_file}"
+            nohup sudo fio -bs=4k -rw=${RW} -ioengine=libaio -numjobs=1 -runtime=100 -iodepth=${IODEPTH} -filename=/dev/infiniswap0 -name=${RW}-${IODEPTH} -ramp_time=10 -output=${out_file} &
             if [ "${DAEMON}" == "down" ];then
-                sleep 30
+                sleep 60
                 cd ../setup
                 source ./config1.sh ${servers_num}
                 cd ../exp
