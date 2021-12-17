@@ -184,7 +184,7 @@ int IS_rdma_read(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_ind
 		return ret;
 	}
 
-	xor_decrypt(local_addr, offset, chunk);
+	xor_decrypt(local_addr, offset, len, chunk);
 
 	return 0;
 }
@@ -227,7 +227,7 @@ void mem_gather(char *rdma_buf, struct request *req)
 	}
 }
 
-void xor_encrypt(int *local_addr, int offset, struct remote_chunk_g *chunk) {
+void xor_encrypt(int *local_addr, int offset, unsigned long len, struct remote_chunk_g *chunk) {
 	int i,j, start_page, len_page;
 
 	start_page = (int)(offset/IS_PAGE_SIZE);	
@@ -235,13 +235,13 @@ void xor_encrypt(int *local_addr, int offset, struct remote_chunk_g *chunk) {
 
 	/* get key start */
 	for (i=0; i<len_page; i++){
-		for(int j=0;j<IS_PAGE_SIZE/sizeof(int);j++) {
+		for(j=0;j<IS_PAGE_SIZE/sizeof(int);j++) {
 			local_addr[j] ^= chunk->key_g[start_page + i+j];
 		}
 	}
 }
 
-void xor_decrypt(int *local_addr, int offset, struct remote_chunk_g *chunk) {
+void xor_decrypt(int *local_addr, int offset, unsigned long len, struct remote_chunk_g *chunk) {
 	int i,j, start_page, len_page;
 
 	start_page = (int)(offset/IS_PAGE_SIZE);	
@@ -249,7 +249,7 @@ void xor_decrypt(int *local_addr, int offset, struct remote_chunk_g *chunk) {
 
 	/* get key start */
 	for (i=0; i<len_page; i++){
-		for(int j=0;j<IS_PAGE_SIZE/sizeof(int);j++) {
+		for(j=0;j<IS_PAGE_SIZE/sizeof(int);j++) {
 			local_addr[j] ^= chunk->key_g[start_page + i+j];
 		}
 	}
@@ -320,7 +320,7 @@ int IS_rdma_write(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_in
 
 	local_addr = (int *)ctx->rdma_sq_wr.wr.sg_list->addr;
 
-	xor_encrypt(local_addr, offset, chunk);
+	xor_encrypt(local_addr, offset, len, chunk);
 
 	ret = ib_post_send(cb->qp, (struct ib_send_wr *) &ctx->rdma_sq_wr, &bad_wr);
 	if (ret) {
@@ -328,7 +328,7 @@ int IS_rdma_write(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_in
 		return ret;
 	}
 
-	xor_decrypt(local_addr, offset, chunk);
+	xor_decrypt(local_addr, offset, len, chunk);
 
 	return 0;
 }
