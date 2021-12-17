@@ -863,14 +863,14 @@ void IS_single_chunk_init(struct kernel_cb *cb)
 			pr_info("key[0]:\n");
 			pr_info("%d\n", cb->remote_chunk.chunk_list[i]->key_g[0]);
 			for (j=0; j < 32; j++) {
-				pr_info("%d", !!((cb->remote_chunk.chunk_list[i]->key_g[0] << j) & 0x80));
+				pr_info("%d", !!((cb->remote_chunk.chunk_list[i]->key_g[0] << j) & 0x80000000));
 			}
 			pr_info("\n");
 
 			pr_info("key[%d]:\n", BITMAP_INT_SIZE - 1);
 			pr_info("%d\n", cb->remote_chunk.chunk_list[i]->key_g[BITMAP_INT_SIZE - 1]);
 			for (j = 0; j < 32; j++) {
-				pr_info("%d", !!((cb->remote_chunk.chunk_list[i]->key_g[BITMAP_INT_SIZE - 1] << j) & 0x80));
+				pr_info("%d", !!((cb->remote_chunk.chunk_list[i]->key_g[BITMAP_INT_SIZE - 1] << j) & 0x80000000));
 			}
 			pr_info("\n");
 
