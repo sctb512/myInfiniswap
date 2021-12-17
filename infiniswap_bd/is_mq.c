@@ -857,7 +857,7 @@ void IS_single_chunk_init(struct kernel_cb *cb)
 			cb->remote_chunk.chunk_list[i]->key_g = (int *)kzalloc(sizeof(int) * BITMAP_INT_SIZE, GFP_KERNEL);
 
 			for(j=0; j<BITMAP_INT_SIZE; j++) {
-				get_random_bytes(cb->remote_chunk.chunk_list[i]->key_g+j*sizeof(int), sizeof(int));
+				get_random_bytes(cb->remote_chunk.chunk_list[i]->key_g+j, sizeof(int));
 			}
 
 			pr_info("key[0]:\n");
