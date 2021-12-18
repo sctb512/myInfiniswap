@@ -1659,6 +1659,113 @@ void IS_ctx_dma_setup(struct kernel_cb *cb, struct IS_session *IS_session, int c
 	pr_info("%s, setup_ctx_dma\n", __func__);
 }
 
+void simulate_select(struct IS_session *IS_session, int select_chunk, int server_number) {
+	NUM_CB = server_number;
+
+	int i, j, k;
+	char name[2];
+	struct kernel_cb *tmp_cb;
+	int selection[SERVER_SELECT_NUM];
+	int free_mem[SERVER_SELECT_NUM];
+	int free_mem_sorted[SERVER_SELECT_NUM]; 
+	int cb_index;
+	int need_chunk;
+	int avail_cb;
+	
+	unsigned int random_cb_selection[NUM_CB];
+	unsigned int random_num;
+
+	struct timespec select_server_start,select_server_end;
+	long long select_server_time;
+	getnstimeofday(&select_server_start);
+
+	for (j = 0; j < SERVER_SELECT_NUM; j++){
+		selection[j] = NUM_CB; //no server 
+		free_mem[j] = -1;
+		free_mem_sorted[j] = NUM_CB;
+	}
+	need_chunk = select_chunk;
+	j = 0;
+
+	avail_cb = NUM_CB;
+	for (i=0; i<NUM_CB;i++){
+		random_cb_selection[i] = -1;
+		if (IS_session->cb_state_list[i] >= CB_EVICTING) {
+			avail_cb -= 1;
+		}
+	}
+
+	if (avail_cb <= SERVER_SELECT_NUM) { 
+		for (i=0; i<IS_session->cb_num; i++){
+			if (IS_session->cb_state_list[i] < CB_EVICTING){
+				selection[j] = i;	
+				j += 1;
+			}
+		}
+	}else { 
+		for (j=0; j<SERVER_SELECT_NUM;j++){
+			get_random_bytes(&random_num, sizeof(unsigned int));
+			random_num %= NUM_CB;
+			while (IS_session->cb_state_list[random_num] >= CB_EVICTING || random_cb_selection[random_num] == 1) {
+				random_num += 1;	
+				random_num %= NUM_CB;
+			}
+			selection[j] = random_num;
+			random_cb_selection[random_num] = 1;
+		}
+	}
+
+	k = j;  
+	if (k == 0) {
+		return -1;	
+	}
+
+	for (i=0; i < k; i++){
+		cb_index = selection[i];
+		if (IS_session->cb_state_list[cb_index] == CB_FAIL){
+			continue;	
+		}
+		tmp_cb = IS_session->cb_list[cb_index];
+		if (IS_session->cb_state_list[cb_index] > CB_IDLE) {
+			IS_send_query(tmp_cb);				
+			wait_event_interruptible(tmp_cb->sem, tmp_cb->state == FREE_MEM_RECV);
+			tmp_cb->state = AFTER_FREE_MEM;
+			free_mem[i] = tmp_cb->remote_chunk.target_size_g;
+			free_mem_sorted[i] = cb_index;
+		}else { //CB_IDLE
+			kernel_cb_init(tmp_cb, IS_session);
+			rdma_connect_upper(tmp_cb);	
+			rdma_connect_down(tmp_cb);	
+			wait_event_interruptible(tmp_cb->sem, tmp_cb->state == FREE_MEM_RECV);
+			tmp_cb->state = AFTER_FREE_MEM;
+			IS_session->cb_state_list[cb_index] = CB_CONNECTED; //add CB_CONNECTED		
+			free_mem[i] = tmp_cb->remote_chunk.target_size_g;
+			free_mem_sorted[i] = cb_index;
+		}
+	}
+	for (j=1; j<k; j++) {
+		if (free_mem[0] < free_mem[j]) {
+			free_mem[0] += free_mem[j];	
+			free_mem[j] = free_mem[0] - free_mem[j];
+			free_mem[0] = free_mem[0] - free_mem[j];
+			free_mem_sorted[0] += free_mem_sorted[j];	
+			free_mem_sorted[j] = free_mem_sorted[0] - free_mem_sorted[j];
+			free_mem_sorted[0] = free_mem_sorted[0] - free_mem_sorted[j];
+		}
+	}
+
+	if (free_mem[0] == 0){
+		return -1;
+	}
+	cb_index = free_mem_sorted[0];
+	tmp_cb = IS_session->cb_list[cb_index];
+
+	getnstimeofday(&select_server_end);
+	select_server_time=(select_server_end.tv_sec-select_server_start.tv_sec)*1000000000+select_server_end.tv_nsec-select_server_start.tv_nsec;
+	pr_info("simulate select_server_time: %lldns, server_number: %d\n", select_server_time, server_number);
+
+}
+
 int IS_single_chunk_map(struct IS_session *IS_session, int select_chunk)
 {
 	int i, j, k;
@@ -1670,6 +1777,7 @@ int IS_single_chunk_map(struct IS_session *IS_session, int select_chunk)
 	int cb_index;
 	int need_chunk;
 	int avail_cb;
+
 	unsigned int random_cb_selection[NUM_CB];
 	unsigned int random_num;
 
@@ -1761,6 +1869,8 @@ int IS_single_chunk_map(struct IS_session *IS_session, int select_chunk)
 	getnstimeofday(&select_server_end);
 	select_server_time=(select_server_end.tv_sec-select_server_start.tv_sec)*1000000000+select_server_end.tv_nsec-select_server_start.tv_nsec;
 	pr_info("select_server_time: %lldns\n", select_server_time);
+
+	simulate_select(IS_session, select_chunk, 10);
 
 
 	if (IS_session->cb_state_list[cb_index] == CB_CONNECTED){ 
