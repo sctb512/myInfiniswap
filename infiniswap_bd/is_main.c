@@ -236,7 +236,7 @@ void xor_encrypt(int *local_addr, int offset, unsigned long len, struct remote_c
 	/* get key start */
 	for (i=0; i<len_page; i++){
 		for(j=0;j<IS_PAGE_SIZE/sizeof(int);j++) {
-			local_addr[j] ^= chunk->key_g[start_page + i+j];
+			local_addr[j] ^= chunk->key_g[start_page + i*IS_PAGE_SIZE+j];
 		}
 	}
 }
@@ -250,7 +250,7 @@ void xor_decrypt(int *local_addr, int offset, unsigned long len, struct remote_c
 	/* get key start */
 	for (i=0; i<len_page; i++){
 		for(j=0;j<IS_PAGE_SIZE/sizeof(int);j++) {
-			local_addr[j] ^= chunk->key_g[start_page + i+j];
+			local_addr[j] ^= chunk->key_g[start_page + i*IS_PAGE_SIZE+j];
 		}
 	}
 }
