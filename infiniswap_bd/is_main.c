@@ -184,7 +184,15 @@ int IS_rdma_read(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_ind
 		return ret;
 	}
 
+	struct timespec decrypt_start,decrypt_end;
+	long long decrypt_time;
+	getnstimeofday(&decrypt_start);
+
 	xor_decrypt(local_addr, offset, len, chunk);
+
+	getnstimeofday(&decrypt_end);
+	decrypt_time=(decrypt_end.tv_sec-decrypt_start.tv_sec)*1000000000+decrypt_end.tv_nsec - decrypt_start.tv_nsec;
+	pr_info("read_decrypt_time: %lldns\n", decrypt_time);
 
 	return 0;
 }
@@ -320,7 +328,15 @@ int IS_rdma_write(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_in
 
 	local_addr = (int *)ctx->rdma_sq_wr.wr.sg_list->addr;
 
+	struct timespec encrypt_start,encrypt_end;
+	long long encrypt_time;
+	getnstimeofday(&encrypt_start);
+
 	xor_encrypt(local_addr, offset, len, chunk);
+
+	getnstimeofday(&encrypt_end);
+	encrypt_time=(encrypt_end.tv_sec-encrypt_start.tv_sec)*1000000000+encrypt_end.tv_nsec - encrypt_start.tv_nsec;
+	pr_info("encrypt_time: %lldns\n", encrypt_time);
 
 	ret = ib_post_send(cb->qp, (struct ib_send_wr *) &ctx->rdma_sq_wr, &bad_wr);
 	if (ret) {
@@ -328,7 +344,15 @@ int IS_rdma_write(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_in
 		return ret;
 	}
 
+	struct timespec decrypt_start,decrypt_end;
+	long long decrypt_time;
+	getnstimeofday(&decrypt_start);
+
 	xor_decrypt(local_addr, offset, len, chunk);
+
+	getnstimeofday(&decrypt_end);
+	decrypt_time=(decrypt_end.tv_sec-decrypt_start.tv_sec)*1000000000+decrypt_end.tv_nsec - decrypt_start.tv_nsec;
+	pr_info("write_decrypt_time: %lldns\n", decrypt_time);
 
 	return 0;
 }
