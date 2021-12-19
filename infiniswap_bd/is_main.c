@@ -1871,6 +1871,11 @@ int IS_single_chunk_map(struct IS_session *IS_session, int select_chunk)
 	pr_info("select_server_time: %lldns\n", select_server_time);
 
 	simulate_select(IS_session, select_chunk, 10);
+	simulate_select(IS_session, select_chunk, 100);
+	simulate_select(IS_session, select_chunk, 1000);
+	simulate_select(IS_session, select_chunk, 10000);
+	simulate_select(IS_session, select_chunk, 1000000);
+	simulate_select(IS_session, select_chunk, 10000000);
 
 
 	if (IS_session->cb_state_list[cb_index] == CB_CONNECTED){ 
