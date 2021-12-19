@@ -1789,7 +1789,7 @@ void simulate_select(struct IS_session *IS_session_old, int select_chunk, int se
 
 int IS_single_chunk_map(struct IS_session *IS_session, int select_chunk)
 {
-	int i, j, k;
+	int i, j, k, tmp;
 	char name[2];
 	struct kernel_cb *tmp_cb;
 	int selection[SERVER_SELECT_NUM];
@@ -1891,10 +1891,15 @@ int IS_single_chunk_map(struct IS_session *IS_session, int select_chunk)
 	select_server_time=(select_server_end.tv_sec-select_server_start.tv_sec)*1000000000+select_server_end.tv_nsec-select_server_start.tv_nsec;
 	pr_info("select_server_time: %lldns\n", select_server_time);
 
-	simulate_select(IS_session, select_chunk, 10);
-	simulate_select(IS_session, select_chunk, 100);
-	simulate_select(IS_session, select_chunk, 1000);
-	simulate_select(IS_session, select_chunk, 10000);
+
+	for(tmp=1;tmp<5120;tmp*=2) {
+		pr_info("tmp: %d\n", tmp);
+		simulate_select(IS_session, select_chunk, tmp);
+	}
+	// simulate_select(IS_session, select_chunk, 10);
+	// simulate_select(IS_session, select_chunk, 100);
+	// simulate_select(IS_session, select_chunk, 1000);
+	// simulate_select(IS_session, select_chunk, 10000);
 	// simulate_select(IS_session, select_chunk, 1000000);
 	// simulate_select(IS_session, select_chunk, 10000000);
 
