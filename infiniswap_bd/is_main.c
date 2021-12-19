@@ -1659,7 +1659,7 @@ void IS_ctx_dma_setup(struct kernel_cb *cb, struct IS_session *IS_session, int c
 	pr_info("%s, setup_ctx_dma\n", __func__);
 }
 
-void simulate_select(struct IS_session *IS_session, int select_chunk, int server_number) {
+void simulate_select(struct IS_session *IS_session_old, int select_chunk, int server_number) {
 	NUM_CB = server_number;
 
 	int i, j, k;
@@ -1674,6 +1674,27 @@ void simulate_select(struct IS_session *IS_session, int select_chunk, int server
 	
 	unsigned int random_cb_selection[NUM_CB];
 	unsigned int random_num;
+
+	struct IS_session *IS_session = (struct IS_session *)kzalloc(sizeof(struct IS_session), GFP_KERNEL);
+
+	memcpy(IS_session, IS_session_old, sizeof(struct IS_session));
+
+	IS_session->cb_num = NUM_CB;
+
+
+	IS_session->cb_list = (struct kernel_cb **)kzalloc(sizeof(struct kernel_cb *) * IS_session->cb_num, GFP_KERNEL);	
+	IS_session->cb_state_list = (enum cb_state *)kzalloc(sizeof(enum cb_state) * IS_session->cb_num, GFP_KERNEL);
+	for (i=0; i<IS_session->cb_num; i++) {
+		IS_session->cb_state_list[i] = CB_IDLE;	
+		IS_session->cb_list[i] = kzalloc(sizeof(struct kernel_cb), GFP_KERNEL);
+		IS_session->cb_list[i]->port = htons(IS_session->portal_list[0].port);
+
+		IS_session->cb_list[i]->addr_str = (char *)IS_session->portal_list[0].addr;
+
+		in4_pton(IS_session->portal_list[0].addr, -1, IS_session->cb_list[i]->addr, -1, NULL);
+		IS_session->cb_list[i]->cb_index = i;
+	}
+
 
 	struct timespec select_server_start,select_server_end;
 	long long select_server_time;
