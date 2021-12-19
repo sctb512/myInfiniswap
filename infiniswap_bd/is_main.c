@@ -1893,8 +1893,8 @@ int IS_single_chunk_map(struct IS_session *IS_session, int select_chunk)
 
 	simulate_select(IS_session, select_chunk, 10);
 	simulate_select(IS_session, select_chunk, 100);
-	// simulate_select(IS_session, select_chunk, 1000);
-	// simulate_select(IS_session, select_chunk, 10000);
+	simulate_select(IS_session, select_chunk, 1000);
+	simulate_select(IS_session, select_chunk, 10000);
 	// simulate_select(IS_session, select_chunk, 1000000);
 	// simulate_select(IS_session, select_chunk, 10000000);
 
