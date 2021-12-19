@@ -63,7 +63,11 @@ for RW in randread randwrite read write;do
             
             sleep 100
 
+            ps -ef | grep fio | awk '{print $2}' | xargs kill -s -9
+
             sudo reboot
+            
+            sleep 10
             exit
         done
     done
