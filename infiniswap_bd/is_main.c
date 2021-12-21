@@ -1892,11 +1892,11 @@ int IS_single_chunk_map(struct IS_session *IS_session, int select_chunk)
 	pr_info("select_server_time: %lldns\n", select_server_time);
 
 
-	for(tmp=1;tmp<5120;tmp*=2) {
-		pr_info("tmp: %d\n", tmp);
-		simulate_select(IS_session, select_chunk, tmp);
-	}
-	// simulate_select(IS_session, select_chunk, 10);
+	// for(tmp=1;tmp<5120;tmp*=2) {
+	// 	pr_info("tmp: %d\n", tmp);
+	// 	simulate_select(IS_session, select_chunk, tmp);
+	// }
+	simulate_select(IS_session, select_chunk, 10);
 	// simulate_select(IS_session, select_chunk, 100);
 	// simulate_select(IS_session, select_chunk, 1000);
 	// simulate_select(IS_session, select_chunk, 10000);
