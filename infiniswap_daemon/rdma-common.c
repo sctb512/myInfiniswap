@@ -648,6 +648,19 @@ void send_message(struct connection *conn)
 
   TEST_NZ(ibv_post_send(conn->qp, &wr, &bad_wr));
 }
+
+char *get_dst_ip(struct connection *conn)
+{
+  struct rdma_cm_id *id = conn->id;
+
+  struct sockaddr_in *sock = (struct sockaddr_in *)&id->route.addr.dst_addr;
+  struct in_addr in = sock->sin_addr;
+  char *str = (char *)malloc(sizeof(char) * INET_ADDRSTRLEN);
+  inet_ntop(AF_INET, &in, str, sizeof(char) * INET_ADDRSTRLEN);
+
+  return str;
+}
+
 void send_single_mr(void *context, int client_chunk_index)
 {
   struct connection *conn = (struct connection *)context;
@@ -657,6 +670,7 @@ void send_single_mr(void *context, int client_chunk_index)
   for (i=0; i<MAX_FREE_MEM_GB;i++){
     conn->send_msg->rkey[i] = 0;
   }
+
   for (i=0; i<MAX_FREE_MEM_GB; i++) {
     if (session.rdma_remote.malloc_map[i] == CHUNK_MALLOCED && session.rdma_remote.conn_map[i] == -1) {// allocated && unmapped 
       conn->sess_chunk_map[i] = i;
@@ -664,7 +678,7 @@ void send_single_mr(void *context, int client_chunk_index)
       TEST_Z(session.rdma_remote.mr_list[i] = ibv_reg_mr(s_ctx->pd, session.rdma_remote.region_list[i], ONE_GB, IBV_ACCESS_LOCAL_WRITE | IBV_ACCESS_REMOTE_WRITE | IBV_ACCESS_REMOTE_READ)); //Write permission can't cover read permission, different traditional understanding
       conn->send_msg->buf[i] = htonll((uint64_t)session.rdma_remote.mr_list[i]->addr);
       conn->send_msg->rkey[i] = htonl((uint64_t)session.rdma_remote.mr_list[i]->rkey);
-      printf("RDMA addr %llx  rkey %x\n", (unsigned long long)conn->send_msg->buf[i], conn->send_msg->rkey[i]);
+      printf("ip: %s, RDMA addr %llx  rkey %x\n", get_dst_ip(conn),(unsigned long long)conn->send_msg->buf[i], conn->send_msg->rkey[i]);
       break;
     }
   } 
