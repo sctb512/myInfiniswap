@@ -60,8 +60,8 @@ ps -ef | grep cpu_rate_docker.sh | grep /bin/bash | awk '{print $2}' | xargs kil
 
 sudo lxc file push dataframe.py ${docker_name}/root/
 
-# for i in $(seq 10); do
-for i in $(seq 5); do
+for i in $(seq 10); do
+# for i in $(seq 5); do
     sudo mkdir -p ${output_dir}/${i}
     for local in 100 90 80 70 60; do
     # for local in 100 90 80 70 60 50 40; do
