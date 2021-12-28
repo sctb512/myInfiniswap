@@ -37,19 +37,19 @@ while [ True ]; do
     end_user=$(echo ${end} | awk '{print $1}')
     end_sys=$(echo ${end} | awk '{print $3}')
 
-    idle=$(expr ${end_idle} - ${start_idle})
-    total=$(expr ${end_total} - ${start_total})
-    user=$(expr ${end_user} - ${start_user})
-    sys=$(expr ${end_sys} - ${start_sys})
+    idle=$((${end_idle} - ${start_idle}))
+    total=$((${end_total} - ${start_total}))
+    user=$((${end_user} - ${start_user}))
+    sys=$((${end_sys} - ${start_sys}))
 
-    idle_normal=$(expr ${idle} * 100)
-    user_normal=$(expr ${user} * 100)
-    sys_normal=$(expr ${sys} * 100)
+    idle_normal=$((${idle} * 100))
+    user_normal=$((${user} * 100))
+    sys_normal=$((${sys} * 100))
 
-    cpu_usage=$(expr ${idle_normal} / ${total})
-    cpu_rate=$(expr 100 - ${cpu_usage})
-    user_rate=$(expr ${user_normal} / ${total})
-    sys_rate=$(expr ${sys_normal} / ${total})
+    cpu_usage=$((${idle_normal} / ${total}))
+    cpu_rate=$((100 - ${cpu_usage}))
+    user_rate=$((${user_normal} / ${total}))
+    sys_rate=$((${sys_normal} / ${total}))
 
     echo -n "${cpu_rate},${user_rate},${sys_rate}," >>${cpu_rate_file}
 
