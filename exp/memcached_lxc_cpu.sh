@@ -68,7 +68,7 @@ for i in $(seq 10); do
         sudo lxc exec ${docker_name} -- sudo --login --user root /usr/bin/zsh -ic "cd /root && rm -rf ${output_dir}" >/dev/null 2>&1
 
         echo "total: ${total_mem} local: ${local} running..."
-        sudo lxc exec ${docker_name} -- sudo --login --user root /usr/bin/zsh -ic "cd /root && mkdir ${output_dir} && memcached -p 11211 -m 64m -d -u root && sleep 5 && memtier_benchmark -s 127.0.0.1 -p 11211 -P memcache_text --clients 100 --threads 8 --data-size 256 --test-time 30 --pipeline 10240 --out-file ${output_dir}/${file} 2>&1"
+        sudo lxc exec ${docker_name} -- sudo --login --user root /usr/bin/zsh -ic "cd /root && mkdir ${output_dir} && memcached -p 11211 -m 64m -d -u root && sleep 5 && memtier_benchmark -s 127.0.0.1 -p 11211 -P memcache_text --clients 100 --threads 8 --data-size 256 --test-time 30 --pipeline 10240 --out-file ${output_dir}/${file} > /dev/null 2>&1"
 
         sudo lxc file pull ${docker_name}/root/${output_dir}/${file} ./${output_dir}/${i}/
 
