@@ -47,7 +47,7 @@ for i in $(seq 10); do
             exit
         fi
 
-        local_mem=$(expr ${total_mem} * ${local} / 100)
+        local_mem=$((${total_mem} * ${local} / 100))
 
         file="total_mem${total_mem}_local_mem${local_mem}_local${local}.txt"
 
