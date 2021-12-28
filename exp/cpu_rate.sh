@@ -5,9 +5,8 @@ if [ $# != 3 ];then
     exit
 fi
 
-dir=$3
+dir=$2
 cpu_rate_file="${dir}/$1_cpu_rate.csv"
-docker_name=$2
 
 interval=1
 
