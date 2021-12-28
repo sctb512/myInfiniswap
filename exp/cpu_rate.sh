@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [ $# != 3 ];then
-    echo "useage: $0 file_name dockere_name file_dir"
+if [ $# != 2 ];then
+    echo "useage: $0 file_name file_dir"
     exit
 fi
 
