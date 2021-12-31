@@ -51,6 +51,8 @@ for code in ${codes[*]}; do
         total_mem=$(awk -F, 'NR>1{print $1,$2,$3,$4,$5,$6,($3+$4+$5+$6)/4}' ${memoryfile} | grep ${cname} | grep ${dname} | grep " 100 " | awk '{print $7}')
         echo "total_mem: ${total_mem}"
 
+        echo "ok"
+
         for local in 100 90 80 70 60 50; do
 
             file="${pfx}_${cname}_${dname}_total${total_mem}_local${local}.txt"
