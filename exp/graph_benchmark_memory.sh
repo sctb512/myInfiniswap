@@ -20,6 +20,8 @@ if [ ! -d "${tmpdir}" ]; then
     mkdir ${tmpdir}
 fi
 
+nohup sudo lxc exec ${docker_name} -- sudo --login --user root /usr/bin/zsh -ic "cd ~ && mkdir ${tmpdir}"
+
 for code in ${codes[*]}; do
     for data in ${datas[*]}; do
         cname=$(echo ${code} | awk -F. '{print $1}')
@@ -35,7 +37,7 @@ for code in ${codes[*]}; do
                 continue
             fi
             # source /etc/profile && conda activate base && cd ~/graph-benchmarks && bash run_profiler.sh code/${code} data/${data} ${repetition} ${tmp_outfile} &
-            nohup sudo lxc exec ${docker_name} -- sudo --login --user root /usr/bin/zsh -ic "conda activate base && cd ~/graph-benchmarks && bash run_profiler.sh code/${code} data/${data} ${repetition} ${tmp_outfile}" &
+            nohup sudo lxc exec ${docker_name} -- sudo --login --user root /usr/bin/zsh -ic "cd ~ && conda activate base && cd ~/graph-benchmarks && bash run_profiler.sh code/${code} data/${data} ${repetition} ${tmp_outfile}" &
             sleep 10
 
             runpid=$(sudo lxc exec ${docker_name} -- sudo --login --user root /usr/bin/zsh -ic "ps -ef | grep run_profiler.sh" | grep code | awk '{print $2}')
@@ -50,6 +52,8 @@ for code in ${codes[*]}; do
             used_kB=$(expr ${mem_max} - ${mem_base})
             line="${line},${used_kB}"
             sleep 10
+
+            sudo lxc file pull ${docker_name}/root/${tmp_outfile} ./${curdir}/
         done
         echo "${line}"
         echo "${line}" >>${outfile}
