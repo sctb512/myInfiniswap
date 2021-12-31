@@ -31,7 +31,7 @@ for code in ${codes[*]}; do
             mem_base=$(sudo lxc exec ${docker_name} -- sudo --login --user root /usr/bin/zsh -ic "free" | awk '/Mem/ {print $3}')
             mem_max=0
 
-            tmp_outfile="./${tmpdir}/graph_benchmark_time_${cname}_${dname}_${repetition}_times${i}.txt"
+            tmp_outfile="${tmpdir}/graph_benchmark_time_${cname}_${dname}_${repetition}_times${i}.txt"
             if [ -f "${tmp_outfile}" ]; then
                 echo "${tmp_outfile} existed."
                 continue
