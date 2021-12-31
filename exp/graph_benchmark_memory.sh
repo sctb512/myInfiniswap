@@ -9,11 +9,10 @@ if [ ! -f "${outfile}" ];then
 fi
 
 # codes=(graphtool_profile.py lightgraphs.jl networkx_profile.py igraph_profile.py networkit_profile.py snap_profile.py)
-codes=(graphtool_profile.py networkx_profile.py igraph_profile.py networkit_profile.py snap_profile.py)
+codes=(graphtool_profile.py igraph_profile.py snap_profile.py)
 # datas=(amazon.txt enron.txt google.txt pokec.txt)
-datas=(amazon.txt google.txt enron.txt)
-# repetitions=(20 40 60 80 100)
-repetitions=(100)
+datas=(google.txt livejournal.txt pokec.txt)
+repetition=1
 
 curdir=`pwd`
 
@@ -23,37 +22,35 @@ fi
 
 for code in ${codes[*]};do
     for data in ${datas[*]};do
-        for repetition in ${repetitions[*]};do
-            cname=`echo ${code} | awk -F. '{print $1}'`
-            dname=`echo ${data} | awk -F. '{print $1}'`
-            line="${cname}_${dname},${repetition}"	
-            for i in `seq 4`;do
-                mem_base=`free | awk '/Mem/ {print $3}'`
-                mem_max=0
+        cname=`echo ${code} | awk -F. '{print $1}'`
+        dname=`echo ${data} | awk -F. '{print $1}'`
+        line="${cname}_${dname},${repetition}"	
+        for i in `seq 4`;do
+            mem_base=`free | awk '/Mem/ {print $3}'`
+            mem_max=0
 
-                tmp_outfile="${curdir}/${tmpdir}/graph_benchmark_time_${cname}_${dname}_${repetition}_times${i}.txt"
-                if [ -f "${tmp_outfile}" ];then
-                    echo "${tmp_outfile} existed."
-                    continue
-                fi
-                source /etc/profile && conda activate base && cd ~/graph-benchmarks && bash run_profiler.sh code/${code} data/${data} ${repetition} ${tmp_outfile} &
-                sleep 10
+            tmp_outfile="${curdir}/${tmpdir}/graph_benchmark_time_${cname}_${dname}_${repetition}_times${i}.txt"
+            if [ -f "${tmp_outfile}" ];then
+                echo "${tmp_outfile} existed."
+                continue
+            fi
+            source /etc/profile && conda activate base && cd ~/graph-benchmarks && bash run_profiler.sh code/${code} data/${data} ${repetition} ${tmp_outfile} &
+            sleep 10
 
+            runpid=`ps -ef | grep run_profiler.sh | grep code | awk '{print $2}'`
+            while [ "${runpid}" ];do
                 runpid=`ps -ef | grep run_profiler.sh | grep code | awk '{print $2}'`
-                while [ "${runpid}" ];do
-                    runpid=`ps -ef | grep run_profiler.sh | grep code | awk '{print $2}'`
-                    sleep 1
-                    mem_cur=`free | awk '/Mem/ {print $3}'`
-                    if [ ${mem_cur} -gt ${mem_max} ];then
-                        mem_max=${mem_cur}
-                    fi
-                done
-                used_kB=`expr ${mem_max} - ${mem_base}`
-                line="${line},${used_kB}"
-                sleep 10
+                sleep 1
+                mem_cur=`free | awk '/Mem/ {print $3}'`
+                if [ ${mem_cur} -gt ${mem_max} ];then
+                    mem_max=${mem_cur}
+                fi
             done
-            echo "${line}"
-            echo "${line}" >> ${outfile}
+            used_kB=`expr ${mem_max} - ${mem_base}`
+            line="${line},${used_kB}"
+            sleep 10
         done
+        echo "${line}"
+        echo "${line}" >> ${outfile}
     done
 done
