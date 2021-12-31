@@ -31,8 +31,11 @@ sudo lxc start ${docker_name}
 sudo lxc config set ${docker_name} limits.memory.swap.priority 50
 sudo lxc config set ${docker_name} limits.memory.swap true
 
-if [ ! -d "${localdir}" ]; then
+if [ ! -d ${localdir} ]; then
     mkdir ${localdir}
+fi
+if [ ! -d ${cpu_rate_dir} ]; then
+    mkdir ${cpu_rate_dir}
 fi
 
 sudo bash -c "echo never > /sys/kernel/mm/transparent_hugepage/enabled"
