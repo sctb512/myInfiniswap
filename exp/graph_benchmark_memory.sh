@@ -3,9 +3,9 @@
 tmpdir=graph_benchmark_memory
 
 outfile=${tmpdir}.csv
-if [ ! -f "${outfile}" ];then
+if [ ! -f "${outfile}" ]; then
     headline="type,repetition,memory_used(kB)"
-    echo "${headline}" > ${outfile}
+    echo "${headline}" >${outfile}
 fi
 
 # codes=(graphtool_profile.py lightgraphs.jl networkx_profile.py igraph_profile.py networkit_profile.py snap_profile.py)
@@ -14,43 +14,44 @@ codes=(graphtool_profile.py igraph_profile.py snap_profile.py)
 datas=(google.txt livejournal.txt pokec.txt)
 repetition=1
 
-curdir=`pwd`
+curdir=$(pwd)
 
-if [ ! -d "${tmpdir}" ];then
+if [ ! -d "${tmpdir}" ]; then
     mkdir ${tmpdir}
 fi
 
-for code in ${codes[*]};do
-    for data in ${datas[*]};do
-        cname=`echo ${code} | awk -F. '{print $1}'`
-        dname=`echo ${data} | awk -F. '{print $1}'`
-        line="${cname}_${dname},${repetition}"	
-        for i in `seq 4`;do
-            mem_base=`free | awk '/Mem/ {print $3}'`
+for code in ${codes[*]}; do
+    for data in ${datas[*]}; do
+        cname=$(echo ${code} | awk -F. '{print $1}')
+        dname=$(echo ${data} | awk -F. '{print $1}')
+        line="${cname}_${dname},${repetition}"
+        for i in $(seq 4); do
+            mem_base=$(sudo lxc exec ${docker_name} -- sudo --login --user root /usr/bin/zsh -ic "free" | awk '/Mem/ {print $3}')
             mem_max=0
 
             tmp_outfile="${curdir}/${tmpdir}/graph_benchmark_time_${cname}_${dname}_${repetition}_times${i}.txt"
-            if [ -f "${tmp_outfile}" ];then
+            if [ -f "${tmp_outfile}" ]; then
                 echo "${tmp_outfile} existed."
                 continue
             fi
-            source /etc/profile && conda activate base && cd ~/graph-benchmarks && bash run_profiler.sh code/${code} data/${data} ${repetition} ${tmp_outfile} &
+            # source /etc/profile && conda activate base && cd ~/graph-benchmarks && bash run_profiler.sh code/${code} data/${data} ${repetition} ${tmp_outfile} &
+            nohup sudo lxc exec ${docker_name} -- sudo --login --user root /usr/bin/zsh -ic "conda activate base && cd ~/graph-benchmarks && bash run_profiler.sh code/${code} data/${data} ${repetition} ${tmp_outfile}" &
             sleep 10
 
-            runpid=`ps -ef | grep run_profiler.sh | grep code | awk '{print $2}'`
-            while [ "${runpid}" ];do
-                runpid=`ps -ef | grep run_profiler.sh | grep code | awk '{print $2}'`
+            runpid=$(sudo lxc exec ${docker_name} -- sudo --login --user root /usr/bin/zsh -ic "ps -ef | grep run_profiler.sh" | grep code | awk '{print $2}')
+            while [ "${runpid}" ]; do
+                runpid=$(sudo lxc exec ${docker_name} -- sudo --login --user root /usr/bin/zsh -ic "ps -ef | grep run_profiler.sh" | grep code | awk '{print $2}')
                 sleep 1
-                mem_cur=`free | awk '/Mem/ {print $3}'`
-                if [ ${mem_cur} -gt ${mem_max} ];then
+                mem_cur=$(free | awk '/Mem/ {print $3}')
+                if [ ${mem_cur} -gt ${mem_max} ]; then
                     mem_max=${mem_cur}
                 fi
             done
-            used_kB=`expr ${mem_max} - ${mem_base}`
+            used_kB=$(expr ${mem_max} - ${mem_base})
             line="${line},${used_kB}"
             sleep 10
         done
         echo "${line}"
-        echo "${line}" >> ${outfile}
+        echo "${line}" >>${outfile}
     done
 done
