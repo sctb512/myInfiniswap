@@ -37,6 +37,7 @@ for code in ${codes[*]}; do
                 continue
             fi
             # source /etc/profile && conda activate base && cd ~/graph-benchmarks && bash run_profiler.sh code/${code} data/${data} ${repetition} ${tmp_outfile} &
+            echo "cd ~ && conda activate base && cd ~/graph-benchmarks && bash run_profiler.sh code/${code} data/${data} ${repetition} ${tmp_outfile}"
             nohup sudo lxc exec ${docker_name} -- sudo --login --user root /usr/bin/zsh -ic "cd ~ && conda activate base && cd ~/graph-benchmarks && bash run_profiler.sh code/${code} data/${data} ${repetition} ${tmp_outfile}" &
             sleep 10
 
