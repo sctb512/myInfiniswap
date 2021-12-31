@@ -20,7 +20,7 @@ if [ ! -d "${tmpdir}" ]; then
     mkdir ${tmpdir}
 fi
 
-nohup sudo lxc exec ${docker_name} -- sudo --login --user root /usr/bin/zsh -ic "cd ~ && mkdir ${tmpdir}"
+sudo lxc exec ${docker_name} -- sudo --login --user root /usr/bin/zsh -ic "cd ~ && mkdir ${tmpdir}"
 
 for code in ${codes[*]}; do
     for data in ${datas[*]}; do
