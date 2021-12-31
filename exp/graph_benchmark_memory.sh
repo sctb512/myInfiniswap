@@ -14,8 +14,6 @@ codes=(graphtool_profile.py igraph_profile.py snap_profile.py)
 datas=(google.txt livejournal.txt pokec.txt)
 repetition=1
 
-curdir=$(pwd)
-
 if [ ! -d "${tmpdir}" ]; then
     mkdir ${tmpdir}
 fi
@@ -31,7 +29,7 @@ for code in ${codes[*]}; do
             mem_base=$(sudo lxc exec ${docker_name} -- sudo --login --user root /usr/bin/zsh -ic "free" | awk '/Mem/ {print $3}')
             mem_max=0
 
-            tmp_outfile="${curdir}/${tmpdir}/graph_benchmark_time_${cname}_${dname}_${repetition}_times${i}.txt"
+            tmp_outfile="./${tmpdir}/graph_benchmark_time_${cname}_${dname}_${repetition}_times${i}.txt"
             if [ -f "${tmp_outfile}" ]; then
                 echo "${tmp_outfile} existed."
                 continue
@@ -53,7 +51,7 @@ for code in ${codes[*]}; do
             line="${line},${used_kB}"
             sleep 10
 
-            sudo lxc file pull ${docker_name}/root/${tmp_outfile} ./${curdir}/
+            sudo lxc file pull ${docker_name}/root/${tmp_outfile} ./${tmpdir}/
         done
         echo "${line}"
         echo "${line}" >>${outfile}
