@@ -7,7 +7,7 @@ fi
 
 servers_num=$1
 
-docker_name=is-sworkloads
+docker_name=is-workloads
 
 pfx=is
 localdir="${pfx}_graph_benchmark_servers${servers_num}"
@@ -48,7 +48,7 @@ for code in ${codes[*]}; do
     for data in ${datas[*]}; do
         cname=$(echo ${code} | awk -F. '{print $1}')
         dname=$(echo ${data} | awk -F. '{print $1}')
-        total_mem=$(awk -F, 'NR>1{print $1,$2,$3,$4,$5,$6,($3+$4+$5+$6)/4}' ${memoryfile} | grep ${cname} | grep ${dname} | grep " 100 " | awk '{print $7}')
+        total_mem=$(awk -F, 'NR>1{print $1,$2,$3,$4,$5,$6,($3+$4+$5+$6)/4}' ${memoryfile} | grep ${cname} | grep ${dname} | awk '{print $7}')
         echo "total_mem: ${total_mem}"
 
         echo "ok"
