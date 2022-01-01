@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cpu_useage=90
-servers_num=$2
+servers_num=$1
 
 output_dir="is_result_dataframe_lxc_total_range_${servers_num}_servers_cpu_${cpu_useage}"
 cpu_rate_dir="${output_dir}_cpu_rate"
