@@ -60,7 +60,7 @@ for i in $(seq 10); do
                 file="${pfx}_${cname}_${dname}_total${total_mem}_local${local}.txt"
                 outpath="output/${file}"
                 if [ -f "${localdir}/${i}/${file}" ]; then
-                    echo "${localdir}/${file} existed."
+                    echo "${localdir}/${i}/${file} existed."
                     continue
                 fi
 
