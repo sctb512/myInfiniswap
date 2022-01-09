@@ -12,10 +12,6 @@ if [ ! -d ${cpu_rate_dir} ]; then
     mkdir -p ${cpu_rate_dir}
 fi
 
-sudo swapoff /dev/sda3
-sudo swapon /dev/sdb2
-swapon -s
-
 total_mem=1460099
 docker_name=is-workloads
 echo "total_mem: ${total_mem}"
@@ -25,9 +21,15 @@ ssh-add /users/bin_tang/.ssh/cloud
 
 # echo 0 | sudo tee  /proc/sys/kernel/hung_task_timeout_secs
 
-# cd ../setup
-# ./run_activeswap.sh ${servers_num} ./config2.sh
-# cd ../exp
+if [ ${servers_num} == 0 ];then
+    sudo swapoff /dev/sda3
+    sudo swapon /dev/sdb2
+else
+    cd ../setup
+    ./run_activeswap.sh ${servers_num} ./config2.sh
+    cd ../exp
+fi
+swapon -s
 
 sudo lxc start ${docker_name}
 
@@ -39,17 +41,17 @@ ps -ef | grep cpu_rate.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
 ./cpu_rate.sh ${output_dir} ${cpu_rate_dir} &
 ./watch_file_num.sh ${output_dir} &
 
-for i in $(seq 1); do
+for i in $(seq 2); do
 # for i in $(seq 10); do
     sudo mkdir -p ${output_dir}/${i}
-    for local in 100 95 90 85 80 75 70 65 60 55 50; do
+    for local in 60; do
         # for local in 65 60 55 50; do
         chunk_num=$(dmesg | grep "\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*" | wc -l)
 
-        if [ ${chunk_num} -gt $((27*${servers_num})) ]; then
-            sudo reboot
-            exit
-        fi
+        # if [ ${chunk_num} -gt $((27*${servers_num})) ]; then
+        #     sudo reboot
+        #     exit
+        # fi
 
         local_mem=$((${total_mem} * ${local} / 100))
 
