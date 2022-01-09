@@ -26,8 +26,7 @@ if [ ${servers_num} == 0 ]; then
     sudo swapon /dev/sdb2
 else
     cd ../setup
-    pwd
-    ./run_activeswap.sh ${servers_num} ./config2.sh
+    ./run_infiniswap.sh ${servers_num} ./config2.sh
     cd ../exp
 fi
 swapon -s
