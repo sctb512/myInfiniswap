@@ -13,7 +13,7 @@ if [ ! -d ${cpu_rate_dir} ]; then
 fi
 
 sudo swapoff /dev/sda3
-sudo swapon /dev/sda4
+sudo swapon /dev/sdb2
 swapon -s
 
 total_mem=1460099
