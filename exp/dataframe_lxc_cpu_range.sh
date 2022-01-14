@@ -4,8 +4,8 @@ servers_num=$1
 output_dir="is_result_dataframe_lxc_cpu_range_${servers_num}_servers"
 cpu_rate_dir="${output_dir}_cpu_rate"
 
-once_file="${output_dir}_once.txt"
-server_distribute="${output_dir}_distribute.csv"
+# once_file="${output_dir}_once.txt"
+# server_distribute="${output_dir}_distribute.csv"
 
 if [ ! -d ${output_dir} ]; then
     mkdir -p ${output_dir}
@@ -14,18 +14,18 @@ if [ ! -d ${cpu_rate_dir} ]; then
     mkdir -p ${cpu_rate_dir}
 fi
 
-if [ ! -f ${once_file} ]; then
-    echo 1 >${once_file}
-fi
-index=$(cat ${once_file})
+# if [ ! -f ${once_file} ]; then
+#     echo 1 >${once_file}
+# fi
+# index=$(cat ${once_file})
 
-if [ ! -f ${server_distribute} ]; then
-    head="turn"
-    for k in $(seq ${servers_num}); do
-        head="${head},${k}"
-    done
-    echo ${head} >${server_distribute}
-fi
+# if [ ! -f ${server_distribute} ]; then
+#     head="turn"
+#     for k in $(seq ${servers_num}); do
+#         head="${head},${k}"
+#     done
+#     echo ${head} >${server_distribute}
+# fi
 # sudo rm -rf ${output_dir}/*
 
 total_mem=25165824
@@ -73,17 +73,17 @@ for i in $(seq 10); do
 
         chunk_num=$(dmesg | grep "\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*" | wc -l)
         if [ ${chunk_num} -gt $((27 * ${servers_num})) ]; then
-            ib=212
-            line="${index}"
-            for m in $(seq ${servers_num}); do
-                num=$(dmesg | grep "bd done, daemon ip" | grep ${ib} | wc -l)
-                line="${line},${num}"
-                ib=$(expr ${ib} + 1)
-            done
-            echo ${line} >>${server_distribute}
+            # ib=212
+            # line="${index}"
+            # for m in $(seq ${servers_num}); do
+            #     num=$(dmesg | grep "bd done, daemon ip" | grep ${ib} | wc -l)
+            #     line="${line},${num}"
+            #     ib=$(expr ${ib} + 1)
+            # done
+            # echo ${line} >>${server_distribute}
 
-            index=$((${index} + 1))
-            echo ${index} >${once_file}
+            # index=$((${index} + 1))
+            # echo ${index} >${once_file}
 
             sudo reboot
             exit
