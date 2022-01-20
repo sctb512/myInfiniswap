@@ -3,7 +3,7 @@
 cpu_useage=$1
 servers_num=$2
 
-output_dir="is_result_dataframe_lxc_${servers_num}_servers_cpu_${cpu_useage}"
+output_dir="is_result_encrypt_dataframe_lxc_${servers_num}_servers_cpu_${cpu_useage}"
 cpu_rate_dir="${output_dir}_cpu_rate"
 
 once_file="${output_dir}_once.txt"
