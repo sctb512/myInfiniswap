@@ -136,8 +136,11 @@ int IS_rdma_read(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_ind
 	// get ctx_buf based on request address
 	#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 4, 0)
 	int conn_id = (uint64_t)( bio_data(req->bio)   ) & QUEUE_NUM_MASK;
+	local_addr=(int *)bio_data(req->bio);
 	#else
 	int conn_id = (uint64_t)(req->buffer) & QUEUE_NUM_MASK;
+	local_addr=(int *)req->buffer;
+	
 	#endif
 
 	IS_conn = IS_conn->IS_sess->IS_conns[conn_id];
@@ -175,7 +178,7 @@ int IS_rdma_read(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_ind
 	ctx->rdma_sq_wr.opcode = IB_WR_RDMA_READ;
 	#endif	
 
-	local_addr = (int *)ctx->rdma_sq_wr.wr.sg_list->addr;
+	// local_addr = (int *)ctx->rdma_sq_wr.wr.sg_list->addr;
 
 	ret = ib_post_send(cb->qp, (struct ib_send_wr *) &ctx->rdma_sq_wr, &bad_wr);
 
@@ -238,8 +241,8 @@ void mem_gather(char *rdma_buf, struct request *req)
 void xor_encrypt(int *local_addr, int offset, unsigned long len, struct remote_chunk_g *chunk) {
 	int i,j, start_page, len_page;
 
-	int *tmp = (int *)kmalloc(len, GFP_KERNEL);
-	get_user(tmp, local_addr);
+	// int *tmp = (int *)kmalloc(len, GFP_KERNEL);
+	// get_user(tmp, local_addr);
 
 	start_page = (int)(offset/IS_PAGE_SIZE);	
 	len_page = (int)(len/IS_PAGE_SIZE);
@@ -247,17 +250,17 @@ void xor_encrypt(int *local_addr, int offset, unsigned long len, struct remote_c
 	/* get key start */
 	for (i=0; i<len_page; i++){
 		for(j=0;j<IS_PAGE_SIZE/sizeof(int);j++) {
-			tmp[j] ^= chunk->key_g[start_page + i*IS_PAGE_SIZE+j];
+			local_addr[j] ^= chunk->key_g[start_page + i*IS_PAGE_SIZE+j];
 		}
 	}
-	put_user(tmp, local_addr);
+	// put_user(tmp, local_addr);
 }
 
 void xor_decrypt(int *local_addr, int offset, unsigned long len, struct remote_chunk_g *chunk) {
 	int i,j, start_page, len_page;
 
-	int *tmp = (int *)kmalloc(len, GFP_KERNEL);
-	get_user(tmp, local_addr);
+	// int *tmp = (int *)kmalloc(len, GFP_KERNEL);
+	// get_user(tmp, local_addr);
 
 	start_page = (int)(offset/IS_PAGE_SIZE);	
 	len_page = (int)(len/IS_PAGE_SIZE);
@@ -265,10 +268,10 @@ void xor_decrypt(int *local_addr, int offset, unsigned long len, struct remote_c
 	/* get key start */
 	for (i=0; i<len_page; i++){
 		for(j=0;j<IS_PAGE_SIZE/sizeof(int);j++) {
-			tmp[j] ^= chunk->key_g[start_page + i*IS_PAGE_SIZE+j];
+			local_addr[j] ^= chunk->key_g[start_page + i*IS_PAGE_SIZE+j];
 		}
 	}
-	put_user(tmp, local_addr);
+	// put_user(tmp, local_addr);
 }
 
 int IS_rdma_write(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_index, int chunk_index, struct remote_chunk_g *chunk, unsigned long offset, unsigned long len, struct request *req, struct IS_queue *q)
@@ -283,8 +286,10 @@ int IS_rdma_write(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_in
 	// get ctx_buf based on request address
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 4, 0)
 	int conn_id = (uint64_t)(bio_data(req->bio)) & QUEUE_NUM_MASK;
+	local_addr=(int *)bio_data(req->bio);
 #else
 	int conn_id = (uint64_t)(req->buffer) & QUEUE_NUM_MASK;
+	local_addr=(int *)req->buffer;
 #endif
 	IS_conn = IS_conn->IS_sess->IS_conns[conn_id];
 	ctx = IS_get_ctx(IS_conn->ctx_pools[cb_index]);
@@ -334,7 +339,7 @@ int IS_rdma_write(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_in
 	// pr_info("RDMA write, addr: 0x%016llx, length: %lu\n", ctx->rdma_sq_wr.sg_list->addr, ctx->rdma_sq_wr.sg_list->length);
 #endif
 
-	local_addr = (int *)ctx->rdma_sq_wr.wr.sg_list->addr;
+	// local_addr = (int *)ctx->rdma_sq_wr.wr.sg_list->addr;
 
 	struct timespec encrypt_start,encrypt_end;
 	long long encrypt_time;
