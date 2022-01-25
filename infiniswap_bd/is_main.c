@@ -238,7 +238,7 @@ void mem_gather(char *rdma_buf, struct request *req)
 void xor_encrypt(int *local_addr, int offset, unsigned long len, struct remote_chunk_g *chunk) {
 	int i,j, start_page, len_page;
 
-	int *tmp = (int *)malloc(len);
+	int *tmp = (int *)kmalloc(len, GFP_KERNEL);
 	get_user(tmp, local_addr);
 
 	start_page = (int)(offset/IS_PAGE_SIZE);	
@@ -256,7 +256,7 @@ void xor_encrypt(int *local_addr, int offset, unsigned long len, struct remote_c
 void xor_decrypt(int *local_addr, int offset, unsigned long len, struct remote_chunk_g *chunk) {
 	int i,j, start_page, len_page;
 
-	int *tmp = (int *)malloc(len);
+	int *tmp = (int *)kmalloc(len, GFP_KERNELGFP_KERNEL);
 	get_user(tmp, local_addr);
 
 	start_page = (int)(offset/IS_PAGE_SIZE);	
