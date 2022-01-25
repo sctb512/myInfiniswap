@@ -1551,7 +1551,7 @@ static int IS_ctx_init(struct IS_connection *IS_conn, struct kernel_cb *cb, int 
 		ctx->free_ctxs = tmp_pool->free_ctxs;
 		ctx->rdma_buf = kzalloc(cb->size, GFP_KERNEL);
 
-		pr_info(PFX "rdma_buf cb->size: %d\n", cb->size);
+		// pr_info(PFX "rdma_buf cb->size: %d\n", cb->size);
 
 		if (!ctx->rdma_buf) {
 			pr_info(PFX "rdma_buf malloc failed\n");
