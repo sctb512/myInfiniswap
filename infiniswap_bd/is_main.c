@@ -238,29 +238,37 @@ void mem_gather(char *rdma_buf, struct request *req)
 void xor_encrypt(int *local_addr, int offset, unsigned long len, struct remote_chunk_g *chunk) {
 	int i,j, start_page, len_page;
 
+	int *tmp = (int *)malloc(len);
+	get_user(tmp, local_addr);
+
 	start_page = (int)(offset/IS_PAGE_SIZE);	
 	len_page = (int)(len/IS_PAGE_SIZE);
 
 	/* get key start */
 	for (i=0; i<len_page; i++){
 		for(j=0;j<IS_PAGE_SIZE/sizeof(int);j++) {
-			local_addr[j] ^= chunk->key_g[start_page + i*IS_PAGE_SIZE+j];
+			tmp[j] ^= chunk->key_g[start_page + i*IS_PAGE_SIZE+j];
 		}
 	}
+	put_user(tmp, local_addr);
 }
 
 void xor_decrypt(int *local_addr, int offset, unsigned long len, struct remote_chunk_g *chunk) {
 	int i,j, start_page, len_page;
 
+	int *tmp = (int *)malloc(len);
+	get_user(tmp, local_addr);
+
 	start_page = (int)(offset/IS_PAGE_SIZE);	
 	len_page = (int)(len/IS_PAGE_SIZE);
 
 	/* get key start */
 	for (i=0; i<len_page; i++){
 		for(j=0;j<IS_PAGE_SIZE/sizeof(int);j++) {
-			local_addr[j] ^= chunk->key_g[start_page + i*IS_PAGE_SIZE+j];
+			tmp[j] ^= chunk->key_g[start_page + i*IS_PAGE_SIZE+j];
 		}
 	}
+	put_user(tmp, local_addr);
 }
 
 int IS_rdma_write(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_index, int chunk_index, struct remote_chunk_g *chunk, unsigned long offset, unsigned long len, struct request *req, struct IS_queue *q)
