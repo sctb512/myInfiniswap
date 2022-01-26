@@ -11,7 +11,8 @@ functions=(bc bfs cc_sv pr_spmv tc cc pr sssp)
 function=sssp
 total_memorys=(18186932 18188654 18132460 18232750 18218126 18133960 18131084 33498212)
 total_memory=33498212
-local_memory=11166070
+# local_memory=11166070
+local_memory=3349821
 
 if [ ! -d ${output_dir} ]; then
     mkdir -p ${output_dir}
