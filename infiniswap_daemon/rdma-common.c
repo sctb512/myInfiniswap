@@ -668,7 +668,7 @@ void send_single_mr(void *context, int client_chunk_index)
       TEST_Z(session.rdma_remote.mr_list[i] = ibv_reg_mr(s_ctx->pd, session.rdma_remote.region_list[i], ONE_GB, IBV_ACCESS_LOCAL_WRITE | IBV_ACCESS_REMOTE_WRITE | IBV_ACCESS_REMOTE_READ)); //Write permission can't cover read permission, different traditional understanding
       conn->send_msg->buf[i] = htonll((uint64_t)session.rdma_remote.mr_list[i]->addr);
       conn->send_msg->rkey[i] = htonl((uint64_t)session.rdma_remote.mr_list[i]->rkey);
-      printf("RDMA addr %llx  rkey %x\n", (unsigned long long)conn->send_msg->buf[i], conn->send_msg->rkey[i]);
+      // printf("RDMA addr %llx  rkey %x\n", (unsigned long long)conn->send_msg->buf[i], conn->send_msg->rkey[i]);
       break;
     }
   } 
