@@ -854,23 +854,24 @@ void IS_single_chunk_init(struct kernel_cb *cb)
 
 
 			/* for xor encrypt */
-			cb->remote_chunk.chunk_list[i]->key_g = (int *)kzalloc(sizeof(int) * BITMAP_INT_SIZE, GFP_KERNEL);
+			cb->remote_chunk.chunk_list[i]->seg_key = (int *)kzalloc(sizeof(int) * AES_INT_KEY, GFP_KERNEL);
 
-			for(j=0; j<BITMAP_INT_SIZE; j++) {
-				get_random_bytes(cb->remote_chunk.chunk_list[i]->key_g+j, sizeof(int));
+			for(j=0; j<AES_INT_KEY; j++) {
+				get_random_bytes(cb->remote_chunk.chunk_list[i]->seg_key+j, sizeof(int));
 			}
 
 			// pr_info("key[0]:\n");
-			// pr_info("%d\n", cb->remote_chunk.chunk_list[i]->key_g[0]);
-			// for (j=0; j < 32; j++) {
-			// 	pr_info("%d", !!((cb->remote_chunk.chunk_list[i]->key_g[0] << j) & 0x80000000));
-			// }
-			// pr_info("\n");
+			// pr_info("%d\n", cb->remote_chunk.chunk_list[i]->seg_key[0]);
+			pr_info("seg_key: ");
+			for (j=0; j < 128; j++) {
+				pr_info("%d", !!((cb->remote_chunk.chunk_list[i]->seg_key[0] << j) & 0x80000000));
+			}
+			pr_info("\n");
 
 			// pr_info("key[%d]:\n", BITMAP_INT_SIZE - 1);
-			// pr_info("%d\n", cb->remote_chunk.chunk_list[i]->key_g[BITMAP_INT_SIZE - 1]);
+			// pr_info("%d\n", cb->remote_chunk.chunk_list[i]->seg_key[BITMAP_INT_SIZE - 1]);
 			// for (j = 0; j < 32; j++) {
-			// 	pr_info("%d", !!((cb->remote_chunk.chunk_list[i]->key_g[BITMAP_INT_SIZE - 1] << j) & 0x80000000));
+			// 	pr_info("%d", !!((cb->remote_chunk.chunk_list[i]->seg_key[BITMAP_INT_SIZE - 1] << j) & 0x80000000));
 			// }
 			// pr_info("\n");
 

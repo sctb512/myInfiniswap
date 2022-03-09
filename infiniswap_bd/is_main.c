@@ -191,7 +191,7 @@ int IS_rdma_read(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_ind
 	long long decrypt_time;
 	getnstimeofday(&decrypt_start);
 
-	xor_decrypt(local_addr, offset, len, chunk);
+	seg_decrypt(local_addr, offset, len, chunk);
 
 	getnstimeofday(&decrypt_end);
 	decrypt_time=(decrypt_end.tv_sec-decrypt_start.tv_sec)*1000000000+decrypt_end.tv_nsec - decrypt_start.tv_nsec;
@@ -238,7 +238,7 @@ void mem_gather(char *rdma_buf, struct request *req)
 	}
 }
 
-void xor_encrypt(int *local_addr, int offset, unsigned long len, struct remote_chunk_g *chunk) {
+void seg_encrypt(int *local_addr, int offset, unsigned long len, struct remote_chunk_g *chunk) {
 	int i,j, start_page, len_page;
 
 	// int *tmp = (int *)kmalloc(len, GFP_KERNEL);
@@ -250,13 +250,13 @@ void xor_encrypt(int *local_addr, int offset, unsigned long len, struct remote_c
 	/* get key start */
 	for (i=0; i<len_page; i++){
 		for(j=0;j<IS_PAGE_SIZE/sizeof(int);j++) {
-			local_addr[j] ^= chunk->key_g[start_page + i*IS_PAGE_SIZE+j];
+			local_addr[j] ^= chunk->seg_key[start_page + i*IS_PAGE_SIZE+j];
 		}
 	}
 	// put_user(tmp, local_addr);
 }
 
-void xor_decrypt(int *local_addr, int offset, unsigned long len, struct remote_chunk_g *chunk) {
+void seg_decrypt(int *local_addr, int offset, unsigned long len, struct remote_chunk_g *chunk) {
 	int i,j, start_page, len_page;
 
 	// int *tmp = (int *)kmalloc(len, GFP_KERNEL);
@@ -268,7 +268,7 @@ void xor_decrypt(int *local_addr, int offset, unsigned long len, struct remote_c
 	/* get key start */
 	for (i=0; i<len_page; i++){
 		for(j=0;j<IS_PAGE_SIZE/sizeof(int);j++) {
-			local_addr[j] ^= chunk->key_g[start_page + i*IS_PAGE_SIZE+j];
+			local_addr[j] ^= chunk->seg_key[start_page + i*IS_PAGE_SIZE+j];
 		}
 	}
 	// put_user(tmp, local_addr);
@@ -345,7 +345,7 @@ int IS_rdma_write(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_in
 	long long encrypt_time;
 	getnstimeofday(&encrypt_start);
 
-	xor_encrypt(local_addr, offset, len, chunk);
+	seg_encrypt(local_addr, offset, len, chunk);
 
 	getnstimeofday(&encrypt_end);
 	encrypt_time=(encrypt_end.tv_sec-encrypt_start.tv_sec)*1000000000+encrypt_end.tv_nsec - encrypt_start.tv_nsec;
@@ -361,7 +361,7 @@ int IS_rdma_write(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_in
 	long long decrypt_time;
 	getnstimeofday(&decrypt_start);
 
-	xor_decrypt(local_addr, offset, len, chunk);
+	seg_decrypt(local_addr, offset, len, chunk);
 
 	getnstimeofday(&decrypt_end);
 	decrypt_time=(decrypt_end.tv_sec-decrypt_start.tv_sec)*1000000000+decrypt_end.tv_nsec - decrypt_start.tv_nsec;

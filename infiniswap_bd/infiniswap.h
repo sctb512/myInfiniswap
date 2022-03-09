@@ -254,6 +254,8 @@ static DECLARE_WAIT_QUEUE_HEAD(req_event);
 #define ONE_GB 1073741824 //1024*1024*1024 
 #define BITMAP_INT_SIZE 8192 //bitmap[], 1GB/4k/32
 
+#define AES_INT_KEY 4 //4*32=128bit
+
 enum mem_type {
 	DMA = 1,
 	FASTREG = 2,
@@ -317,7 +319,7 @@ struct remote_chunk_g {
 	//uint64_t remote_len;		/* remote guys LEN */
 	int *bitmap_g;	//1GB bitmap
 
-	int *key_g;		//key for xor encrypt
+	int *seg_key;		//key for xor encrypt
 };
 
 #define CHUNK_MAPPED 1
@@ -667,8 +669,8 @@ struct IS_session *IS_session_find_by_portal(struct list_head *s_data_list,
 const char* IS_device_state_str(struct IS_file *dev);
 int IS_set_device_state(struct IS_file *dev, enum IS_dev_state state);
 
-void xor_encrypt(int *local_addr, int offset, unsigned long len, struct remote_chunk_g *chunk);
-void xor_decrypt(int *local_addr, int offset, unsigned long len, struct remote_chunk_g *chunk);
+void seg_encrypt(int *local_addr, int offset, unsigned long len, struct remote_chunk_g *chunk);
+void seg_decrypt(int *local_addr, int offset, unsigned long len, struct remote_chunk_g *chunk);
 
 #endif  /* INFINISWAP_H */
 
