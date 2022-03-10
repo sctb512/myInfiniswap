@@ -72,7 +72,7 @@ for i in ${!functions[@]};do
 
                 file="total_mem${total_memory}_local_mem${local_memory}_cpu${cpu_useage}_local${local}.txt"
 
-                if [ -f ${cur_output_dir}/${i}/${file} ]; then
+                if [ -f ${cur_output_dir}/${j}/${file} ]; then
                     continue
                 fi
                 echo "time: $(date "+%Y-%m-%d %H:%M:%S")"
@@ -90,7 +90,7 @@ for i in ${!functions[@]};do
                 echo "total: ${total_memory} local: ${local} running..."
                 sudo lxc exec ${docker_name} -- sudo --login --user root bash -ic "cd /root && mkdir -p ${cur_output_dir} && (time ${gapbs_dir}/${function} -u 26 -n 1) > ${cur_output_dir}/${file} 2>&1"
 
-                sudo lxc file pull ${docker_name}/root/${cur_output_dir}/${file} ./${cur_output_dir}/${i}/
+                sudo lxc file pull ${docker_name}/root/${cur_output_dir}/${file} ./${cur_output_dir}/${j}/
             done
         done
     done
