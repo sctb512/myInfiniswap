@@ -64,7 +64,7 @@ for i in ${!functions[@]};do
 
                 chunk_num=$(dmesg | grep "\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*" | wc -l)
 
-                if [ ${chunk_num} -gt 52 ]; then
+                if [ ${chunk_num} -gt 27 ]; then
                     sudo reboot
                 fi
 
