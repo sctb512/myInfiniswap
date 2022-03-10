@@ -68,9 +68,9 @@ for i in ${!functions[@]};do
                     sudo reboot
                 fi
 
-                local_mem=$(expr ${total_memory} \* ${local} / 100)
+                local_memory=$(expr ${total_memory} \* ${local} / 100)
 
-                file="total_mem${total_memory}_local_mem${local_mem}_cpu${cpu_useage}_local${local}.txt"
+                file="total_mem${total_memory}_local_mem${local_memory}_cpu${cpu_useage}_local${local}.txt"
 
                 if [ -f ${cur_output_dir}/${i}/${file} ]; then
                     continue
