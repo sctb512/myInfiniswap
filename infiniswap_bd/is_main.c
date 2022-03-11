@@ -282,6 +282,7 @@ int IS_rdma_write(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_in
 	int ctx_loop = 0;
 
 	int *local_addr = NULL;
+	uint8_t *aes_start_addr = NULL;
 
 	// get ctx_buf based on request address
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 4, 0)
@@ -345,6 +346,10 @@ int IS_rdma_write(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_in
 	long long encrypt_time;
 	getnstimeofday(&encrypt_start);
 
+	aes_start_addr = local_addr - offset + (offset / 64 * 64);
+	pr_info("local_addr: %p, offset: %ld\n", local_addr, offset);
+	pr_info("aes_start_addr: %p\n", aes_start_addr);
+	
 	seg_encrypt(local_addr, offset, len, chunk);
 
 	getnstimeofday(&encrypt_end);
