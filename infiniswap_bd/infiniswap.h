@@ -665,29 +665,5 @@ struct IS_session *IS_session_find_by_portal(struct list_head *s_data_list,
 const char* IS_device_state_str(struct IS_file *dev);
 int IS_set_device_state(struct IS_file *dev, enum IS_dev_state state);
 
-
-//aes
-#define AES_BLOCKLEN 16 // Block length in bytes - AES is 128b block only
-#define AES_KEYLEN 16   // Key length in bytes
-#define AES_keyExpSize 176
-
-#define Nb 4
-#define Nk 4        // The number of 32 bit words in a key.
-#define Nr 10       // The number of rounds in AES Cipher.
-#ifndef MULTIPLY_AS_A_FUNCTION
-  #define MULTIPLY_AS_A_FUNCTION 0
-#endif
-
-struct AES_ctx
-{
-  uint8_t RoundKey[AES_keyExpSize];
-  uint8_t Iv[AES_BLOCKLEN];
-};
-
-void AES_init_ctx(struct AES_ctx* ctx, const uint8_t* key);
-void AES_init_ctx_iv(struct AES_ctx* ctx, const uint8_t* key, const uint8_t* iv);
-void AES_ctx_set_iv(struct AES_ctx* ctx, const uint8_t* iv);
-void AES_CTR_xcrypt_buffer(struct AES_ctx* ctx, uint8_t* buf, size_t length);
-
 #endif  /* INFINISWAP_H */
 
