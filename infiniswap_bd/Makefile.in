@@ -33,6 +33,7 @@ obj-m := infiniswap.o
 infiniswap-objs := 	\
 	is_configfs.o	\
 	is_mq.o	\
+	aes.o \
 	is_main.o
 
 all-spec:
