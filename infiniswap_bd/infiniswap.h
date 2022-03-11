@@ -254,7 +254,7 @@ static DECLARE_WAIT_QUEUE_HEAD(req_event);
 #define ONE_GB 1073741824 //1024*1024*1024 
 #define BITMAP_INT_SIZE 8192 //bitmap[], 1GB/4k/32
 
-#define AES_INT_KEY 4 //4*32=128bit
+#define AES_INT_KEY 16 //8*16=128bit
 
 enum mem_type {
 	DMA = 1,
@@ -312,6 +312,24 @@ enum test_state {
 
 #define IS_PAGE_SIZE 4096
 
+//aes
+#define AES_BLOCKLEN 16 // Block length in bytes - AES is 128b block only
+#define AES_KEYLEN 16   // Key length in bytes
+#define AES_keyExpSize 176
+
+#define Nb 4
+#define Nk 4        // The number of 32 bit words in a key.
+#define Nr 10       // The number of rounds in AES Cipher.
+#ifndef MULTIPLY_AS_A_FUNCTION
+  #define MULTIPLY_AS_A_FUNCTION 0
+#endif
+
+struct AES_ctx
+{
+  uint8_t RoundKey[AES_keyExpSize];
+  uint8_t Iv[AES_BLOCKLEN];
+};
+
 // 1GB remote chunk struct	("chunk": we use the term "slab" in our paper)
 struct remote_chunk_g {
 	uint32_t remote_rkey;		/* remote guys RKEY */
@@ -319,7 +337,8 @@ struct remote_chunk_g {
 	//uint64_t remote_len;		/* remote guys LEN */
 	int *bitmap_g;	//1GB bitmap
 
-	int *seg_key;		//key for xor encrypt
+	uint8_t *seg_key;		//key for aes encrypt
+	struct AES_ctx *aes_ctx;
 };
 
 #define CHUNK_MAPPED 1
@@ -674,22 +693,6 @@ void seg_decrypt(int *local_addr, int offset, unsigned long len, struct remote_c
 
 
 //aes
-#define AES_BLOCKLEN 16 // Block length in bytes - AES is 128b block only
-#define AES_KEYLEN 16   // Key length in bytes
-#define AES_keyExpSize 176
-
-#define Nb 4
-#define Nk 4        // The number of 32 bit words in a key.
-#define Nr 10       // The number of rounds in AES Cipher.
-#ifndef MULTIPLY_AS_A_FUNCTION
-  #define MULTIPLY_AS_A_FUNCTION 0
-#endif
-
-struct AES_ctx
-{
-  uint8_t RoundKey[AES_keyExpSize];
-  uint8_t Iv[AES_BLOCKLEN];
-};
 
 void AES_init_ctx(struct AES_ctx* ctx, const uint8_t* key);
 void AES_init_ctx_iv(struct AES_ctx* ctx, const uint8_t* key, const uint8_t* iv);

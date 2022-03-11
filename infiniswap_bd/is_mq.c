@@ -844,6 +844,8 @@ void IS_single_chunk_init(struct kernel_cb *cb)
 	int select_chunk = cb->recv_buf.size_gb;
 	struct IS_session *IS_session = cb->IS_sess;
 
+	uint8_t aes_iv[16]  = { 0xf0, 0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8, 0xf9, 0xfa, 0xfb, 0xfc, 0xfd, 0xfe, 0xff };
+
 	for (i = 0; i < MAX_MR_SIZE_GB; i++) {
 		if (cb->recv_buf.rkey[i]) { //from server, this chunk is allocated and given to you
 			pr_info("Received rkey %x addr %llx from peer\n", ntohl(cb->recv_buf.rkey[i]), (unsigned long long)ntohll(cb->recv_buf.buf[i]));	
@@ -853,12 +855,16 @@ void IS_single_chunk_init(struct kernel_cb *cb)
 			IS_bitmap_init(cb->remote_chunk.chunk_list[i]->bitmap_g);
 
 
-			/* for xor encrypt */
-			cb->remote_chunk.chunk_list[i]->seg_key = (int *)kzalloc(sizeof(int) * AES_INT_KEY, GFP_KERNEL);
+			/* for encrypt */
+			cb->remote_chunk.chunk_list[i]->seg_key = (uint8_t *)kzalloc(sizeof(uint8_t) * AES_INT_KEY, GFP_KERNEL);
+			cb->remote_chunk.chunk_list[i]->aes_ctx = (struct AES_ctx *)kzalloc(sizeof(struct AES_ctx), GFP_KERNEL);
 
-			for(j=0; j<AES_INT_KEY; j++) {
-				get_random_bytes(cb->remote_chunk.chunk_list[i]->seg_key+j, sizeof(int));
-			}
+			// for(j=0; j<AES_INT_KEY; j++) {
+			// 	get_random_bytes(cb->remote_chunk.chunk_list[i]->seg_key+j, sizeof(uint8_t));
+			// }
+			get_random_bytes(cb->remote_chunk.chunk_list[i]->seg_key, sizeof(uint8_t)*AES_INT_KEY);
+
+			AES_init_ctx_iv(cb->remote_chunk.chunk_list[i]->aes_ctx, cb->remote_chunk.chunk_list[i]->seg_key, aes_iv);
 
 			// pr_info("key[0]:\n");
 			// pr_info("%d\n", cb->remote_chunk.chunk_list[i]->seg_key[0]);
