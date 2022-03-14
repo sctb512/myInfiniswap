@@ -196,7 +196,7 @@ int IS_rdma_read(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_ind
 	pr_info("local_addr: %p, offset: %ld\n", local_addr, offset);
 	pr_info("aes_begin_addr: %p\n", aes_begin_addr);
 	
-	seg_xcrypt(aes_begin_addr, local_addr+len, SEG_LENGTH);
+	seg_xcrypt(aes_begin_addr, local_addr+len, SEG_LENGTH, chunk);
 
 	getnstimeofday(&decrypt_end);
 	decrypt_time=(decrypt_end.tv_sec-decrypt_start.tv_sec)*1000000000+decrypt_end.tv_nsec - decrypt_start.tv_nsec;
@@ -327,7 +327,7 @@ int IS_rdma_write(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_in
 	pr_info("local_addr: %p, offset: %ld\n", local_addr, offset);
 	pr_info("aes_begin_addr: %p\n", aes_begin_addr);
 	
-	seg_xcrypt(aes_begin_addr, local_addr+len, SEG_LENGTH);
+	seg_xcrypt(aes_begin_addr, local_addr+len, SEG_LENGTH, chunk);
 
 	getnstimeofday(&encrypt_end);
 	encrypt_time=(encrypt_end.tv_sec-encrypt_start.tv_sec)*1000000000+encrypt_end.tv_nsec - encrypt_start.tv_nsec;
@@ -347,7 +347,7 @@ int IS_rdma_write(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_in
 	pr_info("local_addr: %p, offset: %ld\n", local_addr, offset);
 	pr_info("aes_begin_addr: %p\n", aes_begin_addr);
 	
-	seg_xcrypt(aes_begin_addr, local_addr+len, SEG_LENGTH);
+	seg_xcrypt(aes_begin_addr, local_addr+len, SEG_LENGTH, chunk);
 
 	getnstimeofday(&decrypt_end);
 	decrypt_time=(decrypt_end.tv_sec-decrypt_start.tv_sec)*1000000000+decrypt_end.tv_nsec - decrypt_start.tv_nsec;
