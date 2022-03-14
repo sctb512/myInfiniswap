@@ -132,6 +132,7 @@ int IS_rdma_read(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_ind
 	int ctx_loop = 0;
 
 	int *local_addr = NULL;
+	uint8_t *aes_begin_addr = NULL;
 	
 	// get ctx_buf based on request address
 	#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 4, 0)
