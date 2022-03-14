@@ -246,9 +246,11 @@ void mem_gather(char *rdma_buf, struct request *req)
 
 void seg_xcrypt(uint8_t *aes_begin_addr, uint8_t *end_addr, int len, struct remote_chunk_g *chunk) {
 	uint8_t *tmp_addr = NULL;
+	int i=0;
 
 	for (tmp_addr = aes_begin_addr; tmp_addr != NULL && tmp_addr < end_addr; tmp_addr += SEG_LENGTH){
 		AES_CTR_xcrypt_buffer(chunk->aes_ctx, tmp_addr, SEG_LENGTH);
+		pr_info("i: %d\n", i);
 	}
 }
 
