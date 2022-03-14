@@ -697,7 +697,7 @@ void AES_init_ctx_iv(struct AES_ctx* ctx, const uint8_t* key, const uint8_t* iv)
 void AES_ctx_set_iv(struct AES_ctx* ctx, const uint8_t* iv);
 void AES_CTR_xcrypt_buffer(struct AES_ctx* ctx, uint8_t* buf, size_t length);
 
-void seg_xcrypt(int8_t *aes_begin_addr, uint8_t *end_addr, int len, struct remote_chunk_g *chunk);
+void seg_xcrypt(uint8_t *aes_begin_addr, uint8_t *end_addr, int len, struct remote_chunk_g *chunk);
 
 #endif  /* INFINISWAP_H */
 

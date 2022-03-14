@@ -131,16 +131,19 @@ int IS_rdma_read(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_ind
 	struct rdma_ctx *ctx = NULL;
 	int ctx_loop = 0;
 
-	int *local_addr = NULL;
+	uint8_t *local_addr = NULL;
 	uint8_t *aes_begin_addr = NULL;
+
+	struct timespec decrypt_start,decrypt_end;
+	long long decrypt_time;
 	
 	// get ctx_buf based on request address
 	#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 4, 0)
 	int conn_id = (uint64_t)( bio_data(req->bio)   ) & QUEUE_NUM_MASK;
-	local_addr=(int *)bio_data(req->bio);
+	local_addr=(uint8_t *)bio_data(req->bio);
 	#else
 	int conn_id = (uint64_t)(req->buffer) & QUEUE_NUM_MASK;
-	local_addr=(int *)req->buffer;
+	local_addr=(uint8_t *)req->buffer;
 	
 	#endif
 
@@ -188,8 +191,6 @@ int IS_rdma_read(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_ind
 		return ret;
 	}
 
-	struct timespec decrypt_start,decrypt_end;
-	long long decrypt_time;
 	getnstimeofday(&decrypt_start);
 
 	aes_begin_addr = local_addr - offset + (offset / SEG_LENGTH * SEG_LENGTH);
@@ -258,16 +259,16 @@ int IS_rdma_write(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_in
 	struct rdma_ctx *ctx;
 	int ctx_loop = 0;
 
-	int *local_addr = NULL;
+	uint8_t *local_addr = NULL;
 	uint8_t *aes_begin_addr = NULL;
 
 	// get ctx_buf based on request address
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 4, 0)
 	int conn_id = (uint64_t)(bio_data(req->bio)) & QUEUE_NUM_MASK;
-	local_addr=(int *)bio_data(req->bio);
+	local_addr=(uint8_t *)bio_data(req->bio);
 #else
 	int conn_id = (uint64_t)(req->buffer) & QUEUE_NUM_MASK;
-	local_addr=(int *)req->buffer;
+	local_addr=(uint8_t *)req->buffer;
 #endif
 	IS_conn = IS_conn->IS_sess->IS_conns[conn_id];
 	ctx = IS_get_ctx(IS_conn->ctx_pools[cb_index]);
