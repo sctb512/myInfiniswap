@@ -250,8 +250,9 @@ void seg_xcrypt(uint8_t *aes_begin_addr, uint8_t *end_addr, int len, struct remo
 
 	for (tmp_addr = aes_begin_addr; tmp_addr != NULL && tmp_addr < end_addr; tmp_addr += SEG_LENGTH){
 		AES_CTR_xcrypt_buffer(chunk->aes_ctx, tmp_addr, SEG_LENGTH);
-		pr_info("i: %d\n", i);
+		i++;
 	}
+	pr_info("loop turn: %d\n", i);
 }
 
 int IS_rdma_write(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_index, int chunk_index, struct remote_chunk_g *chunk, unsigned long offset, unsigned long len, struct request *req, struct IS_queue *q)
