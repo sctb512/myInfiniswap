@@ -324,7 +324,7 @@ enum test_state {
   #define MULTIPLY_AS_A_FUNCTION 0
 #endif
 
-#define SEG_LENGTH
+#define SEG_LENGTH 64
 
 struct AES_ctx
 {
