@@ -191,7 +191,11 @@ int IS_rdma_read(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_ind
 	long long decrypt_time;
 	getnstimeofday(&decrypt_start);
 
-	seg_decrypt(local_addr, offset, len, chunk);
+	aes_begin_addr = local_addr - offset + (offset / SEG_LENGTH * SEG_LENGTH);
+	pr_info("local_addr: %p, offset: %ld\n", local_addr, offset);
+	pr_info("aes_begin_addr: %p\n", aes_begin_addr);
+	
+	seg_xcrypt(aes_begin_addr, local_addr+len, SEG_LENGTH);
 
 	getnstimeofday(&decrypt_end);
 	decrypt_time=(decrypt_end.tv_sec-decrypt_start.tv_sec)*1000000000+decrypt_end.tv_nsec - decrypt_start.tv_nsec;
@@ -238,40 +242,12 @@ void mem_gather(char *rdma_buf, struct request *req)
 	}
 }
 
-void seg_encrypt(int *local_addr, int offset, unsigned long len, struct remote_chunk_g *chunk) {
-	int i,j, start_page, len_page;
+void seg_xcrypt(uint8_t *aes_begin_addr, uint8_t *end_addr, int len, struct remote_chunk_g *chunk) {
+	uint8_t *tmp_addr = NULL;
 
-	// int *tmp = (int *)kmalloc(len, GFP_KERNEL);
-	// get_user(tmp, local_addr);
-
-	start_page = (int)(offset/IS_PAGE_SIZE);	
-	len_page = (int)(len/IS_PAGE_SIZE);
-
-	/* get key start */
-	for (i=0; i<len_page; i++){
-		for(j=0;j<IS_PAGE_SIZE/sizeof(int);j++) {
-			local_addr[j] ^= chunk->seg_key[start_page + i*IS_PAGE_SIZE+j];
-		}
+	for (tmp_addr = aes_begin_addr; tmp_addr != NULL && tmp_addr < end_addr; tmp_addr += SEG_LENGTH){
+		AES_CTR_xcrypt_buffer(chunk->aes_ctx, tmp_addr, SEG_LENGTH);
 	}
-	// put_user(tmp, local_addr);
-}
-
-void seg_decrypt(int *local_addr, int offset, unsigned long len, struct remote_chunk_g *chunk) {
-	int i,j, start_page, len_page;
-
-	// int *tmp = (int *)kmalloc(len, GFP_KERNEL);
-	// get_user(tmp, local_addr);
-
-	start_page = (int)(offset/IS_PAGE_SIZE);	
-	len_page = (int)(len/IS_PAGE_SIZE);
-
-	/* get key start */
-	for (i=0; i<len_page; i++){
-		for(j=0;j<IS_PAGE_SIZE/sizeof(int);j++) {
-			local_addr[j] ^= chunk->seg_key[start_page + i*IS_PAGE_SIZE+j];
-		}
-	}
-	// put_user(tmp, local_addr);
 }
 
 int IS_rdma_write(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_index, int chunk_index, struct remote_chunk_g *chunk, unsigned long offset, unsigned long len, struct request *req, struct IS_queue *q)
@@ -282,7 +258,7 @@ int IS_rdma_write(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_in
 	int ctx_loop = 0;
 
 	int *local_addr = NULL;
-	uint8_t *aes_start_addr = NULL;
+	uint8_t *aes_begin_addr = NULL;
 
 	// get ctx_buf based on request address
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 4, 0)
@@ -346,11 +322,11 @@ int IS_rdma_write(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_in
 	long long encrypt_time;
 	getnstimeofday(&encrypt_start);
 
-	aes_start_addr = local_addr - offset + (offset / 64 * 64);
+	aes_begin_addr = local_addr - offset + (offset / SEG_LENGTH * SEG_LENGTH);
 	pr_info("local_addr: %p, offset: %ld\n", local_addr, offset);
-	pr_info("aes_start_addr: %p\n", aes_start_addr);
+	pr_info("aes_begin_addr: %p\n", aes_begin_addr);
 	
-	seg_encrypt(local_addr, offset, len, chunk);
+	seg_xcrypt(aes_begin_addr, local_addr+len, SEG_LENGTH);
 
 	getnstimeofday(&encrypt_end);
 	encrypt_time=(encrypt_end.tv_sec-encrypt_start.tv_sec)*1000000000+encrypt_end.tv_nsec - encrypt_start.tv_nsec;
@@ -366,7 +342,11 @@ int IS_rdma_write(struct IS_connection *IS_conn, struct kernel_cb *cb, int cb_in
 	long long decrypt_time;
 	getnstimeofday(&decrypt_start);
 
-	seg_decrypt(local_addr, offset, len, chunk);
+	aes_begin_addr = local_addr - offset + (offset / SEG_LENGTH * SEG_LENGTH);
+	pr_info("local_addr: %p, offset: %ld\n", local_addr, offset);
+	pr_info("aes_begin_addr: %p\n", aes_begin_addr);
+	
+	seg_xcrypt(aes_begin_addr, local_addr+len, SEG_LENGTH);
 
 	getnstimeofday(&decrypt_end);
 	decrypt_time=(decrypt_end.tv_sec-decrypt_start.tv_sec)*1000000000+decrypt_end.tv_nsec - decrypt_start.tv_nsec;

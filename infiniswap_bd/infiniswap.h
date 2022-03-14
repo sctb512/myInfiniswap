@@ -324,6 +324,8 @@ enum test_state {
   #define MULTIPLY_AS_A_FUNCTION 0
 #endif
 
+#define SEG_LENGTH
+
 struct AES_ctx
 {
   uint8_t RoundKey[AES_keyExpSize];
@@ -688,17 +690,14 @@ struct IS_session *IS_session_find_by_portal(struct list_head *s_data_list,
 const char* IS_device_state_str(struct IS_file *dev);
 int IS_set_device_state(struct IS_file *dev, enum IS_dev_state state);
 
-void seg_encrypt(int *local_addr, int offset, unsigned long len, struct remote_chunk_g *chunk);
-void seg_decrypt(int *local_addr, int offset, unsigned long len, struct remote_chunk_g *chunk);
-
 
 //aes
-
 void AES_init_ctx(struct AES_ctx* ctx, const uint8_t* key);
 void AES_init_ctx_iv(struct AES_ctx* ctx, const uint8_t* key, const uint8_t* iv);
 void AES_ctx_set_iv(struct AES_ctx* ctx, const uint8_t* iv);
 void AES_CTR_xcrypt_buffer(struct AES_ctx* ctx, uint8_t* buf, size_t length);
 
+void seg_xcrypt(int8_t *aes_begin_addr, uint8_t *end_addr, int len, struct remote_chunk_g *chunk);
 
 #endif  /* INFINISWAP_H */
 
