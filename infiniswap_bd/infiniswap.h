@@ -325,7 +325,7 @@ enum test_state {
 #endif
 
 // #define SEG_LENGTH 64
-#define SEG_LENGTH 256
+#define SEG_LENGTH 512
 
 struct AES_ctx
 {
