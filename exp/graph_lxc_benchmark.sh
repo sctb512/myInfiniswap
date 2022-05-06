@@ -16,7 +16,8 @@ memoryfile=graph_benchmark_memory.csv
 
 codes=(graphtool_profile.py igraph_profile.py snap_profile.py)
 # datas=(amazon.txt enron.txt google.txt pokec.txt)
-datas=(google.txt livejournal.txt pokec.txt)
+# datas=(google.txt livejournal.txt pokec.txt)
+datas=(livejournal.txt pokec.txt)
 repetition=1
 
 eval $(ssh-agent -s)
