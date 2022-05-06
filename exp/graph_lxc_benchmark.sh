@@ -14,7 +14,8 @@ localdir="${pfx}_graph_benchmark_servers${servers_num}"
 cpu_rate_dir="${localdir}_cpu_rate"
 memoryfile=graph_benchmark_memory.csv
 
-codes=(graphtool_profile.py igraph_profile.py snap_profile.py)
+# codes=(graphtool_profile.py igraph_profile.py snap_profile.py)
+codes=(graphtool_profile.py)
 # datas=(amazon.txt enron.txt google.txt pokec.txt)
 # datas=(google.txt livejournal.txt pokec.txt)
 datas=(livejournal.txt pokec.txt)
