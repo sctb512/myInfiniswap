@@ -30,15 +30,16 @@ sudo lxc start ${docker_name}
 sudo lxc config set ${docker_name} limits.memory.swap.priority 50
 sudo lxc config set ${docker_name} limits.memory.swap true
 
-ps -ef | grep cpu_rate.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
 
-./cpu_rate.sh ${output_dir} ${cpu_rate_dir} &
 ./watch_file_num.sh ${output_dir} &
 
 for i in $(seq 10); do
 # for i in $(seq 2); do
     sudo mkdir -p ${output_dir}/${i}
     for local in 100 95 90 85 80 75 70 65 60 55 50; do
+        ps -ef | grep cpu_rate.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
+        ./cpu_rate.sh "${output_dir}_local${local}_i${i}" ${cpu_rate_dir} &
+        
         # for local in 65 60 55 50; do
         chunk_num=$(dmesg | grep "\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*" | wc -l)
 
