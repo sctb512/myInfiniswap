@@ -312,7 +312,7 @@ enum test_state {
 
 #define IS_PAGE_SIZE 4096
 
-//aes
+/* aes */
 #define AES_BLOCKLEN 16 // Block length in bytes - AES is 128b block only
 #define AES_KEYLEN 16   // Key length in bytes
 #define AES_keyExpSize 176

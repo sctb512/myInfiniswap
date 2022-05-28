@@ -44,7 +44,7 @@ sudo bash -c "echo never > /sys/kernel/mm/transparent_hugepage/enabled"
 sudo bash -c "echo never > /sys/kernel/mm/transparent_hugepage/defrag"
 
 ps -ef | grep cpu_rate.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
-./cpu_rate.sh ${localdir} ${cpu_rate_dir} &
+# ./cpu_rate.sh ${localdir} ${cpu_rate_dir} &
 
 for i in $(seq 10); do
     mkdir -p ${localdir}/${i}
