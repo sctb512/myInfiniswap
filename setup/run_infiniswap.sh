@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo "numbers:$#"
 if [ $# != 2 ] || [ $# != 4 ];then
     echo "useage: $0 server_num configure_file or $0 server_num configure_file daemon_output_dir daemon_cpu_rate_dir"
     exit
