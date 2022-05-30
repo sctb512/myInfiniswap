@@ -86,7 +86,7 @@ for i in $(seq 10); do
                 line="${line},${num}"
                 ib=$(expr ${ib} + 1)
             done
-            echo ${line} >>${server_distribute}
+            echo ${line} >>${chunk_dir}/${server_distribute}
 
             index=$((${index} + 1))
             echo ${index} >${once_file}
