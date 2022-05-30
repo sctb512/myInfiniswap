@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [ $# != 2 ];then
-    echo "useage: $0 server_num configure_file"
+if [ $# != 2 ] || [ $# != 4 ];then
+    echo "useage: $0 server_num configure_file or $0 server_num configure_file daemon_output_dir daemon_cpu_rate_dir"
     exit
 fi
 
@@ -20,7 +20,11 @@ for i in ${!servers[@]};do
     echo "cp-${server}, ib: 192.168.0.${ib}, running..."
     ssh ${user}@128.110.96.${ip} "ps -ef | grep run_daemon.sh | grep /bin/bash | awk '{print \$2}' | xargs kill -s 9"
     sleep 2
-    ssh ${user}@128.110.96.${ip} "cd ~/myInfiniswap/setup && ./run_daemon.sh ${ib} > ~/myInfiniswap/setup/myInfiniswap_daemon.txt &" 
+    if [ -n "$3" ] && [ -n "$4" ];then
+        ssh ${user}@128.110.96.${ip} "cd ~/myInfiniswap/setup && ./run_daemon.sh ${ib} $3 $4> ~/myInfiniswap/setup/myInfiniswap_daemon.txt &" 
+    then
+        ssh ${user}@128.110.96.${ip} "cd ~/myInfiniswap/setup && ./run_daemon.sh ${ib} > ~/myInfiniswap/setup/myInfiniswap_daemon.txt &" 
+    fi
 done
 
 echo "sleep 60s..."

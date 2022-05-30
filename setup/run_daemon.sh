@@ -1,6 +1,7 @@
 #!/bin/bash
 
-output_dir="is_result_dataframe_new"
+output_dir=$2
+cpu_rate_dir=$3
 
 cd ~/myInfiniswap/setup
 
@@ -8,11 +9,12 @@ cd ~/myInfiniswap/setup
 
 pidof infiniswap-daemon | xargs kill -s 9
 pidof activeswap-daemon | xargs kill -s 9
-# ps -ef | grep cpu_rate_core.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
+ps -ef | grep cpu_rate.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
 
-# cd ../exp
-# ./cpu_rate_core.sh ${output_dir} &
-# cd ../setup
+if [ -n "$2" ] && [ -n "$3" ];then
+    cd ../exp
+    ./cpu_rate.sh ${output_dir} ${cpu_rate_dir} &
+    cd ../setup
+fi
 
-# ./daemon.sh 192.168.0.112
 ./daemon.sh 192.168.0.$1

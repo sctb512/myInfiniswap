@@ -14,14 +14,19 @@ start_idle=()
 start_total=()
 cpu_rate=()
 
-echo -n "turn," >${cpu_rate_file}
+if [! -d ${dir}];then
+    mkdir ${dir}
+fi
 
-echo -n "cpu_avg,cpu_user,cpu_sys,mem_rate" >>${cpu_rate_file}
-echo "" >>${cpu_rate_file}
+if [! -f ${dir}/$1_cpu_rate.csv ];then
+    echo -n "unix_time," >${cpu_rate_file}
 
-turn=0
+    echo -n "cpu_avg,cpu_user,cpu_sys,mem_rate,total,used,free,shared,buffers,cached" >>${cpu_rate_file}
+    echo "" >>${cpu_rate_file}
+fi
+
 while [ True ]; do
-    echo -n "${turn}," >>${cpu_rate_file}
+    echo -n "$(date +%s)," >>${cpu_rate_file}
 
     start=$(cat /proc/stat | grep "cpu " | awk '{print $2" "$3" "$4" "$5" "$6" "$7" "$8}')
 
@@ -53,8 +58,8 @@ while [ True ]; do
 
     echo -n "${cpu_rate},${user_rate},${sys_rate}," >>${cpu_rate_file}
 
-    mem_rate=$(free -m | awk -F '[ :]+' 'NR==2{printf("%.2f\n"), $3/$2*100}')
+    # mem_rate=$(free -m | awk -F '[ :]+' 'NR==2{printf("%.2f\n"), $3/$2*100}')
+    mem_rate=$(free -b | awk -F '[ :]+' 'NR==2{printf("%.2f,%d,%d,%d,%d,%d,%d\n"), $3/$2*100,$2,$3,$4,$5,$6,$7}')
     echo -n "${mem_rate}" >>${cpu_rate_file}
     echo "" >>${cpu_rate_file}
-    turn=$(expr ${turn} + 1)
 done
