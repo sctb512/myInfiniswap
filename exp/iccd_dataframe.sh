@@ -75,7 +75,7 @@ for i in $(seq 10); do
         echo "local_mem: ${local_mem}, df_num: ${df_num}"
 
         chunk_num=$(dmesg | grep "\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*" | wc -l)
-        if [ ${chunk_num} -gt $((27 * ${servers_num})) ]; then
+        if [ ${chunk_num} -gt 28 ]; then
             ib=212
             line="${index}"
             for m in $(seq ${servers_num}); do
