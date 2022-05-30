@@ -22,7 +22,7 @@ for i in ${!servers[@]};do
     sleep 2
     if [ -n "$3" ] && [ -n "$4" ];then
         ssh ${user}@128.110.96.${ip} "cd ~/myInfiniswap/setup && ./run_daemon.sh ${ib} $3 $4> ~/myInfiniswap/setup/myInfiniswap_daemon.txt &" 
-    then
+    else
         ssh ${user}@128.110.96.${ip} "cd ~/myInfiniswap/setup && ./run_daemon.sh ${ib} > ~/myInfiniswap/setup/myInfiniswap_daemon.txt &" 
     fi
 done
