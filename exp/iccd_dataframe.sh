@@ -69,9 +69,6 @@ for i in $(seq 10); do
 # for i in $(seq 5); do
     sudo mkdir -p ${output_dir}/${i}
     for local in 100 95 90 85 80 75 70 65 60 55 50;do
-        ps -ef | grep "cpu " | awk '{print $2}' | xargs kill -s 9
-        sleep 10
-        ./cpu ${cpu_useage} &
 
         local_mem=$((${total_mem} * ${local} / 100))
         df_num=$((${total_mem} / 220851))
@@ -95,7 +92,7 @@ for i in $(seq 10); do
             exit
         fi
 
-        file="total_mem${local_cur}_local_mem${local_mem}_cpu${cpu_useage}.txt"
+        file="dataframe_local${local}_cpu${cpu_useage}.txt"
 
         if [ -f ${output_dir}/${i}/${file} ]; then
             continue
