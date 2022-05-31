@@ -2,7 +2,7 @@
 
 servers_num=$1
 
-output_dir="is_iccd_gapbs_lxc_${servers_num}"
+output_dir="is_iccd_gapbs_lxc_${servers_num}_servers"
 cpu_rate_dir="${output_dir}_cpu_rate"
 chunk_dir="${output_dir}_chunk"
 
