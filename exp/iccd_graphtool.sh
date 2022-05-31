@@ -50,7 +50,7 @@ eval $(ssh-agent -s)
 ssh-add /users/bin_tang/.ssh/cloud
 
 cd ../setup
-./run_infiniswap.sh ${servers_num}  ./config2.sh ${output_dir} ${cpu_rate_dir}
+./run_infiniswap.sh ${servers_num}  ./config1.sh ${output_dir} ${cpu_rate_dir}
 cd ../exp
 
 sudo lxc start ${docker_name}
