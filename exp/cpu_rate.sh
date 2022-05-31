@@ -14,11 +14,11 @@ start_idle=()
 start_total=()
 cpu_rate=()
 
-if [! -d ${dir}];then
+if [ ! -d ${dir} ];then
     mkdir ${dir}
 fi
 
-if [! -f ${dir}/$1_cpu_rate.csv ];then
+if [ ! -f ${dir}/$1_cpu_rate.csv ];then
     echo -n "unix_time," >${cpu_rate_file}
 
     echo -n "cpu_avg,cpu_user,cpu_sys,mem_rate,total,used,free,shared,buffers,cached" >>${cpu_rate_file}
