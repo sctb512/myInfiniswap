@@ -6,7 +6,7 @@ if [ $# != 3 ];then
 fi
 
 dir=$3
-file="${dir}/$1_cpu_rate.csv"
+file="${dir}/$1_cpu_rate_lxc.csv"
 docker_name=$2
 
 if [ ! -f ${file} ];then
