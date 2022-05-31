@@ -21,7 +21,7 @@ for i in ${!servers[@]};do
     ssh ${user}@128.110.96.${ip} "ps -ef | grep run_daemon.sh | grep /bin/bash | awk '{print \$2}' | xargs kill -s 9"
     sleep 2
     if [ -n "$3" ] && [ -n "$4" ];then
-        ssh ${user}@128.110.96.${ip} "cd ~/myInfiniswap/setup && ./run_daemon.sh ${ib} $3 $4> ~/myInfiniswap/setup/myInfiniswap_daemon.txt &" 
+        ssh ${user}@128.110.96.${ip} "cd ~/myInfiniswap/setup && ./run_daemon.sh ${ib} $3 ${ib}_$4> ~/myInfiniswap/setup/myInfiniswap_daemon.txt &" 
     else
         ssh ${user}@128.110.96.${ip} "cd ~/myInfiniswap/setup && ./run_daemon.sh ${ib} > ~/myInfiniswap/setup/myInfiniswap_daemon.txt &" 
     fi
