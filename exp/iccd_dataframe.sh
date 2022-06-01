@@ -65,11 +65,11 @@ ps -ef | grep cpu_rate_lxc.sh | grep /bin/bash | awk '{print $2}' | xargs kill -
 
 sudo lxc file push dataframe.py ${docker_name}/root/
 
-for i in $(seq 10); do
-# for i in $(seq 5); do
+# for i in $(seq 10); do
+for i in $(seq 5); do
     sudo mkdir -p ${output_dir}/${i}
-    for local in 100 95 90 85 80 75 70 65 60 55 50;do
-
+    # for local in 100 95 90 85 80 75 70 65 60 55 50;do
+    for local in 100 90 80 70 60 50;do
         local_mem=$((${total_mem} * ${local} / 100))
         df_num=$((${total_mem} / 220851))
         echo "local_mem: ${local_mem}, df_num: ${df_num}"

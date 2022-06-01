@@ -66,7 +66,8 @@ ps -ef | grep cpu_rate.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
 ./cpu_rate.sh ${output_dir} ${cpu_rate_dir} &
 ./cpu_rate_lxc.sh ${output_dir} ${docker_name} ${cpu_rate_dir} &
 
-for i in $(seq 10); do
+# for i in $(seq 10); do
+for i in $(seq 5); do
     mkdir -p ${output_dir}/${i}
     for code in ${codes[*]}; do
         for data in ${datas[*]}; do
@@ -75,7 +76,8 @@ for i in $(seq 10); do
             total_mem=$(awk -F, 'NR>1{print $1,$2,$3,$4,$5,$6,($3+$4+$5+$6)/4}' ${memoryfile} | grep ${cname} | grep ${dname} | awk '{print $7}')
             echo "total_mem: ${total_mem}"
 
-            for local in 100 95 90 85 80 75 70 65 60 55 50; do
+            # for local in 100 95 90 85 80 75 70 65 60 55 50; do
+            for local in 100 90 80 70 60 50; do
                 
                 chunk_num=$(dmesg | grep "\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*" | wc -l)
                 if [ ${chunk_num} -gt 28 ]; then

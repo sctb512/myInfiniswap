@@ -55,11 +55,11 @@ ps -ef | grep cpu_rate_lxc.sh | grep "/bin/bash" | awk '{print $2}' | xargs kill
 
 ./watch_file_num.sh ${output_dir} &
 
-for i in $(seq 10); do
-# for i in $(seq 2); do
+# for i in $(seq 10); do
+for i in $(seq 5); do
     sudo mkdir -p ${output_dir}/${i}
-    for local in 100 95 90 85 80 75 70 65 60 55 50; do
-        # for local in 65 60 55 50; do
+    # for local in 100 95 90 85 80 75 70 65 60 55 50; do
+    for local in 100 90 80 70 60 50; do
         chunk_num=$(dmesg | grep "\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*" | wc -l)
         if [ ${chunk_num} -gt 28 ]; then
             ib=212
