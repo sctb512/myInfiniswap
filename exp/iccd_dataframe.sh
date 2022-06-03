@@ -98,6 +98,9 @@ for i in $(seq 5); do
             continue
         fi
 
+        sudo lxc stop ${docker_name}
+        sudo lxc start ${docker_name}
+        
         sudo lxc config set ${docker_name} limits.memory ${local_mem}kB
         echo $((${local_mem} * 1024 + 32 * 1024 * 1024 * 1024)) | sudo tee /sys/fs/cgroup/memory/lxc/${docker_name}/memory.memsw.limit_in_bytes
 

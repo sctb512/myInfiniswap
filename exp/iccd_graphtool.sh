@@ -9,7 +9,7 @@ servers_num=$1
 
 docker_name=is-workloads
 
-output_dir="is_iccd_graph_lxc_${servers_num}_servers"
+output_dir="is_iccd_graphtool_lxc_${servers_num}_servers"
 cpu_rate_dir="${output_dir}_cpu_rate"
 chunk_dir="${output_dir}_chunk"
 
@@ -105,6 +105,9 @@ for i in $(seq 5); do
                 fi
 
                 local_mem=$((${total_mem} * ${local} / 100))
+
+                sudo lxc stop ${docker_name}
+                sudo lxc start ${docker_name}
 
                 sudo lxc config set ${docker_name} limits.memory ${local_mem}kB
                 echo $((${local_mem} * 1024 + 32 * 1024 * 1024 * 1024)) | sudo tee /sys/fs/cgroup/memory/lxc/${docker_name}/memory.memsw.limit_in_bytes
