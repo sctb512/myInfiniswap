@@ -61,7 +61,7 @@ ps -ef | grep cpu_rate_lxc.sh | grep /bin/bash | awk '{print $2}' | xargs kill -
 ./cpu_rate.sh ${output_dir} ${cpu_rate_dir} &
 ./cpu_rate_lxc.sh ${output_dir} ${docker_name} ${cpu_rate_dir} &
 
-./watch_file_num.sh ${output_dir} &
+./watch_file_num.sh ${output_dir} ${index} ${server_num} ${chunk_dir}/${server_distribute} 222 &
 
 sudo lxc file push dataframe.py ${docker_name}/root/
 
@@ -76,7 +76,7 @@ for i in $(seq 5); do
 
         chunk_num=$(dmesg | grep "\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*" | wc -l)
         if [ ${chunk_num} -gt 28 ]; then
-            ib=212
+            ib=222
             line="${index}"
             for m in $(seq ${servers_num}); do
                 num=$(dmesg | grep "bd done, daemon ip" | grep ${ib} | wc -l)
@@ -100,7 +100,7 @@ for i in $(seq 5); do
 
         sudo lxc stop ${docker_name}
         sudo lxc start ${docker_name}
-        
+
         sudo lxc config set ${docker_name} limits.memory ${local_mem}kB
         echo $((${local_mem} * 1024 + 32 * 1024 * 1024 * 1024)) | sudo tee /sys/fs/cgroup/memory/lxc/${docker_name}/memory.memsw.limit_in_bytes
 

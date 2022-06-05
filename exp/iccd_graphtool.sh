@@ -66,6 +66,8 @@ ps -ef | grep cpu_rate.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
 ./cpu_rate.sh ${output_dir} ${cpu_rate_dir} &
 ./cpu_rate_lxc.sh ${output_dir} ${docker_name} ${cpu_rate_dir} &
 
+./watch_file_num.sh ${output_dir} ${index} ${server_num} ${chunk_dir}/${server_distribute} 212 &
+
 # for i in $(seq 10); do
 for i in $(seq 5); do
     mkdir -p ${output_dir}/${i}

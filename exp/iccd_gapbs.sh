@@ -58,7 +58,7 @@ sudo lxc config set ${docker_name} limits.memory.swap true
 ps -ef | grep cpu_rate.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
 ./cpu_rate.sh ${output_dir} ${cpu_rate_dir} &
 
-./watch_file_num.sh ${output_dir} &
+./watch_file_num.sh ${output_dir} ${index} ${server_num} ${chunk_dir}/${server_distribute} 212 &
 
 for i in ${!functions[@]};do
     function=${functions[${i}]}
