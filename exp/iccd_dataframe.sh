@@ -1,5 +1,12 @@
 #!/bin/bash
+
+if [ $# != 2 ]; then
+    echo "useage: $0 server_num config_file"
+    exit
+fi
+
 servers_num=$1
+conf=$2
 cpu_useage=90
 
 output_dir="is_iccd_dataframe_lxc_${servers_num}_servers"
@@ -34,6 +41,9 @@ if [ ! -f ${chunk_dir}/${server_distribute} ]; then
 fi
 # sudo rm -rf ${output_dir}/*
 
+ib_start=$(cat ../setup/${conf} | grep client | tail -n 1 | awk -F= '{print $2}')
+ib_start=$((${ib_start} + 1))
+
 total_mem=25165824
 docker_name=is-workloads
 echo "total_mem: ${total_mem}"
@@ -42,7 +52,7 @@ eval $(ssh-agent -s)
 ssh-add /users/bin_tang/.ssh/cloud
 
 cd ../setup
-./run_infiniswap.sh ${servers_num} ./config2.sh ${output_dir} ${cpu_rate_dir}
+./run_infiniswap.sh ${servers_num} ${conf} ${output_dir} ${cpu_rate_dir}
 cd ../exp
 
 sudo lxc start ${docker_name}
@@ -61,7 +71,7 @@ ps -ef | grep cpu_rate_lxc.sh | grep /bin/bash | awk '{print $2}' | xargs kill -
 ./cpu_rate.sh ${output_dir} ${cpu_rate_dir} &
 ./cpu_rate_lxc.sh ${output_dir} ${docker_name} ${cpu_rate_dir} &
 
-./watch_file_num.sh ${output_dir} ${index} ${server_num} ${chunk_dir}/${server_distribute} 222 &
+./watch_file_num.sh ${output_dir} ${index} ${server_num} ${chunk_dir}/${server_distribute} ${ib_start} &
 
 sudo lxc file push dataframe.py ${docker_name}/root/
 
@@ -76,7 +86,7 @@ for i in $(seq 5); do
 
         chunk_num=$(dmesg | grep "\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*" | wc -l)
         if [ ${chunk_num} -gt 28 ]; then
-            ib=222
+            ib=${ib_start}
             line="${index}"
             for m in $(seq ${servers_num}); do
                 num=$(dmesg | grep "bd done, daemon ip" | grep ${ib} | wc -l)

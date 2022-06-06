@@ -1,6 +1,12 @@
 #!/bin/bash
 
+if [ $# != 2 ]; then
+    echo "useage: $0 server_num config_file"
+    exit
+fi
+
 servers_num=$1
+conf=$2
 
 output_dir="is_iccd_memcached_lxc_${servers_num}_servers"
 cpu_rate_dir="${output_dir}_cpu_rate"
@@ -30,6 +36,9 @@ if [ ! -f ${chunk_dir}/${server_distribute} ]; then
     echo ${head} >${chunk_dir}/${server_distribute}
 fi
 
+ib_start=$(cat ../setup/${conf} | grep client | tail -n 1 | awk -F= '{print $2}')
+ib_start=$((${ib_start} + 1))
+
 total_mem=1460099
 docker_name=is-workloads
 echo "total_mem: ${total_mem}"
@@ -53,7 +62,7 @@ ps -ef | grep cpu_rate_lxc.sh | grep "/bin/bash" | awk '{print $2}' | xargs kill
 ./cpu_rate.sh ${output_dir} ${cpu_rate_dir} &
 ./cpu_rate_lxc.sh ${output_dir} ${docker_name} ${cpu_rate_dir} &
 
-./watch_file_num.sh ${output_dir} ${index} ${server_num} ${chunk_dir}/${server_distribute} 212 &
+./watch_file_num.sh ${output_dir} ${index} ${server_num} ${chunk_dir}/${server_distribute} ${ib_start} &
 
 # for i in $(seq 10); do
 for i in $(seq 5); do
@@ -62,7 +71,7 @@ for i in $(seq 5); do
     for local in 100 90 80 70 60 50; do
         chunk_num=$(dmesg | grep "\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*" | wc -l)
         if [ ${chunk_num} -gt 28 ]; then
-            ib=212
+            ib=${ib_start}
             line="${index}"
             for m in $(seq ${servers_num}); do
                 num=$(dmesg | grep "bd done, daemon ip" | grep ${ib} | wc -l)
