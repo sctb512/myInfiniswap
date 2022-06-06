@@ -65,11 +65,6 @@ sudo lxc config set ${docker_name} limits.memory.swap true
 sudo bash -c "echo never > /sys/kernel/mm/transparent_hugepage/enabled"
 sudo bash -c "echo never > /sys/kernel/mm/transparent_hugepage/defrag"
 
-ps -ef | grep cpu_rate_lxc.sh | grep "/bin/bash" | awk '{print $2}' | xargs kill -9
-ps -ef | grep cpu_rate.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
-./cpu_rate.sh ${output_dir} ${cpu_rate_dir} &
-./cpu_rate_lxc.sh ${output_dir} ${docker_name} ${cpu_rate_dir} &
-
 ./watch_file_num.sh ${output_dir} ${index} ${server_num} ${chunk_dir}/${server_distribute} ${ib_start} &
 
 # for i in $(seq 10); do
@@ -102,6 +97,11 @@ for i in $(seq 5); do
                     sudo reboot
                     exit
                 fi
+
+                ps -ef | grep cpu_rate.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
+                ps -ef | grep cpu_rate_lxc.sh | grep "/bin/bash" | awk '{print $2}' | xargs kill -9
+                ./cpu_rate.sh "${cname}_${dname}_local_${local}_${output_dir}" ${cpu_rate_dir}/${i} &
+                ./cpu_rate_lxc.sh "${cname}_${dname}_local_${local}_${output_dir} ${docker_name}" ${cpu_rate_dir}/${i} &
 
                 file="${cname}_${dname}_total${total_mem}_local${local}.txt"
                 outpath="output/${file}"

@@ -15,7 +15,7 @@ start_total=()
 cpu_rate=()
 
 if [ ! -d ${dir} ];then
-    mkdir ${dir}
+    mkdir -p ${dir}
 fi
 
 if [ ! -f ${dir}/$1_cpu_rate.csv ];then

@@ -64,9 +64,6 @@ sudo lxc start ${docker_name}
 sudo lxc config set ${docker_name} limits.memory.swap.priority 50
 sudo lxc config set ${docker_name} limits.memory.swap true
 
-ps -ef | grep cpu_rate.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
-./cpu_rate.sh ${output_dir} ${cpu_rate_dir} &
-
 ./watch_file_num.sh ${output_dir} ${index} ${server_num} ${chunk_dir}/${server_distribute} ${ib_start} &
 
 for i in ${!functions[@]};do
@@ -74,9 +71,6 @@ for i in ${!functions[@]};do
     total_memory=${total_memorys[${i}]}
 
     echo "function: ${function}, total_memory: ${total_memory}"
-
-    ps -ef | grep cpu_rate_lxc.sh | grep "/bin/bash" | awk '{print $2}' | xargs kill -9
-    ./cpu_rate_lxc.sh ${output_dir} ${docker_name} ${cpu_rate_dir} &
 
     cur_output_dir=${output_dir}/${function}
 
@@ -106,6 +100,11 @@ for i in ${!functions[@]};do
                 sudo reboot
                 exit
             fi
+
+            ps -ef | grep cpu_rate.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
+            ps -ef | grep cpu_rate_lxc.sh | grep "/bin/bash" | awk '{print $2}' | xargs kill -9
+            ./cpu_rate.sh "local_${local}_${output_dir}" ${cpu_rate_dir}/${i} &
+            ./cpu_rate_lxc.sh "local_${local}_${output_dir} ${docker_name}" ${cpu_rate_dir}/${i} &
 
             local_mem=$(expr ${total_memory} \* ${local} / 100)
 
