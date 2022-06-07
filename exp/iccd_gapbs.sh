@@ -85,11 +85,14 @@ for i in ${!functions[@]};do
         for local in 100 90 80 70 60 50; do
             chunk_num=$(dmesg | grep "\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*" | wc -l)
             if [ ${chunk_num} -gt 28 ]; then
+                echo "chunk_num gt 28, reboot..."
+                echo "ib_start: ${ib_start}"
                 ib=${ib_start}
                 line="${index}"
                 for m in $(seq ${servers_num}); do
                     num=$(dmesg | grep "bd done, daemon ip" | grep ${ib} | wc -l)
                     line="${line},${num}"
+                    echo "ib: ${ib}, num: ${num}"
                     ib=$(expr ${ib} + 1)
                 done
                 echo ${line} >>${chunk_dir}/${server_distribute}
