@@ -1,7 +1,7 @@
 #!/bin/bash
 
 user=bin_tang
-nodes=(53 64 38 33 25 26)
+nodes=(53 64 38 33 25 26 57 62 39)
 
 
 for node in ${nodes[*]};do
