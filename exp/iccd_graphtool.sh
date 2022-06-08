@@ -131,7 +131,7 @@ for i in $(seq 5); do
                 ps -ef | grep cpu_rate.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
                 ps -ef | grep cpu_rate_lxc.sh | grep "/bin/bash" | awk '{print $2}' | xargs kill -9
                 ./cpu_rate.sh "${cname}_${dname}_local_${local}_${output_dir}" ${cpu_rate_dir}/${i} &
-                ./cpu_rate_lxc.sh "${cname}_${dname}_local_${local}_${output_dir} ${docker_name}" ${cpu_rate_dir}/${i} &
+                ./cpu_rate_lxc.sh "${cname}_${dname}_local_${local}_${output_dir}" ${docker_name} ${cpu_rate_dir}/${i} &
                 
                 sudo lxc exec ${docker_name} -- sudo --login --user root /usr/bin/zsh -ic "${cmd}"
                 ps -ef | grep cpu_rate.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9

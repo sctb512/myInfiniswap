@@ -115,7 +115,7 @@ for i in $(seq 5); do
         ps -ef | grep cpu_rate.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
         ps -ef | grep cpu_rate_lxc.sh | grep "/bin/bash" | awk '{print $2}' | xargs kill -9
         ./cpu_rate.sh "local_${local}_${output_dir}" ${cpu_rate_dir}/${i} &
-        ./cpu_rate_lxc.sh "local_${local}_${output_dir} ${docker_name}" ${cpu_rate_dir}/${i} &
+        ./cpu_rate_lxc.sh "local_${local}_${output_dir}" ${docker_name} ${cpu_rate_dir}/${i} &
 
         sudo lxc exec ${docker_name} -- sudo --login --user root /usr/bin/zsh -ic "cd /root && mkdir ${output_dir} && memcached -p 11211 -m 64m -d -u root && sleep 5 && memtier_benchmark -s 127.0.0.1 -p 11211 -P memcache_text --clients 100 --threads 8 --data-size 256 --test-time 30 --pipeline 10240 --out-file ${output_dir}/${file} > /dev/null 2>&1"
         ps -ef | grep cpu_rate.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
