@@ -9,6 +9,10 @@ dir=$3
 file="${dir}/$1_cpu_rate_lxc.csv"
 docker_name=$2
 
+if [ ! -d ${dir} ];then
+    mkdir -p ${dir}
+fi
+
 if [ ! -f ${file} ];then
     echo "unix_time,mem_rate,total,used,free,shared,buffers,cached,usr,sys,cpu_rate" >${file}
 fi
