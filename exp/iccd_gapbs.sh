@@ -59,6 +59,9 @@ cd ../setup
 ./run_infiniswap.sh ${servers_num}  ${conf} ${output_dir} ${cpu_rate_dir}
 cd ../exp
 
+ps -ef | grep cpu_rate.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
+ps -ef | grep cpu_rate_lxc.sh | grep "/bin/bash" | awk '{print $2}' | xargs kill -9
+
 sudo lxc start ${docker_name}
 
 sudo lxc config set ${docker_name} limits.memory.swap.priority 50
@@ -104,11 +107,6 @@ for i in ${!functions[@]};do
                 exit
             fi
 
-            ps -ef | grep cpu_rate.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
-            ps -ef | grep cpu_rate_lxc.sh | grep "/bin/bash" | awk '{print $2}' | xargs kill -9
-            ./cpu_rate.sh "local_${local}_${output_dir}" ${cpu_rate_dir}/${i} &
-            ./cpu_rate_lxc.sh "local_${local}_${output_dir} ${docker_name}" ${cpu_rate_dir}/${i} &
-
             local_mem=$(expr ${total_memory} \* ${local} / 100)
 
             file="total_mem${total_memory}_local_mem${local_mem}_local${local}.txt"
@@ -132,7 +130,14 @@ for i in ${!functions[@]};do
             sudo lxc exec ${docker_name} -- sudo --login --user root bash -ic "cd /root && rm -rf ${cur_output_dir}" >/dev/null 2>&1
 
             echo "total: ${total_mem} local: ${local} running..."
+            ps -ef | grep cpu_rate.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
+            ps -ef | grep cpu_rate_lxc.sh | grep "/bin/bash" | awk '{print $2}' | xargs kill -9
+            ./cpu_rate.sh "local_${local}_${output_dir}" ${cpu_rate_dir}/${i} &
+            ./cpu_rate_lxc.sh "local_${local}_${output_dir} ${docker_name}" ${cpu_rate_dir}/${i} &
+
             sudo lxc exec ${docker_name} -- sudo --login --user root bash -ic "cd /root && mkdir -p ${cur_output_dir} && (time ${gapbs_dir}/${function} -u 26 -n 1) > ${cur_output_dir}/${file} 2>&1"
+            ps -ef | grep cpu_rate.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
+            ps -ef | grep cpu_rate_lxc.sh | grep "/bin/bash" | awk '{print $2}' | xargs kill -9
 
             sudo lxc file pull ${docker_name}/root/${cur_output_dir}/${file} ./${cur_output_dir}/${i}/
 
