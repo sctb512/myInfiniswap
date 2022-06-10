@@ -72,11 +72,11 @@ for i in $(seq 5); do
             echo "chunk_num gt 28, reboot..."
             echo "ib_start: ${ib_start}"
             ib=${ib_start}
-            line="is,${index}"
+            line="${chunk_dir},${index}"
             for m in $(seq ${servers_num}); do
                 num=$(dmesg | grep "bd done, daemon ip" | grep ${ib} | wc -l)
                 line="${line},${num}"
-                echo "is, ib: ${ib}, num: ${num}"
+                echo "${chunk_dir}, ib: ${ib}, num: ${num}"
                 ib=$(expr ${ib} + 1)
             done
             echo ${line}

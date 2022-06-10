@@ -38,7 +38,7 @@ if [ ! -f ${once_file} ]; then
 fi
 index=$(cat ${once_file})
 if [ ! -f ${chunk_dir}/${server_distribute} ]; then
-    head="turn"
+    head="type,turn"
     for k in $(seq ${servers_num}); do
         head="${head},${k}"
     done
@@ -91,13 +91,14 @@ for i in ${!functions[@]};do
                 echo "chunk_num gt 28, reboot..."
                 echo "ib_start: ${ib_start}"
                 ib=${ib_start}
-                line="${index}"
+                line="${chunk_dir},${index}"
                 for m in $(seq ${servers_num}); do
                     num=$(dmesg | grep "bd done, daemon ip" | grep ${ib} | wc -l)
                     line="${line},${num}"
-                    echo "ib: ${ib}, num: ${num}"
+                    echo "${chunk_dir}, ib: ${ib}, num: ${num}"
                     ib=$(expr ${ib} + 1)
                 done
+                echo ${line}
                 echo ${line} >>${chunk_dir}/${server_distribute}
 
                 index=$((${index} + 1))
