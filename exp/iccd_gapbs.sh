@@ -85,7 +85,7 @@ for i in ${!functions[@]};do
     for i in $(seq 5); do
         sudo mkdir -p ${cur_output_dir}/${i}
         # for local in 100 95 90 85 80 75 70 65 60 55 50; do
-        for local in 100 90 80 70 60; do
+        for local in 100 90 80 70 60 50; do
             chunk_num=$(dmesg | grep "\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*" | wc -l)
             if [ ${chunk_num} -gt 28 ]; then
                 echo "chunk_num gt 28, reboot..."
