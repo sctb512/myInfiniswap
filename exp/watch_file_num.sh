@@ -8,8 +8,8 @@ ib_start=$5
 file_num=$(ls -lR ${dir} |grep "^-" | wc -l)
 
 while true;do
-    echo "sleep $((60*60*1))s..."
-    sleep $((60*60*1))
+    echo "sleep $((60*60*1+60*30))s..."
+    sleep $((60*60*1+60*30))
     cur_file_num=$(ls -lR ${dir} |grep "^-" | wc -l)
 
     if [ ${cur_file_num} -le ${file_num} ];then

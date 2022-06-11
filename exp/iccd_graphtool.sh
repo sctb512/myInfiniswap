@@ -21,7 +21,7 @@ memoryfile=graph_benchmark_memory.csv
 
 # codes=(graphtool_profile.py igraph_profile.py snap_profile.py)
 # datas=(amazon.txt enron.txt google.txt pokec.txt)
-codes=(graphtool_profile.py igraph_profile.py)
+codes=(graphtool_profile.py)
 datas=(livejournal.txt pokec.txt)
 repetition=1
 
