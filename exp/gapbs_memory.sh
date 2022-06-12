@@ -34,7 +34,7 @@ for func in ${functoins[*]}; do
         used_kB=$(expr ${mem_max} - ${mem_base})
         line="${line},${used_kB}"
         pkill ${func}
-        sleep 10
+        sleep 6
     done
     echo "${line}"
     echo "${line}" >>gapbs_memory.csv
