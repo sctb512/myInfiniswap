@@ -9,7 +9,8 @@ done
 echo "${headline}" >gapbs_memory_u24.csv
 
 # functoins=(bc bfs cc_sv converter pr_spmv tc cc pr sssp)
-functoins=(bc bfs cc_sv pr_spmv tc cc pr sssp)
+# functoins=(bc bfs cc_sv pr_spmv tc cc pr sssp)
+functoins=(cc_sv pr_spmv cc sssp)
 
 for func in ${functoins[*]}; do
     line="${func}"
