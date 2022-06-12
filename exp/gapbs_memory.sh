@@ -6,7 +6,7 @@ headline="functoin"
 for i in $(seq 5); do
     headline="${headline},${i}_memory_used(kB)"
 done
-echo "${headline}" >gapbs_memory.csv
+echo "${headline}" >gapbs_memory_u24.csv
 
 # functoins=(bc bfs cc_sv converter pr_spmv tc cc pr sssp)
 functoins=(bc bfs cc_sv pr_spmv tc cc pr sssp)
@@ -16,7 +16,7 @@ for func in ${functoins[*]}; do
     for i in $(seq 5); do
         mem_base=$(free | awk '/Mem/ {print $3}')
         mem_max=0
-        ${gapbs_dir}/${func} -u 26 -n 1 &
+        ${gapbs_dir}/${func} -u 24 -n 1 &
         sleep 10
         mem_cur=$(free | awk '/Mem/ {print $3}')
         used=$(expr ${mem_cur} - ${mem_base})
