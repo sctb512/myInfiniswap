@@ -14,12 +14,14 @@ while true;do
 
     if [ ${cur_file_num} -le ${file_num} ];then
         ib=${ib_start}
-        line="${index}"
+        line="${dir},${index}"
         for m in $(seq ${servers_num}); do
             num=$(dmesg | grep "bd done, daemon ip" | grep ${ib} | wc -l)
             line="${line},${num}"
+            echo "${dir}, ib: ${ib}, num: ${num}"
             ib=$(expr ${ib} + 1)
         done
+        echo ${line}
         echo ${line} >>${server_distribute}
 
         index=$((${index} + 1))
