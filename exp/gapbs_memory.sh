@@ -2,11 +2,13 @@
 
 gapbs_dir="/users/bin_tang/gapbs"
 
+mem_file="gapbs_memory_u24.csv"
+
 headline="functoin"
 for i in $(seq 10); do
     headline="${headline},${i}_memory_used(kB)"
 done
-echo "${headline}" >gapbs_memory_u24.csv
+echo "${headline}" >${mem_file}
 
 # functoins=(bc bfs cc_sv converter pr_spmv tc cc pr sssp)
 # functoins=(bc bfs cc_sv pr_spmv tc cc pr sssp)
@@ -37,5 +39,5 @@ for func in ${functoins[*]}; do
         sleep 6
     done
     echo "${line}"
-    echo "${line}" >>gapbs_memory.csv
+    echo "${line}" >>${mem_file}
 done
