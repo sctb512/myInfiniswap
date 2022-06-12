@@ -33,6 +33,7 @@ for func in ${functoins[*]}; do
             fi
             used=$(expr ${mem_cur} - ${mem_base})
         done
+        echo "mem_max: ${mem_max}, mem_base: ${mem_base}"
         used_kB=$(expr ${mem_max} - ${mem_base})
         line="${line},${used_kB}"
         pkill ${func}
