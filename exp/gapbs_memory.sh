@@ -18,13 +18,13 @@ for func in ${functoins[*]}; do
         mem_base=$(free | awk '/Mem/ {print $3}')
         mem_max=0
         ${gapbs_dir}/${func} -u 24 -n 1 &
-        sleep 10
+        sleep 0.1
         mem_cur=$(free | awk '/Mem/ {print $3}')
         used=$(expr ${mem_cur} - ${mem_base})
         gb=$(expr 1024 \* 1024)
         mb=$((1024 * 200))
         while [ ${used} -gt ${mb} ]; do
-            sleep 1
+            sleep 0.1
             mem_cur=$(free | awk '/Mem/ {print $3}')
             if [ ${mem_cur} -gt ${mem_max} ]; then
                 mem_max=${mem_cur}
