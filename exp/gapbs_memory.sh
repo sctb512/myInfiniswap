@@ -14,7 +14,7 @@ functoins=(cc_sv pr_spmv cc sssp)
 
 for func in ${functoins[*]}; do
     line="${func}"
-    for i in $(seq 5); do
+    for i in $(seq 10); do
         mem_base=$(free | awk '/Mem/ {print $3}')
         mem_max=0
         ${gapbs_dir}/${func} -u 24 -n 1 &
