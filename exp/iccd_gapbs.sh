@@ -134,8 +134,8 @@ for i in ${!functions[@]};do
             echo "total: ${total_mem} local: ${local} running..."
             ps -ef | grep cpu_rate.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
             ps -ef | grep cpu_rate_lxc.sh | grep "/bin/bash" | awk '{print $2}' | xargs kill -9
-            ./cpu_rate.sh "local_${local}_${output_dir}" ${cpu_rate_dir}/${i} &
-            ./cpu_rate_lxc.sh "local_${local}_${output_dir}" ${docker_name} ${cpu_rate_dir}/${i} &
+            ./cpu_rate.sh "func_${function}_local_${local}_${output_dir}" ${cpu_rate_dir}/${i} &
+            ./cpu_rate_lxc.sh "func_${function}_local_${local}_${output_dir}" ${docker_name} ${cpu_rate_dir}/${i} &
 
             sudo lxc exec ${docker_name} -- sudo --login --user root bash -ic "cd /root && mkdir -p ${cur_output_dir} && (time ${gapbs_dir}/${function} -u 24 -n 1) > ${cur_output_dir}/${file} 2>&1"
             ps -ef | grep cpu_rate.sh | grep /bin/bash | awk '{print $2}' | xargs kill -s 9
