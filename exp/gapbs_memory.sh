@@ -3,7 +3,7 @@
 gapbs_dir="/users/bin_tang/gapbs"
 
 headline="functoin"
-for i in $(seq 5); do
+for i in $(seq 10); do
     headline="${headline},${i}_memory_used(kB)"
 done
 echo "${headline}" >gapbs_memory_u24.csv
