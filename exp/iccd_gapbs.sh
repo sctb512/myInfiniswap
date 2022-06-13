@@ -20,10 +20,10 @@ gapbs_dir="/root/gapbs"
 # functions=(bc bfs cc_sv pr_spmv tc cc pr sssp)
 # total_memorys=(18186932 18188654 18132460 18232750 18218126 18133960 18131084 33498212)
 # functions=(cc_sv pr_spmv cc sssp)
-functions=(pr_spmv cc sssp)
+functions=(pr_spmv cc)
 # total_memorys=(18132460 18232750 18133960 33498212)
 # total_memorys=(4561044 4550048 4576217 8523690)
-total_memorys=(4550048 4576217 8523690)
+total_memorys=(4550048 4576217)
 
 
 if [ ! -d ${output_dir} ]; then
