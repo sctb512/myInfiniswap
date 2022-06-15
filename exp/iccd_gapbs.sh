@@ -48,7 +48,7 @@ if [ ! -f ${chunk_dir}/${server_distribute} ]; then
     echo ${head} >${chunk_dir}/${server_distribute}
 fi
 
-ib_start=$(cat ../setup/${conf} | grep client | tail -n 1 | awk -F= '{print $2}')
+ib_start=$(cat ../setup/${${conf}/\.\//} | grep client | tail -n 1 | awk -F= '{print $2}')
 ib_start=$((${ib_start} + 1))
 
 docker_name=is-workloads
