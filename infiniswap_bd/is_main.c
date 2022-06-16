@@ -1854,8 +1854,20 @@ int IS_single_chunk_map(struct IS_session *IS_session, int select_chunk)
 		}
 		tmp_cb = IS_session->cb_list[cb_index];
 		if (IS_session->cb_state_list[cb_index] > CB_IDLE) {
+
+			struct timespec sync_start,sync_end;
+			long long sync_time;
+			getnstimeofday(&sync_start);
+
 			IS_send_query(tmp_cb);				
 			wait_event_interruptible(tmp_cb->sem, tmp_cb->state == FREE_MEM_RECV);
+
+			getnstimeofday(&sync_end);
+			// pr_info("sync_end.tv_sec: %ld, sync_end.tv_nsec: %ld\n", sync_end.tv_sec, sync_end.tv_nsec);
+			// pr_info("sync_start.tv_sec: %ld, sync_start.tv_nsec: %ld\n", sync_start.tv_sec, sync_start.tv_nsec);
+			sync_time=(sync_end.tv_sec-sync_start.tv_sec)*1000000000+(sync_end.tv_nsec -sync_start.tv_nsec);
+			pr_info("sync_time: %lldns\n", sync_time);
+
 			tmp_cb->state = AFTER_FREE_MEM;
 			free_mem[i] = tmp_cb->remote_chunk.target_size_g;
 			free_mem_sorted[i] = cb_index;
@@ -1896,7 +1908,14 @@ int IS_single_chunk_map(struct IS_session *IS_session, int select_chunk)
 	// 	pr_info("tmp: %d\n", tmp);
 	// 	simulate_select(IS_session, select_chunk, tmp);
 	// }
-	simulate_select(IS_session, select_chunk, 10);
+
+	for(tmp=1;tmp<8;tmp*=2) {
+		pr_info("tmp: %d\n", tmp);
+		simulate_select(IS_session, select_chunk, tmp);
+	}
+	
+
+	// simulate_select(IS_session, select_chunk, 10);
 	// simulate_select(IS_session, select_chunk, 100);
 	// simulate_select(IS_session, select_chunk, 1000);
 	// simulate_select(IS_session, select_chunk, 10000);
