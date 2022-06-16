@@ -58,7 +58,7 @@ sudo lxc config set ${docker_name} limits.memory.swap true
 ./watch_file_num.sh ${output_dir} ${index} ${server_num} ${chunk_dir}/${server_distribute} ${ib_start} &
 
 
-for servers_num in 1 2 4 6 8 10 12;do
+for servers_num in 1 2 4 6 8;do
     cd ../setup
     ./run_infiniswap.sh ${servers_num} ${conf} ${output_dir} ${cpu_rate_dir}
     cd ../exp
