@@ -12,8 +12,8 @@ elif [ $1 == "4" ];then
     client=211
     ibs=(212 213 214 215)
 elif [ $1 == "2" ];then
-    servers=(25 18)
-    ips=(25 18)
+    servers=(25 26)
+    ips=(25 26)
     client=211
     ibs=(212 213)
 elif [ $1 == "1" ];then
