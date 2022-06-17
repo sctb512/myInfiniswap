@@ -61,7 +61,7 @@ sudo lxc config set ${docker_name} limits.memory.swap true
 for servers_num in 1 2 4 6 8;do
 
     server_files=$(ls -lR ${output_dir} | grep ^- | grep servers_${servers_num})
-    if [ ${server_num} -eq 30 ];then
+    if [ ${server_files} -eq 30 ];then
         continue
     fi
 
